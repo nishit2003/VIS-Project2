@@ -11,4 +11,46 @@ header {
    text-align: center;
    padding: 20px 0;
    justify-content: center;
+   width: 100%;
+}
+
+button {
+   background-color: #04AA6D;
+   color: white;
+   padding: 12px 20px;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   float: right;
+   margin-left: 15px;
+ }
+
+#row1{
+   display: grid;
+   grid-template-columns: 30% 70%;
+   padding: 10px;
+   height: 650px;
+   width: 100%;
+
+}
+
+#column1{
+   border-style: groove;
+}
+
+#column2{
+   border-style: groove;
+}
+
+#row2{
+   border-style: groove;
+   height: 100px;
+   display: flex;
+   align-items: center;
+
+}
+
+#resetBtn{
+   float: right;
+   justify-content: right;
 }

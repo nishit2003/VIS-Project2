@@ -16,15 +16,38 @@
  
    <div id="row1">
       <div id="column1">
+         <h2>Filters</h2>
 
+         <button id="toggleBtn" >Toggle Map</button>
+
+         <label for="filter">Select Filter:</label>
+         <select id="filter">
+            <option value="date_time">Date Time</option>
+            <option value="city_area">City Area</option>
+            <option value="state">State</option>
+            <option value="country">Country</option>
+            <option value="ufo_shape">UFO Shape</option>
+            <option value="encounter_length">Encounter Length</option>
+            <option value="described_encounter_length">Described Encounter Length</option>
+            <option value="description">Description</option>
+            <option value="date_documented">Date Documented</option>
+            <option value="latitude">Latitude</option>
+            <option value="longitude">Longitude</option>
+         </select>
+
+         
       </div>
+
       <div id="column2">
+          <p>map</p> <!--remove this -->
+         <svg id="map" ></svg>
          <div id="tooltip"></div>
       </div>
+
    </div>
 
-   <div id ="row2">
-
+   <div id ="row2" class="timeline">
+   <button id="resetBtn">Reset</button>
    </div>
 
 
@@ -32,7 +55,6 @@
   </div>
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="js/script.js"></script>
 <script src="js/main.js"></script>
 <script src="js/leaflet.js"></script>
 <script src="js/main.js"></script>
