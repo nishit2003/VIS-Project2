@@ -28,9 +28,9 @@ class LeafletMap {
         let vis = this;     // saves reference to the class to a locally-scoped variable
 
         // experimenting with the topographic map:
-        vis.base_layer = L.tileLayer(vis.topoUrl, {
+        vis.base_layer = L.tileLayer(vis.TOPO_URL, {
             id: 'thout-image',
-            attribution: vis.topoAttr,
+            attribution: vis.TOPO_ATTR,
             ext: 'png'
         });
     
@@ -54,8 +54,16 @@ class LeafletMap {
             // Leaflet has to take control of projecting points. Here we are feeding the latitude and longitude coordinates to
             // leaflet so that it can project them on the coordinates of the view. Notice, we have to reverse lat and lon.
             // Finally, the returned conversion produces an x and y point. We have to select the the desired one using .x or .y
-            .attr("cx", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).x)
-            .attr("cy", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).y)
+            .attr("cx", d => {
+                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
+                else { vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x }
+            })
+            .attr("cy", d => {
+                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
+                else { vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
+            })
+            //.attr("cx", d => vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x)
+            //.attr("cy", d => vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y)
             .attr("r", 3)
             .on('mouseover', function(event, d) {
                 d3.select(this).transition()    // D3 selects the object we have moused over in order to perform operations on it
@@ -98,7 +106,7 @@ class LeafletMap {
 
     updateVis() {
         let vis = this;
-
+        
         //want to control the size of the radius to be a certain number of meters? 
         vis.radiusSize = 3; 
 
@@ -110,8 +118,16 @@ class LeafletMap {
     
         // redraw based on new zoom- need to recalculate on-screen position
         vis.Dots
-            .attr("cx", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).x)
-            .attr("cy", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).y)
+            .attr("cx", d => {
+                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
+                else { vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x }
+            })
+            .attr("cy", d => {
+                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
+                else { vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
+            })
+            //.attr("cx", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).x)
+            //.attr("cy", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).y)
             .attr("r", vis.radiusSize);
     }
 

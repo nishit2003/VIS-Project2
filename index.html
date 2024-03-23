@@ -4,6 +4,7 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Project 2 - The truth is out there </title>
+   <link rel="stylesheet" href="css/leaflet.css"/>
    <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
@@ -13,54 +14,50 @@
    </header>
    
    <div id ="mainContent">
- 
-   <div id="row1">
-      <div id="column1">
-         <h2>Filters</h2>
+      <div id="row1">
+         <div id="column1">
+            <h2>Filters</h2>
 
-         <button id="toggleBtn">Toggle Map</button>
+            <button id="toggleBtn">Toggle Map</button>
 
-         <label for="filter">Select Filter:</label>
-         <select id="filter">
-            <option value="date_time">Date Time</option>
-            <option value="city_area">City Area</option>
-            <option value="state">State</option>
-            <option value="country">Country</option>
-            <option value="ufo_shape">UFO Shape</option>
-            <option value="encounter_length">Encounter Length</option>
-            <option value="described_encounter_length">Described Encounter Length</option>
-            <option value="description">Description</option>
-            <option value="date_documented">Date Documented</option>
-            <option value="latitude">Latitude</option>
-            <option value="longitude">Longitude</option>
-         </select>
+            <label for="filter">Select Filter:</label>
+            <select id="filter">
+               <option value="date_time">Date Time</option>
+               <option value="city_area">City Area</option>
+               <option value="state">State</option>
+               <option value="country">Country</option>
+               <option value="ufo_shape">UFO Shape</option>
+               <option value="encounter_length">Encounter Length</option>
+               <option value="described_encounter_length">Described Encounter Length</option>
+               <option value="description">Description</option>
+               <option value="date_documented">Date Documented</option>
+               <option value="latitude">Latitude</option>
+               <option value="longitude">Longitude</option>
+            </select>
+         </div>
+
+         <div id="column2">
+            <div id="map"></div>
+            <div id="tooltip"></div>
+         </div>
       </div>
 
-      <div id="column2">
-         <!--<p>map</p>    remove this -->
-         <div id="map"></div>
-         <!--<svg id="map"></svg>-->
-         <div id="tooltip"></div>
+      <div id ="row2" class="timeline">
+         <p>Timeline w brushing</p>    <!--remove this -->
+         <button id="resetBtn">Reset</button>
       </div>
    </div>
 
-   <div id ="row2" class="timeline">
-      <p>Timeline w brushing</p><!--remove this -->
-   <button id="resetBtn">Reset</button>
-   </div>
+   <!--
+      JavaScript Files (NOTE: Make sure the 'main.js' is the last file. Order of imports matters).
+      Library files (D3 & leaflet) first, followed by custom JS classes.
+   -->
+   <script src="js/d3.v6.min.js" type="text/javascript"></script>
+   <script src="js/leaflet.js" type="text/javascript"></script>
 
-
-
-   </div>
-
-   <!-- JavaScript Files (NOTE: Make sure the 'main.js' is the last file. Order of imports matters) -->
-   <script src="https://d3js.org/d3.v5.min.js" type="text/javascript"></script>
    <script src="js/datastore.js" type="text/javascript"></script>
    <script src="js/csvdataparser.js" type="text/javascript"></script>
-   <script src="js/leaflet.js" type="text/javascript"></script>
    <script src="js/leafletMap.js" type="text/javascript"></script>
    <script src="js/main.js" type="text/javascript"></script>
-
-
 </body>
 </html>
