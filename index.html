@@ -4,96 +4,95 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Project 2 - The truth is out there </title>
-   <link rel="stylesheet" href="css/styles.css" />
+   <link rel="stylesheet" href="css/leaflet.css"/>
+   <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
    <header>
       <h1 id="dashboardTitle">National UFO Reporting Dashboard</h1>
-      <h2><u>THE TRUTH IS OUT THERE</u> </h2>
-  </header>
+      <h2><u>THE TRUTH IS OUT THERE</u></h2>
+   </header>
    
-  <div id ="mainContent">   
+   <div id ="mainContent">   
  
    <div id="row1">
       <div id="column1">
          <h2>Let's Filter Out</h2>
 
-            <form id="Sub_column1">
-      
-<div class="row">
-         <div class="col-25">
-         <label for="filter">Select Attribute:</label>
-      </div>
+         <form id="Sub_column1">
+            <div class="row">
+               <div class="col-25">
+                  <label for="filter">Select Attribute:</label>
+               </div>
 
-      <div class="col-75">
-         <select id="filter">
-            <option value="date_time">Date Time</option>
-            <option value="city_area">City Area</option>
-            <option value="state">State</option>
-            <option value="country">Country</option>
-            <option value="ufo_shape">UFO Shape</option>
-            <option value="encounter_length">Encounter Length</option>
-            <option value="described_encounter_length">Described Encounter Length</option>
-            <option value="description">Description</option>
-            <option value="date_documented">Date Documented</option>
-            <option value="latitude">Latitude</option>
-            <option value="longitude">Longitude</option>
-         </select>
-      </div>
-   </div>
-
-   <div class="row">
-         <div class="col-25">
-            <label for="toggleBtn" > Switch View </label>
-         </div>
-      <div class="col-75">
-            <button id="toggleBtn" >Toggle Map</button>
-         </div>
-         </div>
-
-         <div class="row">
-            <div class="col-75">
-            <input placeholder="Search for a Word(s)"/>
-         </div>
-         <div class="col-25">
-            <button id="ClearBtn">Clear</button>
-         </div>
-         </div>
-
-         <div class="row">
-            <div class="col-50">
-               <button id="submit" > Submit</button>
+               <div class="col-75">
+                  <select id="filter">
+                     <option value="date_time">Date Time</option>
+                     <option value="city_area">City Area</option>
+                     <option value="state">State</option>
+                     <option value="country">Country</option>
+                     <option value="ufo_shape">UFO Shape</option>
+                     <option value="encounter_length">Encounter Length</option>
+                     <option value="described_encounter_length">Described Encounter Length</option>
+                     <option value="description">Description</option>
+                     <option value="date_documented">Date Documented</option>
+                     <option value="latitude">Latitude</option>
+                     <option value="longitude">Longitude</option>
+                  </select>
+               </div>
             </div>
-            <div class="col-50">
-               <button id="resetBtn" > Reset </button>
+
+            <div class="row">
+               <div class="col-25">
+                  <label for="toggleBtn" > Switch View </label>
+               </div>
+               <div class="col-75">
+                  <button id="toggleBtn" >Toggle Map</button>
+               </div>
             </div>
-         </div>
-      </form>
-         
-         
+
+            <div class="row">
+               <div class="col-75">
+                  <input placeholder="Search for a Word(s)"/>
+               </div>
+               <div class="col-25">
+                  <button id="ClearBtn">Clear</button>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-50">
+                  <button id="submit" > Submit</button>
+               </div>
+               <div class="col-50">
+                  <button id="resetBtn" > Reset </button>
+               </div>
+            </div>
+         </form>
       </div>
 
       <div id="column2">
-          <p>map</p> <!--remove this -->
-         <svg id="map" ></svg>
-         <div id="tooltip"></div>
+         <p>Map goes here (why is it not loading?). Compare with in-class leaflet activity.</p> <!-- TODO: remove this -->
+         <div id="map"></div>
+        <div id="tooltip"></div>
       </div>
-
    </div>
-
+   
    <div id ="row2" class="timeline">
-      <p>Timeline w brushing</p><!--remove this -->
+      <p>Timeline w brushing</p>    <!-- TODO: remove this -->
+      <button id="resetBtn">Reset</button>
    </div>
 
+   <!--
+      JavaScript Files (NOTE: Make sure the 'main.js' is the last file. Order of imports matters).
+      Library files (D3 & leaflet) first, followed by custom JS classes.
+   -->
+   <script src="js/d3.v6.min.js" type="text/javascript"></script>
+   <script src="js/leaflet.js" type="text/javascript"></script>
 
-
-  </div>
-
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="js/main.js"></script>
-<script src="js/leaflet.js"></script>
-<script src="js/main.js"></script>
-<script src="js/main.js"></script>
-
+   <script src="js/datastore.js" type="text/javascript"></script>
+   <script src="js/csvdataparser.js" type="text/javascript"></script>
+   <script src="js/leafletMap.js" type="text/javascript"></script>
+   <script src="js/main.js" type="text/javascript"></script>
 </body>
 </html>
