@@ -16,11 +16,16 @@
  
    <div id="row1">
       <div id="column1">
-         <h2>Filters</h2>
+         <h2>Let's Filter Out</h2>
 
-         <button id="toggleBtn" >Toggle Map</button>
+            <form id="Sub_column1">
+      
+<div class="row">
+         <div class="col-25">
+         <label for="filter">Select Attribute:</label>
+      </div>
 
-         <label for="filter">Select Filter:</label>
+      <div class="col-75">
          <select id="filter">
             <option value="date_time">Date Time</option>
             <option value="city_area">City Area</option>
@@ -34,7 +39,37 @@
             <option value="latitude">Latitude</option>
             <option value="longitude">Longitude</option>
          </select>
+      </div>
+   </div>
 
+   <div class="row">
+         <div class="col-25">
+            <label for="toggleBtn" > Switch View </label>
+         </div>
+      <div class="col-75">
+            <button id="toggleBtn" >Toggle Map</button>
+         </div>
+         </div>
+
+         <div class="row">
+            <div class="col-75">
+            <input placeholder="Search for a Word(s)"/>
+         </div>
+         <div class="col-25">
+            <button id="ClearBtn">Clear</button>
+         </div>
+         </div>
+
+         <div class="row">
+            <div class="col-50">
+               <button id="submit" > Submit</button>
+            </div>
+            <div class="col-50">
+               <button id="resetBtn" > Reset </button>
+            </div>
+         </div>
+      </form>
+         
          
       </div>
 
@@ -48,7 +83,6 @@
 
    <div id ="row2" class="timeline">
       <p>Timeline w brushing</p><!--remove this -->
-   <button id="resetBtn">Reset</button>
    </div>
 
 
