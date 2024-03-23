@@ -4,21 +4,21 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Project 2 - The truth is out there </title>
-   <link rel="stylesheet" href="css/styles.css" />
+   <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
    <header>
       <h1 id="dashboardTitle">National UFO Reporting Dashboard</h1>
-      <h2><u>THE TRUTH IS OUT THERE</u> </h2>
-  </header>
+      <h2><u>THE TRUTH IS OUT THERE</u></h2>
+   </header>
    
-  <div id ="mainContent">   
+   <div id ="mainContent">
  
    <div id="row1">
       <div id="column1">
          <h2>Filters</h2>
 
-         <button id="toggleBtn" >Toggle Map</button>
+         <button id="toggleBtn">Toggle Map</button>
 
          <label for="filter">Select Filter:</label>
          <select id="filter">
@@ -34,16 +34,14 @@
             <option value="latitude">Latitude</option>
             <option value="longitude">Longitude</option>
          </select>
-
-         
       </div>
 
       <div id="column2">
-          <p>map</p> <!--remove this -->
-         <svg id="map" ></svg>
+         <!--<p>map</p>    remove this -->
+         <div id="map"></div>
+         <!--<svg id="map"></svg>-->
          <div id="tooltip"></div>
       </div>
-
    </div>
 
    <div id ="row2" class="timeline">
