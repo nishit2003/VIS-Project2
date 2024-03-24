@@ -31,6 +31,7 @@ class CsvDataParser {
             })
 
             DataStore.filteredData = data;    // saves the filtered data to DataStore() class
+            console.log("Filtered Data:", data);    // testing output
         })
         .catch(error => console.error(error));
 
