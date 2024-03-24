@@ -56,11 +56,11 @@ class LeafletMap {
             // Finally, the returned conversion produces an x and y point. We have to select the the desired one using .x or .y
             .attr("cx", d => {
                 if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
-                else { vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x }
+                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x }
             })
             .attr("cy", d => {
                 if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
-                else { vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
+                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
             })
             //.attr("cx", d => vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x)
             //.attr("cy", d => vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y)
@@ -120,11 +120,11 @@ class LeafletMap {
         vis.Dots
             .attr("cx", d => {
                 if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
-                else { vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x }
+                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x }
             })
             .attr("cy", d => {
                 if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
-                else { vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
+                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
             })
             //.attr("cx", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).x)
             //.attr("cy", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).y)
