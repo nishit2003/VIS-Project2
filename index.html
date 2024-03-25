@@ -11,12 +11,14 @@
    <header>
       <h1 id="dashboardTitle">National UFO Reporting Dashboard</h1>
       <h2><u>THE TRUTH IS OUT THERE</u></h2>
+      <button type="submit" id="infoBtn" ><img src="/images/info-button.jpeg"  width="50" height="50"></button>
    </header>
    
    <div id ="mainContent">   
  
    <div id="row1">
       <div id="column1">
+         
          <h2>Let's Filter Out</h2>
 
          <form id="Sub_column1">
@@ -60,28 +62,31 @@
                </div>
             </div>
 
-            <div class="row">
+            <div class="row4btn">
                <div class="col-50">
-                  <button id="submit" > Submit</button>
+                  <button id="submitBtn" > Submit</button>
                </div>
                <div class="col-50">
                   <button id="resetBtn" > Reset </button>
                </div>
             </div>
          </form>
-      </div>
+                  <div id="tooltip"></div>  <!--TODO: figure out why styles are not working -->
 
-      <div id="map"></div> <!-- TODO: add map to column2 -->
-      <div id="column2">
-         <div id="tooltip"></div>
       </div>
-   </div>
+      <div id="map"></div> <!-- TODO: add map to column2 -->
+
+      <!-- <div id="column2">
+         <div id="tooltip"></div>
+      </div> -->
+   </div> <!-- row1 div -->
    
    <div id ="row2" class="timeline">
       <p>Timeline w brushing</p>    <!-- TODO: remove this -->
       <button id="resetBtn">Reset</button>
    </div>
 
+   </div>   <!-- mainContent div -->
    <!--
       JavaScript Files (NOTE: Make sure the 'main.js' is the last file. Order of imports matters).
       Library files (D3 & leaflet) first, followed by custom JS classes.
