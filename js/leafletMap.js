@@ -77,8 +77,8 @@ class LeafletMap {
                     .style('z-index', 1000000)
                     .html(
                         `<div class="tooltip-label">
+                            <h3 class="tooltip-title">${d.city_area.charAt(0).toUpperCase()}${d.city_area.slice(1)}</h3>
                             <ul>
-                                <li>City Area: ${d.city_area}</li>
                                 <li>Date Documented: ${d.date_documented}</li>
                             </ul>
                         </div>`
