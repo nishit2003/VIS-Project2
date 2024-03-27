@@ -99,7 +99,8 @@ header {
 
  }
 
-#submitBtn{
+ /* TODO: Add a class attribute to this & other buttons, so that we don't need to duplicate styles? */
+#btnSubmitFilters{
    background-color: #04AA6D;
    color: white;
    padding: 12px 20px;
@@ -142,6 +143,19 @@ header {
    align-items: center;
 }
 
+/* TODO: Add a class attribute to this & other buttons, so that we don't need to duplicate styles? */
+#btnResetTimeline {
+   background-color: #04AA6D;
+   color: white;
+   padding: 12px 20px;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   /* float: right; */
+   /* margin-right: 65%; */
+}
+
+/* TODO: Add a class attribute to this & other buttons, so that we don't need to duplicate styles? */
 #resetBtn {
    background-color: #04AA6D;
    color: white;

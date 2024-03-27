@@ -21,6 +21,8 @@ class LeafletMap {
         this.THOUT_ATTR = '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         this.ST_URL = 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}';     // Stamen
         this.ST_ATTR = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+        DataStore.currMapBckgrnd = [ this.TOPO, this.TOPO_ATTR ];   // by default, we use the TOPO leaflet map background
     }
 
     // Class Methods
@@ -103,6 +105,8 @@ class LeafletMap {
         vis.theMap.on("zoomend", function() {
             vis.updateVis();
         });
+
+        // TODO: Add a tooltip that shows the current bounds when user hovers over the timeline?
     }
 
     updateVis() {
@@ -111,9 +115,8 @@ class LeafletMap {
         // want to control the size of the radius to be a certain number of meters? 
         vis.radiusSize = 3; 
     
-        // Redraw based on new zoom - need to recalculate on-screen position
-        vis.Dots = vis.svg.selectAll('circle')
-            .data(DataStore.filteredData); // Use filtered data here
+        // Redraw dots based on new selection
+        vis.Dots = vis.svg.selectAll('circle').data(DataStore.filteredData);    // we use the globally-accessible DataStore.filteredData here
             
         // Update existing dots
         vis.Dots

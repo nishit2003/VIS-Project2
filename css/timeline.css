@@ -2,7 +2,7 @@
 .timeline-brush .handle {
     fill: #666;
     stroke: #000;
-    width: 3px;
+    width: 2px;
 }
 .timeline-brush .overlay {
     fill-opacity: 0.1;
