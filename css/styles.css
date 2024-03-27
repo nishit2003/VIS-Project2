@@ -1,3 +1,5 @@
+/* Main styles for the entire application. */
+
 body {
    font-family: 'Noto Sans JP', sans-serif;
    font-size: 20px;
@@ -62,7 +64,8 @@ header {
    margin-top: 50%;
    display: flex;
    flex-direction: column;
-justify-content: space-evenly;}
+   justify-content: space-evenly;
+}
 
 .row{
    margin-top: 10px;
@@ -125,7 +128,12 @@ justify-content: space-evenly;}
 
 #column2{
    border-style: groove;
-} 
+}
+
+#map {
+   /* TODO: Delete this once we want to re-implement the map. I (Jeremy) added this to speed up load times while developing the timeline. */
+   visibility: visible;
+}
 
 #row2{
    border-style: groove;

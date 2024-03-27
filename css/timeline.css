@@ -1,0 +1,10 @@
+/* Styles for the brushable timeline. */
+.timeline-brush .handle {
+    fill: #666;
+    stroke: #000;
+    width: 3px;
+}
+.timeline-brush .overlay {
+    fill-opacity: 0.1;
+    cursor: crosshair;
+}

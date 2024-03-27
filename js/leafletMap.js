@@ -47,7 +47,8 @@ class LeafletMap {
 
         // these are the city locations, displayed as a set of dots 
         vis.Dots = vis.svg.selectAll('circle')
-            .data(vis.data)
+            //.data(vis.data)
+            .data(DataStore.filteredData)
             .join('circle')
             .attr("fill", "steelblue")
             .attr("stroke", "black")
@@ -105,18 +106,16 @@ class LeafletMap {
     }
 
     updateVis() {
-        let vis = this;
+        let vis = this;     // saves reference to the class to a locally-scoped variable
         
-        //want to control the size of the radius to be a certain number of meters? 
+        // want to control the size of the radius to be a certain number of meters? 
         vis.radiusSize = 3; 
-
-        // if( vis.theMap.getZoom > 15 ) {
-        //   metresPerPixel = 40075016.686 * Math.abs(Math.cos(map.getCenter().lat * Math.PI/180)) / Math.pow(2, map.getZoom()+8);
-        //   desiredMetersForPoint = 100; //or the uncertainty measure... =) 
-        //   radiusSize = desiredMetersForPoint / metresPerPixel;
-        // }
     
-        // redraw based on new zoom- need to recalculate on-screen position
+        // Redraw based on new zoom - need to recalculate on-screen position
+        vis.Dots = vis.svg.selectAll('circle')
+            .data(DataStore.filteredData); // Use filtered data here
+            
+        // Update existing dots
         vis.Dots
             .attr("cx", d => {
                 if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
@@ -126,9 +125,25 @@ class LeafletMap {
                 if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
                 else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
             })
-            //.attr("cx", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).x)
-            //.attr("cy", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).y)
             .attr("r", vis.radiusSize);
+    
+        // Enter new dots
+        vis.Dots.enter()
+            .append('circle')
+            .attr("fill", "steelblue")
+            .attr("stroke", "black")
+            .attr("cx", d => {
+                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
+                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x }
+            })
+            .attr("cy", d => {
+                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
+                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
+            })
+            .attr("r", vis.radiusSize);
+    
+        // Remove dots not in filtered data
+        vis.Dots.exit().remove();
     }
 
     renderVis() {
