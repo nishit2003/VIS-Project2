@@ -5,6 +5,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Project 2 - The truth is out there </title>
    <link rel="stylesheet" href="css/leaflet.css"/>
+   <link rel="stylesheet" href="css/timeline.css"/>
    <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
@@ -14,79 +15,86 @@
       <button type="submit" id="infoBtn" ><img src="/images/info-button.jpeg"  width="50" height="50"></button>
    </header>
    
-   <div id ="mainContent">   
- 
-   <div id="row1">
-      <div id="column1">
-         
-         <h2>Let's Filter Out</h2>
+   <div id ="mainContent">
+      <div id="row1">
+         <div id="column1">
+            
+            <h2>Let's Filter Out</h2>
 
-         <form id="Sub_column1">
-            <div class="row">
-               <div class="col-25">
-                  <label for="filter">Select Attribute:</label>
+            <form id="Sub_column1">
+               <div class="row">
+                  <div class="col-25">
+                     <label for="filter">Select Attribute:</label>
+                  </div>
+
+                  <div class="col-75">
+                     <select id="filter">
+                        <option value="date_time">Date Time</option>
+                        <option value="city_area">City Area</option>
+                        <option value="state">State</option>
+                        <option value="country">Country</option>
+                        <option value="ufo_shape">UFO Shape</option>
+                        <option value="encounter_length">Encounter Length</option>
+                        <option value="described_encounter_length">Described Encounter Length</option>
+                        <option value="description">Description</option>
+                        <option value="date_documented">Date Documented</option>
+                        <option value="latitude">Latitude</option>
+                        <option value="longitude">Longitude</option>
+                     </select>
+                  </div>
                </div>
 
-               <div class="col-75">
-                  <select id="filter">
-                     <option value="date_time">Date Time</option>
-                     <option value="city_area">City Area</option>
-                     <option value="state">State</option>
-                     <option value="country">Country</option>
-                     <option value="ufo_shape">UFO Shape</option>
-                     <option value="encounter_length">Encounter Length</option>
-                     <option value="described_encounter_length">Described Encounter Length</option>
-                     <option value="description">Description</option>
-                     <option value="date_documented">Date Documented</option>
-                     <option value="latitude">Latitude</option>
-                     <option value="longitude">Longitude</option>
-                  </select>
+               <div class="row">
+                  <div class="col-25">
+                     <label for="toggleBtn">Switch View</label>
+                  </div>
+                  <div class="col-75">
+                     <button id="toggleBtn">Toggle Map</button>
+                  </div>
                </div>
-            </div>
 
-            <div class="row">
-               <div class="col-25">
-                  <label for="toggleBtn" > Switch View </label>
+               <div class="row">
+                  <div class="col-75">
+                     <input id="txtWordSearch" placeholder="Search for a Word(s)"/>
+                  </div>
+                  <div class="col-25">
+                     <button id="ClearBtn">Clear</button>
+                  </div>
                </div>
-               <div class="col-75">
-                  <button id="toggleBtn" >Toggle Map</button>
-               </div>
-            </div>
 
-            <div class="row">
-               <div class="col-75">
-                  <input placeholder="Search for a Word(s)"/>
+               <div class="row4btn">
+                  <div class="col-50">
+                     <!-- TODO: Remove the "1" and adjust this <form /> tag so that it doesn't reload the page after submission. -->
+                     <button id="btnSubmitFilters1"> Submit</button>
+                  </div>
+                  <div class="col-50">
+                     <button id="resetBtn"> Reset </button>
+                  </div>
                </div>
-               <div class="col-25">
-                  <button id="ClearBtn">Clear</button>
-               </div>
-            </div>
+            </form>
 
-            <div class="row4btn">
-               <div class="col-50">
-                  <button id="submitBtn" > Submit</button>
-               </div>
-               <div class="col-50">
-                  <button id="resetBtn" > Reset </button>
-               </div>
-            </div>
-         </form>
+            <div id="tooltip"></div>  <!--TODO: figure out why styles are not working -->
+         </div>
+         <div id="map"></div> <!-- TODO: add map to column2 -->
 
-      <div id="tooltip"></div>  <!--TODO: figure out why styles are not working -->
+         <!-- <div id="column2">
+            <div id="tooltip"></div>
+         </div> -->
+      </div> <!-- row1 div -->
+      
+      <div id ="row2">
+         <svg id="timeline"></svg>
+         <button id="btnResetTimeline">Reset</button>
       </div>
-      <div id="map"></div> <!-- TODO: add map to column2 -->
 
-      <!-- <div id="column2">
-         <div id="tooltip"></div>
-      </div> -->
-   </div> <!-- row1 div -->
-   
-   <div id ="row2" class="timeline">
-      <p>Timeline w brushing</p>    <!-- TODO: remove this -->
-      <button id="resetBtn">Reset</button>
-   </div>
-
+      <!-- TODO: Remove once actual submit button is working again. -->
+      <div class="col-50">
+         <p style="font-size: 10px;">This has been placed down here to showcase the keyword search functionality. Remove it once the actual submit button in the form works. Currently, when clicking submit, it reloads the page. I believe this is because it's wrapped in a form tag, and thus it has some default functionality. To test, simply enter a word (or phrase) into the text input and click the submit button on the right -></p>
+         <button id="btnSubmitFilters"> Submit </button>
+         <br>
+      </div>
    </div>   <!-- mainContent div -->
+
    <!--
       JavaScript Files (NOTE: Make sure the 'main.js' is the last file. Order of imports matters).
       Library files (D3 & leaflet) first, followed by custom JS classes.
@@ -97,6 +105,8 @@
    <script src="js/datastore.js" type="text/javascript"></script>
    <script src="js/csvdataparser.js" type="text/javascript"></script>
    <script src="js/leafletMap.js" type="text/javascript"></script>
+   <script src="js/timeline.js" type="text/javascript"></script>
+   <script src="js/callbacks.js" type="text/javascript"></script>
    <script src="js/main.js" type="text/javascript"></script>
 </body>
 </html>

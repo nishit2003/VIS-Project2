@@ -21,6 +21,8 @@ class LeafletMap {
         this.THOUT_ATTR = '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         this.ST_URL = 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}';     // Stamen
         this.ST_ATTR = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+        DataStore.currMapBckgrnd = [ this.TOPO, this.TOPO_ATTR ];   // by default, we use the TOPO leaflet map background
     }
 
     // Class Methods
@@ -47,7 +49,8 @@ class LeafletMap {
 
         // these are the city locations, displayed as a set of dots 
         vis.Dots = vis.svg.selectAll('circle')
-            .data(vis.data)
+            //.data(vis.data)
+            .data(DataStore.filteredData)
             .join('circle')
             .attr("fill", "steelblue")
             .attr("stroke", "black")
@@ -102,21 +105,20 @@ class LeafletMap {
         vis.theMap.on("zoomend", function() {
             vis.updateVis();
         });
+
+        // TODO: Add a tooltip that shows the current bounds when user hovers over the timeline?
     }
 
     updateVis() {
-        let vis = this;
+        let vis = this;     // saves reference to the class to a locally-scoped variable
         
-        //want to control the size of the radius to be a certain number of meters? 
+        // want to control the size of the radius to be a certain number of meters? 
         vis.radiusSize = 3; 
-
-        // if( vis.theMap.getZoom > 15 ) {
-        //   metresPerPixel = 40075016.686 * Math.abs(Math.cos(map.getCenter().lat * Math.PI/180)) / Math.pow(2, map.getZoom()+8);
-        //   desiredMetersForPoint = 100; //or the uncertainty measure... =) 
-        //   radiusSize = desiredMetersForPoint / metresPerPixel;
-        // }
     
-        // redraw based on new zoom- need to recalculate on-screen position
+        // Redraw dots based on new selection
+        vis.Dots = vis.svg.selectAll('circle').data(DataStore.filteredData);    // we use the globally-accessible DataStore.filteredData here
+            
+        // Update existing dots
         vis.Dots
             .attr("cx", d => {
                 if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
@@ -126,9 +128,25 @@ class LeafletMap {
                 if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
                 else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
             })
-            //.attr("cx", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).x)
-            //.attr("cy", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).y)
             .attr("r", vis.radiusSize);
+    
+        // Enter new dots
+        vis.Dots.enter()
+            .append('circle')
+            .attr("fill", "steelblue")
+            .attr("stroke", "black")
+            .attr("cx", d => {
+                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
+                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x }
+            })
+            .attr("cy", d => {
+                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
+                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
+            })
+            .attr("r", vis.radiusSize);
+    
+        // Remove dots not in filtered data
+        vis.Dots.exit().remove();
     }
 
     renderVis() {

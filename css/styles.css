@@ -1,3 +1,5 @@
+/* Main styles for the entire application. */
+
 body {
    font-family: 'Noto Sans JP', sans-serif;
    font-size: 20px;
@@ -62,7 +64,8 @@ header {
    margin-top: 50%;
    display: flex;
    flex-direction: column;
-justify-content: space-evenly;}
+   justify-content: space-evenly;
+}
 
 .row{
    margin-top: 10px;
@@ -96,7 +99,8 @@ justify-content: space-evenly;}
 
  }
 
-#submitBtn{
+ /* TODO: Add a class attribute to this & other buttons, so that we don't need to duplicate styles? */
+#btnSubmitFilters{
    background-color: #04AA6D;
    color: white;
    padding: 12px 20px;
@@ -125,7 +129,12 @@ justify-content: space-evenly;}
 
 #column2{
    border-style: groove;
-} 
+}
+
+#map {
+   /* TODO: Delete this once we want to re-implement the map. I (Jeremy) added this to speed up load times while developing the timeline. */
+   visibility: visible;
+}
 
 #row2{
    border-style: groove;
@@ -134,6 +143,19 @@ justify-content: space-evenly;}
    align-items: center;
 }
 
+/* TODO: Add a class attribute to this & other buttons, so that we don't need to duplicate styles? */
+#btnResetTimeline {
+   background-color: #04AA6D;
+   color: white;
+   padding: 12px 20px;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   /* float: right; */
+   /* margin-right: 65%; */
+}
+
+/* TODO: Add a class attribute to this & other buttons, so that we don't need to duplicate styles? */
 #resetBtn {
    background-color: #04AA6D;
    color: white;
