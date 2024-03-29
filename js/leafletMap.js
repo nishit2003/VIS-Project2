@@ -22,6 +22,7 @@ class LeafletMap {
         this.THOUT_ATTR = '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         this.ST_URL = 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}';     // Stamen
         this.ST_ATTR = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+        this.initVis()
     }
 
     // Class Methods
@@ -46,6 +47,16 @@ class LeafletMap {
         vis.overlay = d3.select(vis.theMap.getPanes().overlayPane)
         vis.svg = vis.overlay.select('svg').attr("pointer-events", "auto")
 
+        // handler here for updating the map, as you zoom in and out           
+        vis.theMap.on("zoomend", function() {
+            vis.updateVis();
+        });
+    }
+
+    updateVis() {
+        let vis = this;
+        //want to control the size of the radius to be a certain number of meters? 
+        vis.radiusSize = 3;
         // these are the city locations, displayed as a set of dots 
         vis.Dots = vis.svg.selectAll('circle')
             .data(vis.data)
@@ -80,6 +91,7 @@ class LeafletMap {
                             <h3 class="tooltip-title">${d.city_area.charAt(0).toUpperCase()}${d.city_area.slice(1)}</h3>
                             <ul>
                                 <li>Date Documented: ${d.date_documented}</li>
+                                <li>Date Documented: ${d.date_time}</li>
                             </ul>
                         </div>`
                     );
@@ -96,29 +108,7 @@ class LeafletMap {
                     .attr('r', 3)     // change radius
                 d3.select('#tooltip').style('opacity', 0);  // turn off the tooltip
             });
-
-        // handler here for updating the map, as you zoom in and out           
-        vis.theMap.on("zoomend", function() {
-            vis.updateVis();
-        });
-    }
-
-    updateVis() {
-        let vis = this;
         vis.getColorScale(vis.filter)
-        //want to control the size of the radius to be a certain number of meters? 
-        vis.radiusSize = 3;
-
-        vis.Dots
-            .attr("cx", d => {
-                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
-                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x }
-            })
-            .attr("cy", d => {
-                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
-                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
-            })
-            .attr("r", vis.radiusSize);
     }
 
     renderVis() {
@@ -131,7 +121,7 @@ class LeafletMap {
 
         if (filter == "year") {
             this.colorScale = d3.scaleOrdinal()
-                .range(["#585661", '#9151a8', '#85152f', '##b0522a', "#b09a2a",  "#186e26",  "#094263"])
+                .range(["#585661", '#9151a8', '#85152f', '#b0522a', "#b09a2a",  "#186e26",  "#094263"])
                 .domain(['1950','1960',"1970","1980","1990", "2000", "2010"]);
             this.Dots.attr("fill", d => {
                 if (typeof d.date_time != "number") {
@@ -173,7 +163,7 @@ class LeafletMap {
         else if (filter == "ufo_shape") {
             this.colorScale = d3.scaleOrdinal()
             .range(['#c41d1d', '#995f12', '#998c12', "#7a9912", "#3b9912", "#0f7d1c", "#0f7d41", "#0f7d63", "#0f787d", "#0e75a1",
-                    "#0f4187", "#0f2387", "#321bb3", "#3f1170", "#9c3cc2", "#744975", "#c286b4", "#752b49", "#8f2845", "#8f2845"])
+                    "#0f4187", "#0f2387", "#321bb3", "#3f1170", "#9c3cc2", "#744975", "#c286b4", "#752b49", "#8f2845", "#ce9ab2"])
             .domain(['changing','chevron', "cigar", "circle", "cylinder", "diamond", "disk", "egg", "fireball", "flash", 
                     "formation", "light", "NA", "other", "oval", "rectangle", "sphere", "teardrop", "triangle", "unknown"]);
             this.Dots.attr("fill", d => this.colorScale(d.ufo_shape))
@@ -193,7 +183,7 @@ class LeafletMap {
                 else {return this.colorScale("0:00")}
             })
         }
-        else {this.Dots.attr("fill", "blue")}
+        else {this.Dots.attr("fill", "steelblue")}
     }
     // TOOD: Add class methods as necessary
 }
