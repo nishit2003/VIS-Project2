@@ -11,7 +11,7 @@ async function main() {
     leafletMap.initVis();
     console.log(leafletMap)
 
-    document.getElementById("toggleBtn").addEventListener("click", function() {
+    document.getElementById("submitBtn").addEventListener("click", function() {
         var filter = document.getElementById("filter").value;
         leafletMap.filter = filter;
         leafletMap.updateVis();

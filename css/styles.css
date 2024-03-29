@@ -35,7 +35,6 @@ header {
  input{
    width: 80%;
  }
-
 #row1{
    display: grid;
    grid-template-columns: 1fr 3fr;
@@ -75,7 +74,18 @@ justify-content: space-evenly;}
    margin-top: 6px;
    margin-left: 5%;
  }
-
+#map {
+   padding: 50px;
+   height: 63%;
+}
+#legend-table {
+   padding: 20px;
+   width: 96.5%;
+   height: 50px;
+   background-color: black;
+   border-style: groove;
+   align-items: right;
+}
  #toggleBtn {
    background-color: #04AA6D;
    color: white;

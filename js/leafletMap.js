@@ -69,7 +69,6 @@ class LeafletMap {
             .on('mouseover', function(event, d) {
                 d3.select(this).transition()    // D3 selects the object we have moused over in order to perform operations on it
                     .duration('150')    // how long we are transitioning between the two states
-                    .attr("fill", "red")    // change the fill
                     .attr("r", 4);  // change radius
                 
                 // create a tool tip
@@ -105,7 +104,6 @@ class LeafletMap {
     }
 
     updateVis() {
-        console.log("hi")
         let vis = this;
         vis.getColorScale(vis.filter)
         //want to control the size of the radius to be a certain number of meters? 
@@ -132,7 +130,6 @@ class LeafletMap {
     getColorScale(filter) {
 
         if (filter == "year") {
-            console.log("hi")
             this.colorScale = d3.scaleOrdinal()
                 .range(["#585661", '#9151a8', '#85152f', '##b0522a', "#b09a2a",  "#186e26",  "#094263"])
                 .domain(['1950','1960',"1970","1980","1990", "2000", "2010"]);
