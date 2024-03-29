@@ -90,8 +90,9 @@ class LeafletMap {
                         `<div class="tooltip-label">
                             <h3 class="tooltip-title">${d.city_area.charAt(0).toUpperCase()}${d.city_area.slice(1)}</h3>
                             <ul>
-                                <li>Date Documented: ${d.date_documented}</li>
-                                <li>Date Documented: ${d.date_time}</li>
+                                <li>Date and Time of Occurance: ${d.date_time}</li>
+                                <li>Shape of UFO: ${d.ufo_shape}</li>
+                                <li>Description: ${d.description}</li>
                             </ul>
                         </div>`
                     );

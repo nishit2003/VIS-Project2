@@ -33,15 +33,15 @@ async function main() {
       d3.select(this).classed('inactive', !d3.select(this).classed('inactive'));
       // Check which categories are active
       let selectedStatus = [];
-      if (leafletMap.filter == 'ufo_shape') {
-        d3.selectAll('.legend-btn:not(.inactive)').each(function() {
-            selectedStatus.push(d3.select(this).attr('ufo_shape'));
+      d3.selectAll('.legend-btn:not(.inactive)').each(function() {
+        selectedStatus.push(d3.select(this).attr('ufo_shape'));
+        selectedStatus.push(d3.select(this).attr('month'));
+        selectedStatus.push(d3.select(this).attr('year'));
+        selectedStatus.push(d3.select(this).attr('time_day'));
+        if (leafletMap.filter == 'ufo_shape') {
             leafletMap.data = DataStore.filteredData.filter(d => selectedStatus.includes(d.ufo_shape));
-        });
-      }
-      else if (leafletMap.filter == 'year') {
-        d3.selectAll('.legend-btn:not(.inactive)').each(function() {
-            selectedStatus.push(d3.select(this).attr('year'));
+        }
+        else if (leafletMap.filter == 'year') {
             leafletMap.data = DataStore.filteredData.filter(d => 
                 {if (typeof d.date_time != "number") {
                     var year = d.date_time.split(" ")[0].split("/")[2]
@@ -56,11 +56,8 @@ async function main() {
                 }
 
             });
-        });
-      }
-      else if (leafletMap.filter == 'month') {
-        d3.selectAll('.legend-btn:not(.inactive)').each(function() {
-            selectedStatus.push(d3.select(this).attr('month'));
+        }
+        else if (leafletMap.filter == 'month') {
             leafletMap.data = DataStore.filteredData.filter(d => {
                 if (typeof d.date_time != "number") {
                     var month = d.date_time.split(" ")[0].split("/")[0]
@@ -78,11 +75,8 @@ async function main() {
                     else if (Number(month) == 12 && selectedStatus.includes(month)) {return true}
                 }
             });
-        });
-      }
-      else if (leafletMap.filter == 'time_day') {
-        d3.selectAll('.legend-btn:not(.inactive)').each(function() {
-            selectedStatus.push(d3.select(this).attr('time_day'));
+        }
+        else if (leafletMap.filter == 'time_day') {
             leafletMap.data = DataStore.filteredData.filter(d => {
                 if (typeof d.date_time != "number") {
                     var hour = d.date_time.split(" ")[1].split(":")[1]
@@ -91,8 +85,8 @@ async function main() {
                     else if ((Number(hour) >= 11 && Number(hour) <= 17) && selectedStatus.includes("12:00")) {return true}
                     else if ((Number(hour) >= 18 && Number(hour) <= 21) && selectedStatus.includes("18:00")) {return true}            
             }});
-        });
-      }
+        }
+    });
       // Filter data accordingly and update vis
 
       leafletMap.updateVis();
