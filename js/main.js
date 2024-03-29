@@ -14,6 +14,7 @@ async function main() {
     document.getElementById("submitBtn").addEventListener("click", function() {
         // Change colors of dots
         var filter = document.getElementById("filter").value;
+        leafletMap.data = DataStore.filteredData
         leafletMap.filter = filter;
         leafletMap.updateVis();
 
@@ -28,6 +29,7 @@ async function main() {
         }}});
 
     // Code for Legends
+    // TODO Possibly add it where you can use multiple filters, ex. Filter summer sightings in the 1950s.
     d3.selectAll(".legend-btn").on("click", function () {
       // Toggle 'inactive' class
       d3.select(this).classed('inactive', !d3.select(this).classed('inactive'));
