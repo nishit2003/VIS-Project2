@@ -106,5 +106,4 @@ async function main() {
     .catch(error => console.error(error));
     */
 }
-
 main(); // calls the main() function to begin execution
