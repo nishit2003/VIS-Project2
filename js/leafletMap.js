@@ -210,7 +210,7 @@ class LeafletMap {
             ext: 'png'
         });
 
-        vis.theMap.setView([30, 0], 2); // Set the new center and zoom level
+        vis.theMap.setView(vis.theMap.getCenter(), vis.theMap.getZoom()); // Set the new center and zoom level
         vis.theMap.eachLayer(function(layer) {
             vis.theMap.removeLayer(layer); // Remove existing layers
         });
