@@ -6,12 +6,32 @@
    <title>Project 2 - The truth is out there </title>
    <link rel="stylesheet" href="css/leaflet.css"/>
    <link rel="stylesheet" href="css/styles.css"/>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
+   <!-- Information Button -->
+   <div class="info-button" onclick="openModal()">
+      <i class="fa fa-info"></i> <!-- Adjust the class based on your icon library -->
+  </div>
+
+  <!-- Modal Content -->
+  <div id="myModal" class="modal">
+      <div class="modal-content">
+          <!-- Close button -->
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h2>How To Use This Application</h2>
+          <p>
+              Add Stuff 
+              <br><br>
+              Add Stuff
+              <br><br>
+              Add Stuff
+          </p>
+      </div>
+  </div>
    <header>
       <h1 id="dashboardTitle">National UFO Reporting Dashboard</h1>
       <h2><u>THE TRUTH IS OUT THERE</u></h2>
-      <button type="submit" id="infoBtn" ><img src="/images/info-button.jpeg"  width="50" height="50"></button>
    </header>
    
    <div id ="mainContent">   
@@ -149,5 +169,18 @@
    <script src="js/csvdataparser.js" type="text/javascript"></script>
    <script src="js/leafletMap.js" type="text/javascript"></script>
    <script src="js/main.js" type="text/javascript"></script>
+   <script>
+      // Function to open the modal
+      function openModal() {
+          var modal = document.getElementById("myModal");
+          modal.style.display = "block";
+      }
+
+      // Function to close the modal
+      function closeModal() {
+          var modal = document.getElementById("myModal");
+          modal.style.display = "none";
+      }
+  </script>
 </body>
 </html>
