@@ -23,6 +23,8 @@ class LeafletMap {
         this.THOUT_ATTR = '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         this.ST_URL = 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}';     // Stamen
         this.ST_ATTR = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+        DataStore.currMapBckgrnd = [ this.TOPO, this.TOPO_ATTR ];   // by default, we use the TOPO leaflet map background
         this.MAPNIK_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
         this.MAPNIK_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         this.initVis()
@@ -62,7 +64,8 @@ class LeafletMap {
         vis.radiusSize = 3;
         // these are the city locations, displayed as a set of dots 
         vis.Dots = vis.svg.selectAll('circle')
-            .data(vis.data)
+            //.data(vis.data)
+            .data(DataStore.filteredData)
             .join('circle')
             .attr("fill", "steelblue")
             .attr("stroke", "black")
@@ -112,6 +115,29 @@ class LeafletMap {
                     .attr('r', 3)     // change radius
                 d3.select('#tooltip').style('opacity', 0);  // turn off the tooltip
             });
+
+        // handler here for updating the map, as you zoom in and out           
+        vis.theMap.on("zoomend", function() {
+            vis.updateVis();
+        });
+
+        // Enter new dots
+        vis.Dots.enter()
+            .append('circle')
+            .attr("fill", "steelblue")
+            .attr("stroke", "black")
+            .attr("cx", d => {
+                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
+                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x }
+            })
+            .attr("cy", d => {
+                if ((d.longitude == "NA") || (d.latitude == "NA")) { /* If longitude/latitude is 'NA' then we do nothing */ }
+                else { return vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y }
+            })
+            .attr("r", vis.radiusSize);
+    
+        // Remove dots not in filtered data
+        vis.Dots.exit().remove();
         vis.getColorScale(vis.filter)
     }
 

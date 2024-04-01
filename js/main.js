@@ -1,18 +1,25 @@
 /* This script will act as the main "runner" of the entire application. */
+// some script-level (global) variables
+let leafletMap, timeline;
+//let btnSubmitFilters = document.getElementById("#btnSubmitFilters"); // the submit button for changing active on the map
+//let btnResetTimeline = document.getElementById("#btnResetTimeline"); // the submit button for resetting the timeline selection
 
 // Because we've moved the CSV data parsing into a separate module, we need to ensure the rest of the program waits for CSV parsing to complete.
 //  If you look at the in-class examples, most of the visualization creation is done INSIDE of the "d3.csv()" tag, so the synchronization is encapsulated.
 //  Since we've split it out, we need to ensure the main runner waits for the parsing to complete. That is why I've launched the application in this way.
 async function main() {
     await CsvDataParser.parseUfoData(); 
-    
+
+    // next we create the brushable timeline
+    timeline = new Timeline({parentElement: '#timeline'}, DataStore.rawData);
+    timeline.initVis();
+
     // next we can generate the leaflet map
-    let leafletMap = new LeafletMap({ parentElement: '#map'}, DataStore.filteredData, "", "topo");
+    leafletMap = new LeafletMap({ parentElement: '#map'}, DataStore.filteredData, "", "topo");
     leafletMap.updateVis();
-    console.log(leafletMap)
 
     // Submit button to apply filters
-    document.getElementById("submitBtn").addEventListener("click", function() {
+    document.getElementById("btnSubmitFilters").addEventListener("click", function() {
         // Change colors of dots
         var filter = document.getElementById("filter").value;
         leafletMap.data = DataStore.filteredData
@@ -113,5 +120,26 @@ async function main() {
     }
     .catch(error => console.error(error));
     */
+
+    // lastly, we setup the UI event handlers (callbacks)
+    setupUICallbacks();
+}
+
+/**
+ * 
+ * This method is used as a global access point for updating the various visualizations.
+ * It should call into each JS class' respective updateVis() method.
+ * The beauty of this mechanism (paired with the global, singleton DataStore() class) is that we don't need to pass updated data in.
+ *  Inside the class method itself, we can target the 'DataStore.filteredData' which is also directly modified from UI controls.
+ */
+function updateVisualizations() {
+    console.log("called main script updateVisualizations() method");        // testing
+    leafletMap.updateVis();
+    timeline.updateVis();
+
+    //console.log("# of data points in rawData:", DataStore.rawData.length);  // testing
+    //console.log("# of data points shown:", DataStore.filteredData.length);  // testing
+
+    // TODO: Add calls as necessary
 }
 main(); // calls the main() function to begin execution

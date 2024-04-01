@@ -13,6 +13,7 @@ class CsvDataParser {
         const UFO_CSV_FILE = "data/ufo_sightings.csv";
         d3.csv(UFO_CSV_FILE).then(data => {
             console.log("Data:", data);
+            console.log("A Data Entry:", data[0]);
             const deepCopyRawData = JSON.parse(JSON.stringify(data));   // creates a deep copy so that modifications to this object don't affect the data object
             DataStore.rawData = deepCopyRawData;    // saves the raw data to the DataStore() class
 

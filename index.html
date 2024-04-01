@@ -5,6 +5,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Project 2 - The truth is out there </title>
    <link rel="stylesheet" href="css/leaflet.css"/>
+   <link rel="stylesheet" href="css/timeline.css"/>
    <link rel="stylesheet" href="css/styles.css"/>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -34,130 +35,128 @@
       <h2><u>THE TRUTH IS OUT THERE</u></h2>
    </header>
    
-   <div id ="mainContent">   
- 
-   <div id="row1">
-      <div id="column1">
-         
-         <h2>Let's Filter Out</h2>
+   <div id ="mainContent">
+      <div id="row1">
+         <div id="column1">
+            
+            <h2>Let's Filter Out</h2>
 
-         <form id="Sub_column1">
-            <div class="row">
-               <div class="col-25">
-                  <label for="filter">Select Attribute:</label>
+            <form id="Sub_column1">
+               <div class="row">
+                  <div class="col-25">
+                     <label for="filter">Select Attribute:</label>
+                  </div>
+
+                  <div class="col-75">
+                  
+                     <select id="filter">
+                        <option value="month">Month</option>
+                        <option value="year">Year</option>
+                        <option value="ufo_shape">UFO Shape</option>
+                        <option value="time_day">Time of Day</option>
+                        <option value="country">Country</option>                
+                        <option value="city_area">City Area</option>
+                        <option value="state">State</option>
+                        <option value="country">Country</option>
+                        <option value="encounter_length">Encounter Length</option>
+                        <option value="described_encounter_length">Described Encounter Length</option>
+                        <option value="description">Description</option>
+                        <option value="date_documented">Date Documented</option>
+                        <option value="latitude">Latitude</option>
+                        <option value="longitude">Longitude</option>
+                     </select>
+                  </div>
+
                </div>
 
-               <div class="col-75">
-                  <select id="filter">
-                     <option value="month">Month</option>
-                     <option value="year">Year</option>
-                     <option value="ufo_shape">UFO Shape</option>
-                     <option value="time_day">Time of Day</option>
-                     <option value="country">Country</option>                
-                     <option value="city_area">City Area</option>
-                     <option value="state">State</option>
-                     <option value="country">Country</option>
-                     <option value="encounter_length">Encounter Length</option>
-                     <option value="described_encounter_length">Described Encounter Length</option>
-                     <option value="description">Description</option>
-                     <option value="date_documented">Date Documented</option>
-                     <option value="latitude">Latitude</option>
-                     <option value="longitude">Longitude</option>
-                  </select>
+               <div class="row">
+                  <div class="col-75">
+                     <input id="txtWordSearch" placeholder="Search for a Word(s)"/>
+                  </div>
+                  <div class="col-25">
+                     <button id="ClearBtn" type="button">Clear</button>
+                  </div>
                </div>
-            </div>
 
-            <div class="row">
-               <div class="col-25">
-                  <label for="toggleBtn" > Switch View: </label>
+               <div class="row">
+                  <div class="col-25">
+                     <label for="toggleBtn" > Switch View: </label>
+                  </div>
+                  <div class="col-75">
+                     <button type='button' id="toggleBtn" >Toggle Map</button>
+                  </div>
                </div>
-               <div class="col-75">
-                  <button type='button' id="toggleBtn" >Toggle Map</button>
-               </div>
-            </div>
 
-            <div class="row">
-               <div class="col-75">
-                  <input placeholder="Search for a Word(s)"/>
+               <div class="row4btn">
+                  <div class="col-50">
+                     <button id="btnSubmitFilters" type="button"> Submit</button>
+                  </div>
+                  <div class="col-50">
+                     <button id="resetBtn"> Reset </button>
+                  </div>
                </div>
-               <div class="col-25">
-                  <button type='button' id="ClearBtn">Clear</button>
-               </div>
-            </div>
-
-            <div class="row4btn">
-               <div class="col-50">
-                  <button type='button' id="submitBtn" > Submit</button>
-               </div>
-               <div class="col-50">
-                  <button type='button' id="resetBtn" > Reset </button>
-               </div>
-            </div>
-         </form>
-
-      </div>
-
-      <div id="column2">
-         <div id="map"></div>
-         <div>
-                <ul class="legend">
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="changing"><span class="legend-symbol"></span> Changing</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="chevron"><span class="legend-symbol"></span> Chevron</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="cigar"><span class="legend-symbol"></span>  Cigar</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="circle"><span class="legend-symbol"></span> Circle</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="cylinder"><span class="legend-symbol"></span> Cylinder</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="diamond"><span class="legend-symbol"></span> Diamond</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="disk"><span class="legend-symbol"></span> Disk</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="egg"><span class="legend-symbol"></span> Egg</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="fireball"><span class="legend-symbol"></span> Fireball</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="flash"><span class="legend-symbol"></span> Flash</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="formation"><span class="legend-symbol"></span> Formation</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="light"><span class="legend-symbol"></span> Light</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="NA"><span class="legend-symbol"></span> NA</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="other"><span class="legend-symbol"></span> Other</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="oval"><span class="legend-symbol"></span> Oval</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="rectangle"><span class="legend-symbol"></span> Rectangle</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="sphere"><span class="legend-symbol"></span> Sphere</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="teardrop"><span class="legend-symbol"></span> Teardrop</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="triangle"><span class="legend-symbol"></span> Triangle</li>
-                    <li style="display: none" class="legend-btn ufo_shape" ufo_shape="unknown"><span class="legend-symbol"></span> Unknown</li>
-                    <li style="display: none" class="legend-btn month" month="1"><span class="legend-symbol"></span> January</li>
-                    <li style="display: none" class="legend-btn month" month="2"><span class="legend-symbol"></span> February</li>
-                    <li style="display: none" class="legend-btn month" month="3"><span class="legend-symbol"></span> March</li>
-                    <li style="display: none" class="legend-btn month" month="4"><span class="legend-symbol"></span> April</li>
-                    <li style="display: none" class="legend-btn month" month="5"><span class="legend-symbol"></span> May</li>
-                    <li style="display: none" class="legend-btn month" month="6"><span class="legend-symbol"></span> June</li>
-                    <li style="display: none" class="legend-btn month" month="7"><span class="legend-symbol"></span> July</li>
-                    <li style="display: none" class="legend-btn month" month="8"><span class="legend-symbol"></span> August</li>
-                    <li style="display: none" class="legend-btn month" month="9"><span class="legend-symbol"></span> September</li>
-                    <li style="display: none" class="legend-btn month" month="10"><span class="legend-symbol"></span> October</li>
-                    <li style="display: none" class="legend-btn month" month="11"><span class="legend-symbol"></span> November</li>
-                    <li style="display: none" class="legend-btn month" month="12"><span class="legend-symbol"></span> December</li>
-                    <li style="display: none" class="legend-btn year" year="1950"><span class="legend-symbol"></span> 1950s</li>
-                    <li style="display: none" class="legend-btn year" year="1960"><span class="legend-symbol"></span> 1960s</li>
-                    <li style="display: none" class="legend-btn year" year="1970"><span class="legend-symbol"></span> 1970s</li>
-                    <li style="display: none" class="legend-btn year" year="1980"><span class="legend-symbol"></span> 1980s</li>
-                    <li style="display: none" class="legend-btn year" year="1990"><span class="legend-symbol"></span> 1990s</li>
-                    <li style="display: none" class="legend-btn year" year="2000"><span class="legend-symbol"></span> 2000s</li>
-                    <li style="display: none" class="legend-btn year" year="2010"><span class="legend-symbol"></span> 2010s</li>
-                    <li style="display: none" class="legend-btn time_day" time_day="6:00"><span class="legend-symbol"></span> Morning</li>
-                    <li style="display: none" class="legend-btn time_day" time_day="12:00"><span class="legend-symbol"></span> Afternoon</li>
-                    <li style="display: none" class="legend-btn time_day" time_day="18:00"><span class="legend-symbol"></span> Evening</li>
-                    <li style="display: none" class="legend-btn time_day" time_day="0:00"><span class="legend-symbol"></span> Night</li>
-                </ul>
+            </form>
          </div>
+
+         <div id="column2">
+            <div id="map"></div>
+            <div>
+                   <ul class="legend">
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="changing"><span class="legend-symbol"></span> Changing</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="chevron"><span class="legend-symbol"></span> Chevron</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="cigar"><span class="legend-symbol"></span>  Cigar</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="circle"><span class="legend-symbol"></span> Circle</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="cylinder"><span class="legend-symbol"></span> Cylinder</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="diamond"><span class="legend-symbol"></span> Diamond</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="disk"><span class="legend-symbol"></span> Disk</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="egg"><span class="legend-symbol"></span> Egg</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="fireball"><span class="legend-symbol"></span> Fireball</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="flash"><span class="legend-symbol"></span> Flash</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="formation"><span class="legend-symbol"></span> Formation</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="light"><span class="legend-symbol"></span> Light</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="NA"><span class="legend-symbol"></span> NA</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="other"><span class="legend-symbol"></span> Other</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="oval"><span class="legend-symbol"></span> Oval</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="rectangle"><span class="legend-symbol"></span> Rectangle</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="sphere"><span class="legend-symbol"></span> Sphere</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="teardrop"><span class="legend-symbol"></span> Teardrop</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="triangle"><span class="legend-symbol"></span> Triangle</li>
+                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="unknown"><span class="legend-symbol"></span> Unknown</li>
+                       <li style="display: none" class="legend-btn month" month="1"><span class="legend-symbol"></span> January</li>
+                       <li style="display: none" class="legend-btn month" month="2"><span class="legend-symbol"></span> February</li>
+                       <li style="display: none" class="legend-btn month" month="3"><span class="legend-symbol"></span> March</li>
+                       <li style="display: none" class="legend-btn month" month="4"><span class="legend-symbol"></span> April</li>
+                       <li style="display: none" class="legend-btn month" month="5"><span class="legend-symbol"></span> May</li>
+                       <li style="display: none" class="legend-btn month" month="6"><span class="legend-symbol"></span> June</li>
+                       <li style="display: none" class="legend-btn month" month="7"><span class="legend-symbol"></span> July</li>
+                       <li style="display: none" class="legend-btn month" month="8"><span class="legend-symbol"></span> August</li>
+                       <li style="display: none" class="legend-btn month" month="9"><span class="legend-symbol"></span> September</li>
+                       <li style="display: none" class="legend-btn month" month="10"><span class="legend-symbol"></span> October</li>
+                       <li style="display: none" class="legend-btn month" month="11"><span class="legend-symbol"></span> November</li>
+                       <li style="display: none" class="legend-btn month" month="12"><span class="legend-symbol"></span> December</li>
+                       <li style="display: none" class="legend-btn year" year="1950"><span class="legend-symbol"></span> 1950s</li>
+                       <li style="display: none" class="legend-btn year" year="1960"><span class="legend-symbol"></span> 1960s</li>
+                       <li style="display: none" class="legend-btn year" year="1970"><span class="legend-symbol"></span> 1970s</li>
+                       <li style="display: none" class="legend-btn year" year="1980"><span class="legend-symbol"></span> 1980s</li>
+                       <li style="display: none" class="legend-btn year" year="1990"><span class="legend-symbol"></span> 1990s</li>
+                       <li style="display: none" class="legend-btn year" year="2000"><span class="legend-symbol"></span> 2000s</li>
+                       <li style="display: none" class="legend-btn year" year="2010"><span class="legend-symbol"></span> 2010s</li>
+                       <li style="display: none" class="legend-btn time_day" time_day="6:00"><span class="legend-symbol"></span> Morning</li>
+                       <li style="display: none" class="legend-btn time_day" time_day="12:00"><span class="legend-symbol"></span> Afternoon</li>
+                       <li style="display: none" class="legend-btn time_day" time_day="18:00"><span class="legend-symbol"></span> Evening</li>
+                       <li style="display: none" class="legend-btn time_day" time_day="0:00"><span class="legend-symbol"></span> Night</li>
+                   </ul>
+            </div>
+         </div>
+         <div id="tooltip"></div>
+      </div> <!-- row1 div -->
+      
+      <div id ="row2">
+         <svg id="timeline"></svg>
+         <button id="btnResetTimeline" type="button">Reset</button>
       </div>
-      <div id="tooltip"></div>
-   </div>
-
-   </div> <!-- row1 div -->
-   
-   <div id ="row2" class="timeline">
-      <p>Timeline w brushing</p>    <!-- TODO: remove this -->
-      <button id="resetBtn">Reset</button>
-   </div>
-
    </div>   <!-- mainContent div -->
+
    <!--
       JavaScript Files (NOTE: Make sure the 'main.js' is the last file. Order of imports matters).
       Library files (D3 & leaflet) first, followed by custom JS classes.
@@ -168,6 +167,8 @@
    <script src="js/datastore.js" type="text/javascript"></script>
    <script src="js/csvdataparser.js" type="text/javascript"></script>
    <script src="js/leafletMap.js" type="text/javascript"></script>
+   <script src="js/timeline.js" type="text/javascript"></script>
+   <script src="js/callbacks.js" type="text/javascript"></script>
    <script src="js/main.js" type="text/javascript"></script>
    <script>
       // Function to open the modal
