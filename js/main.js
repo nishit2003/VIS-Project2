@@ -7,10 +7,11 @@ async function main() {
     await CsvDataParser.parseUfoData(); 
     
     // next we can generate the leaflet map
-    let leafletMap = new LeafletMap({ parentElement: '#map'}, DataStore.filteredData, "");
+    let leafletMap = new LeafletMap({ parentElement: '#map'}, DataStore.filteredData, "", "topo");
     leafletMap.updateVis();
     console.log(leafletMap)
 
+    // Submit button to apply filters
     document.getElementById("submitBtn").addEventListener("click", function() {
         // Change colors of dots
         var filter = document.getElementById("filter").value;
@@ -27,6 +28,13 @@ async function main() {
             else {
                 legends[i].setAttribute("style", "display: none");
         }}});
+
+
+    // Toggle Map code
+    document.getElementById("toggleBtn").addEventListener("click", function() {
+        leafletMap.updateMap(leafletMap.map)
+    })
+
 
     // Code for Legends
     // TODO Possibly add it where you can use multiple filters, ex. Filter summer sightings in the 1950s.

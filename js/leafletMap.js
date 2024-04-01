@@ -12,6 +12,7 @@ class LeafletMap {
         this.config = { parentElement: _config.parentElement, };
         this.data = _data;
         this.filter = _filter;
+        this.map = "topo";
 
         // various leaflet map bases
         this.ESRI_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';    // ESRI
@@ -22,6 +23,8 @@ class LeafletMap {
         this.THOUT_ATTR = '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         this.ST_URL = 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}';     // Stamen
         this.ST_ATTR = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+        this.MAPNIK_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+        this.MAPNIK_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         this.initVis()
     }
 
@@ -119,72 +122,103 @@ class LeafletMap {
     }
 
     getColorScale(filter) {
-
+        let vis = this;
         if (filter == "year") {
-            this.colorScale = d3.scaleOrdinal()
+            vis.colorScale = d3.scaleOrdinal()
                 .range(["#585661", '#9151a8', '#85152f', '#b0522a', "#b09a2a",  "#186e26",  "#094263"])
                 .domain(['1950','1960',"1970","1980","1990", "2000", "2010"]);
-            this.Dots.attr("fill", d => {
+            vis.Dots.attr("fill", d => {
                 if (typeof d.date_time != "number") {
                     var year = d.date_time.split(" ")[0].split("/")[2]
-                    if (Number(year) <= 1959) {return this.colorScale("1950")}
-                    else if (Number(year) <= 1969) {return this.colorScale("1960")}
-                    else if (Number(year) <= 1979) {return this.colorScale("1970")}
-                    else if (Number(year) <= 1989) {return this.colorScale("1980")}
-                    else if (Number(year) <= 1999) {return this.colorScale("1990")}
-                    else if (Number(year) <= 2009) {return this.colorScale("2000")}
-                    else if (Number(year) <= 2019) {return this.colorScale("2010")}
+                    if (Number(year) <= 1959) {return vis.colorScale("1950")}
+                    else if (Number(year) <= 1969) {return vis.colorScale("1960")}
+                    else if (Number(year) <= 1979) {return vis.colorScale("1970")}
+                    else if (Number(year) <= 1989) {return vis.colorScale("1980")}
+                    else if (Number(year) <= 1999) {return vis.colorScale("1990")}
+                    else if (Number(year) <= 2009) {return vis.colorScale("2000")}
+                    else if (Number(year) <= 2019) {return vis.colorScale("2010")}
                 }
-                else {return this.colorScale("2010")}
+                else {return vis.colorScale("2010")}
             })
         }
         else if (filter == "month") {
-            this.colorScale = d3.scaleOrdinal()
+            vis.colorScale = d3.scaleOrdinal()
             .range(['#c41d1d', '#995f12', '#998c12', "#7a9912", "#3b9912", "#0f7d1c", "#0f7d41", "#0f7d63", "#0f787d", "#0e75a1", "#0f4187", "#0f2387"])
             .domain(['1','2', "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]);
-            this.Dots.attr("fill", d => {
+            vis.Dots.attr("fill", d => {
                 if (typeof d.date_time != "number") {
                     var month = d.date_time.split(" ")[0].split("/")[0]
-                    if (Number(month) == 1) {return this.colorScale("1")}
-                    else if (Number(month) == 2) {return this.colorScale("2")}
-                    else if (Number(month) == 3) {return this.colorScale("3")}
-                    else if (Number(month) == 4) {return this.colorScale("4")}
-                    else if (Number(month) == 5) {return this.colorScale("5")}
-                    else if (Number(month) == 6) {return this.colorScale("6")}
-                    else if (Number(month) == 7) {return this.colorScale("7")}
-                    else if (Number(month) == 8) {return this.colorScale("8")}
-                    else if (Number(month) == 9) {return this.colorScale("9")}
-                    else if (Number(month) == 10) {return this.colorScale("10")}
-                    else if (Number(month) == 11) {return this.colorScale("11")}
-                    else if (Number(month) == 12) {return this.colorScale("12")}
+                    if (Number(month) == 1) {return vis.colorScale("1")}
+                    else if (Number(month) == 2) {return vis.colorScale("2")}
+                    else if (Number(month) == 3) {return vis.colorScale("3")}
+                    else if (Number(month) == 4) {return vis.colorScale("4")}
+                    else if (Number(month) == 5) {return vis.colorScale("5")}
+                    else if (Number(month) == 6) {return vis.colorScale("6")}
+                    else if (Number(month) == 7) {return vis.colorScale("7")}
+                    else if (Number(month) == 8) {return vis.colorScale("8")}
+                    else if (Number(month) == 9) {return vis.colorScale("9")}
+                    else if (Number(month) == 10) {return vis.colorScale("10")}
+                    else if (Number(month) == 11) {return vis.colorScale("11")}
+                    else if (Number(month) == 12) {return vis.colorScale("12")}
                 }
-                else {return this.colorScale("1")}
+                else {return vis.colorScale("1")}
             })
         }
         else if (filter == "ufo_shape") {
-            this.colorScale = d3.scaleOrdinal()
+            vis.colorScale = d3.scaleOrdinal()
             .range(['#c41d1d', '#995f12', '#998c12', "#7a9912", "#3b9912", "#0f7d1c", "#0f7d41", "#0f7d63", "#0f787d", "#0e75a1",
                     "#0f4187", "#0f2387", "#321bb3", "#3f1170", "#9c3cc2", "#744975", "#c286b4", "#752b49", "#8f2845", "#ce9ab2"])
             .domain(['changing','chevron', "cigar", "circle", "cylinder", "diamond", "disk", "egg", "fireball", "flash", 
                     "formation", "light", "NA", "other", "oval", "rectangle", "sphere", "teardrop", "triangle", "unknown"]);
-            this.Dots.attr("fill", d => this.colorScale(d.ufo_shape))
+            vis.Dots.attr("fill", d => vis.colorScale(d.ufo_shape))
         }
         else if (filter == "time_day") {
-            this.colorScale = d3.scaleOrdinal()
+            vis.colorScale = d3.scaleOrdinal()
             .range(["#19544e", '#0f780d', '#83b010', '#b04010'])
             .domain(['0:00','6:00', "12:00", "18:00"]);
-            this.Dots.attr("fill", d => {
+            vis.Dots.attr("fill", d => {
                 if (typeof d.date_time != "number") {
                     var hour = d.date_time.split(" ")[1].split(":")[1]
-                    if (Number(hour) <= 5 || Number(hour) >= 22) {return this.colorScale("0:00")}
-                    else if (Number(hour) >= 6 && Number(hour) <= 10) {return this.colorScale("6:00")}
-                    else if (Number(hour) >= 11 && Number(hour) <= 17) {return this.colorScale("12:00")}
-                    else if (Number(hour) >= 18 && Number(hour) <= 21) {return this.colorScale("18:00")}
+                    if (Number(hour) <= 5 || Number(hour) >= 22) {return vis.colorScale("0:00")}
+                    else if (Number(hour) >= 6 && Number(hour) <= 10) {return vis.colorScale("6:00")}
+                    else if (Number(hour) >= 11 && Number(hour) <= 17) {return vis.colorScale("12:00")}
+                    else if (Number(hour) >= 18 && Number(hour) <= 21) {return vis.colorScale("18:00")}
                 }
-                else {return this.colorScale("0:00")}
+                else {return vis.colorScale("0:00")}
             })
         }
-        else {this.Dots.attr("fill", "steelblue")}
+        else {vis.Dots.attr("fill", "steelblue")}
     }
-    // TOOD: Add class methods as necessary
+
+    updateMap(map) {
+        let vis = this;
+
+        // Switch Maps
+        if (map == "mapnik") {
+            var url = vis.TOPO_URL;
+            var attr = vis.TOPO_ATTR;
+            vis.map = "topo";
+        } else {
+            var url = vis.MAPNIK_URL;
+            var attr = vis.MAPNIK_ATTR;
+            vis.map = "mapnik";
+        }
+
+        vis.base_layer = L.tileLayer(url, {
+            id: 'thout-image',
+            attribution: attr,
+            ext: 'png'
+        });
+
+        vis.theMap.setView(vis.theMap.getCenter(), vis.theMap.getZoom()); // Set the new center and zoom level
+        vis.theMap.eachLayer(function(layer) {
+            vis.theMap.removeLayer(layer); // Remove existing layers
+        });
+
+        L.svg({clickable:true}).addTo(vis.theMap) 
+        vis.base_layer.addTo(vis.theMap);
+        vis.overlay = d3.select(vis.theMap.getPanes().overlayPane)
+        vis.svg = vis.overlay.select('svg').attr("pointer-events", "auto")
+        vis.updateVis(); // Update the data visualization
+    }
 }
