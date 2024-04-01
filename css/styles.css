@@ -17,16 +17,6 @@ header {
    align-items: center;
 }
 
-#infoBtn {
-   /* background: none;
-   border: none; */
-   cursor: pointer;
-   float: right;
-   margin-left: auto;
-   margin-right: 0;
-   border-radius: 70%;
-}
-
  label{
    font-size: 25px;
    color: whitesmoke;
@@ -329,3 +319,63 @@ justify-content: space-evenly;}
    padding-left: 20px;
    text-align: left;
  }
+
+ /* Styles for the information button */
+.info-button {
+  position: fixed; /* Fixed position */
+  top: 20px; /* Distance from the top */
+  right: 20px; /* Distance from the right */
+  z-index: 1000; /* Ensure it's above other content */
+  background-color: rgba(255, 255, 255, 0.8); /* Background color */
+  border: 3px solid #ccc; /* Border */
+  border-radius: 50%; /* Rounded shape */
+  width: 40px; /* Button width */
+  height: 40px; /* Button height */
+  display: flex; /* Flex display for centering content */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  cursor: pointer; /* Cursor style */
+}
+
+.info-button i {
+  color: #333; /* Icon color */
+  font-size: 24px; /* Icon size */
+}
+
+/* Styles for the modal */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1001; /* Sit on top of the button */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+  padding-top: 60px; /* Location of the modal content */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto; /* 5% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 10px; /* Rounded corners */
+  width: 60%; /* Could be more or less, depending on screen size */
+}
+
+/* Close button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
