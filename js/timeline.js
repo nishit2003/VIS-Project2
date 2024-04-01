@@ -25,7 +25,7 @@ class Timeline {
 
         // then we'll set up margins and dimensions
         const margin = { top: 10, right: 50, bottom: 30, left: 50 };
-        const width = 1600 - margin.left - margin.right;
+        const width = 1000 - margin.left - margin.right;
         const height = 100 - margin.top - margin.bottom;
 
         // create/select the timeline SVG element

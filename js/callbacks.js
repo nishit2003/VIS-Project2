@@ -12,7 +12,7 @@ function setupUICallbacks() {
 
         // Filter the data based on the description attribute containing the keyword
         DataStore.filteredData = DataStore.filteredData.filter(d => {
-            const lowerDescription = d.description.toLowerCase();   // Convert the description to lowercase for case-insensitive matching
+            const lowerDescription = String(d.description).toLowerCase();   // Convert the description to lowercase for case-insensitive matching
             return lowerDescription.includes(lowerKeyword); // Check if the keyword is found in the description
         });
 
