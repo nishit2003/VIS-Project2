@@ -1,6 +1,6 @@
 /* This script will act as the main "runner" of the entire application. */
 // some script-level (global) variables
-let leafletMap, timeline;
+let leafletMap, timeline, barGraphVisuals;
 //let btnSubmitFilters = document.getElementById("#btnSubmitFilters"); // the submit button for changing active on the map
 //let btnResetTimeline = document.getElementById("#btnResetTimeline"); // the submit button for resetting the timeline selection
 
@@ -17,6 +17,11 @@ async function main() {
     // next we can generate the leaflet map
     leafletMap = new LeafletMap({ parentElement: '#map'}, DataStore.filteredData, "", "topo");
     leafletMap.updateVis();
+
+    // next we can generate the leaflet map
+    barGraphs = new BarGraphVisuals({ parentElement: '#month-graph'}, { parentElement: '#ufo-graph'},{ parentElement: '#month-graph'},{ parentElement: '#month-graph'}, DataStore.filteredData);
+    barGraphs.updateVis();
+
 
     // Submit button to apply filters
     document.getElementById("btnSubmitFilters").addEventListener("click", function() {

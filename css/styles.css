@@ -401,3 +401,17 @@ header {
   text-decoration: none;
   cursor: pointer;
 }
+
+.month-graph{
+   margin-top: 10px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+.ufo-graph{
+   margin-top: 10px;
+   padding-left: 300px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
