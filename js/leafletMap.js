@@ -65,7 +65,7 @@ class LeafletMap {
         // these are the city locations, displayed as a set of dots 
         vis.Dots = vis.svg.selectAll('circle')
             //.data(vis.data)
-            .data(DataStore.filteredData)
+            .data(vis.data)
             .join('circle')
             .attr("fill", "steelblue")
             .attr("stroke", "black")
@@ -123,6 +123,7 @@ class LeafletMap {
 
         // Enter new dots
         vis.Dots.enter()
+            .data(vis.data)
             .append('circle')
             .attr("fill", "steelblue")
             .attr("stroke", "black")

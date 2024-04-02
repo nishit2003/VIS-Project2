@@ -410,7 +410,7 @@ header {
 }
 .ufo-graph{
    margin-top: 10px;
-   padding-left: 300px;
+   padding-left: 100px;
    display: flex;
    align-items: center;
    justify-content: space-between;

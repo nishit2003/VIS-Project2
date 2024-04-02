@@ -10,7 +10,7 @@ class CsvDataParser {
     // Class Methods
     // method which parses specifically the data from the 'ufo_sightings.csv' file. TODO: Maybe make more modular & pass file names/attributes to parse in?
     static async parseUfoData() {
-        const UFO_CSV_FILE = "data/ufo_sightings.csv";
+        const UFO_CSV_FILE = "data/UPDATED_ufo_sightings.csv";
         d3.csv(UFO_CSV_FILE).then(data => {
             console.log("Data:", data);
             console.log("A Data Entry:", data[0]);

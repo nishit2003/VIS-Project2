@@ -138,7 +138,8 @@ async function main() {
  *  Inside the class method itself, we can target the 'DataStore.filteredData' which is also directly modified from UI controls.
  */
 function updateVisualizations() {
-    console.log("called main script updateVisualizations() method");        // testing
+    console.log("called main script updateVisualizations() method"); 
+    leafletMap.data = DataStore.filteredData       // testing
     leafletMap.updateVis();
     timeline.updateVis();
 
