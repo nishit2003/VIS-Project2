@@ -21,6 +21,12 @@ async function main() {
     // next we can generate the leaflet map
     barGraphs = new BarGraphVisuals({ parentElement: '#month-graph'}, { parentElement: '#ufo-shape-graph'}, { parentElement: '#encounter-graph'}, { parentElement: '#time-graph'}, DataStore.filteredData);
 
+    document.getElementById("btnResetGraphs").addEventListener("click", function() {
+        barGraphs.updateVis(DataStore.filteredData)
+        barGraphs.updateVisUFO(DataStore.filteredData)
+        barGraphs.updateVisEncounter(DataStore.filteredData)
+        barGraphs.updateVisTimeDay(DataStore.filteredData)
+    })
 
     // Submit button to apply filters
     document.getElementById("btnSubmitFilters").addEventListener("click", function() {

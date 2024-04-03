@@ -36,7 +36,7 @@ class BarGraphVisuals {
         containerHeight: 400,
         margin: _config_time.margin || { top: 50, right: 60, bottom: 50, left: 100 },
         tooltipPadding: _config_time.tooltipPadding || 15,
-        };
+        }; 
         this.data = _data;
 
         this.initVisMonth()
@@ -168,6 +168,17 @@ class BarGraphVisuals {
 
         vis.bins_month = vis.histogram_month(data)
 
+        var min = d3.min(data, d => {
+            if (typeof d.date_time != "number") {
+                return d.date_time.split(" ")[0].split("/")[0]}
+            })
+        var max = (d3.max(data, d => {
+            if (typeof d.date_time != "number") {
+                return Number(d.date_time.split(" ")[0].split("/")[0])}
+            }))
+
+        vis.xScale_month.domain([min, max + 1])
+
         // Update yScale domain based on data
         vis.yScale_month.domain([0, d3.max(vis.bins_month, d => d.length)]);
 
@@ -189,186 +200,185 @@ class BarGraphVisuals {
         
     }
 
-initVisUFO() {
-    let vis = this;
+    initVisUFO() {
+        let vis = this;
 
-    vis.width_ufo = vis.config_ufo.containerWidth - vis.config_ufo.margin.left - vis.config_ufo.margin.right;
-    vis.height_ufo = vis.config_ufo.containerHeight - vis.config_ufo.margin.top - vis.config_ufo.margin.bottom;
+        vis.width_ufo = vis.config_ufo.containerWidth - vis.config_ufo.margin.left - vis.config_ufo.margin.right;
+        vis.height_ufo = vis.config_ufo.containerHeight - vis.config_ufo.margin.top - vis.config_ufo.margin.bottom;
 
-    // Create SVG
-    vis.svg_ufo = d3.select(vis.config_ufo.parentElement)
-        .append('svg')
-        .attr('width', vis.config_ufo.containerWidth)
-        .attr('height', vis.config_ufo.containerHeight)
-        .append('g')
-        .attr('transform', `translate(${vis.config_ufo.margin.left},${vis.config_ufo.margin.top})`);
+        // Create SVG
+        vis.svg_ufo = d3.select(vis.config_ufo.parentElement)
+            .append('svg')
+            .attr('width', vis.config_ufo.containerWidth)
+            .attr('height', vis.config_ufo.containerHeight)
+            .append('g')
+            .attr('transform', `translate(${vis.config_ufo.margin.left},${vis.config_ufo.margin.top})`);
 
-    // Calculate frequency of each ufo_shape
-    vis.ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
+        // Calculate frequency of each ufo_shape
+        vis.ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
 
-    // Convert the rollup map to an array of objects
-    vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
+        // Convert the rollup map to an array of objects
+        vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
 
-    // X axis
-    vis.xScale_ufo = d3.scaleBand()
-        .range([0, vis.width_ufo])
-        .domain(vis.ufoShapes.map(d => d.ufo_shape))
-        .padding(0.2);
+        // X axis
+        vis.xScale_ufo = d3.scaleBand()
+            .range([0, vis.width_ufo])
+            .domain(vis.ufoShapes.map(d => d.ufo_shape))
+            .padding(0.2);
 
-    // Add Y axis
-    vis.yScale_ufo = d3.scaleLinear()
-        .domain([0, d3.max(vis.ufoShapes, d => d.Value)]) // Adjust domain based on the maximum frequency
-        .range([vis.height_ufo, 0]);
+        // Add Y axis
+        vis.yScale_ufo = d3.scaleLinear()
+            .domain([0, d3.max(vis.ufoShapes, d => d.Value)]) // Adjust domain based on the maximum frequency
+            .range([vis.height_ufo, 0]);
 
-    // Initialize axes
-    vis.xAxis_ufo = d3.axisBottom(vis.xScale_ufo)
+        // Initialize axes
+        vis.xAxis_ufo = d3.axisBottom(vis.xScale_ufo)
 
-    vis.yAxis_ufo = d3.axisLeft(vis.yScale_ufo)
+        vis.yAxis_ufo = d3.axisLeft(vis.yScale_ufo)
 
-    // Update the domain of y scale with new data
-    vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
+        // Update the domain of y scale with new data
+        vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
 
-    vis.svg_ufo.append("g")
-        .attr("class", "x-axis")
-        .attr("transform", `translate(0, ${vis.height_ufo})`) // Corrected translation
-        .call(vis.xAxis_ufo);
+        vis.svg_ufo.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", `translate(0, ${vis.height_ufo})`) // Corrected translation
+            .call(vis.xAxis_ufo);
 
-    // Append Y axis
-    vis.svg_ufo.append("g")
-        .attr("class", "y-axis")
-        .call(vis.yAxis_ufo);
+        // Append Y axis
+        vis.svg_ufo.append("g")
+            .attr("class", "y-axis")
+            .call(vis.yAxis_ufo);
 
-    // Append both axis titles
-    vis.svg_ufo.append('text')
-        .attr('y', vis.height_ufo + 25)
-        .attr('x', vis.width_ufo)
-        .attr('dy', '.71em')
-        .style('text-anchor', 'end')
-        .text("Shape");
+        // Append both axis titles
+        vis.svg_ufo.append('text')
+            .attr('y', vis.height_ufo + 25)
+            .attr('x', vis.width_ufo)
+            .attr('dy', '.71em')
+            .style('text-anchor', 'end')
+            .text("Shape");
 
-    vis.svg_ufo.append('text')
-        .attr('x', -80)
-        .attr('y', -5)
-        .attr('dy', '.71em')
-        .text("Frequency");
+        vis.svg_ufo.append('text')
+            .attr('x', -80)
+            .attr('y', -5)
+            .attr('dy', '.71em')
+            .text("Frequency");
 
-    vis.svg_ufo.append('text')
-        .attr('x', vis.width_ufo / 5)
-        .attr('y', -40)
-        .attr('font-size', "px")
-        .attr('dy', '.71em')
-        .text(`UFO Shape Histogram`);
+        vis.svg_ufo.append('text')
+            .attr('x', vis.width_ufo / 5)
+            .attr('y', -40)
+            .attr('font-size', "px")
+            .attr('dy', '.71em')
+            .text(`UFO Shape Histogram`);
 
-    // Convert ufoShapes to histogram bins
-    vis.histogramData = vis.ufoShapes.map(d => ({
-        ufo_shape: d.ufo_shape,
-        frequency: d.Value
-    }));
+        // Convert ufoShapes to histogram bins
+        vis.histogramData = vis.ufoShapes.map(d => ({
+            ufo_shape: d.ufo_shape,
+            frequency: d.Value
+        }));
 
-    const brushed = (event) => {
-        if (!event.selection) return;
-        var [x0, x1] = event.selection;
+        const brushed = (event) => {
+            if (!event.selection) return;
+            var [x0, x1] = event.selection;
+            
+            // Filter bars within the brushed area
+            const selectedBars = vis.histogramData.filter(d => {
+                const barX = vis.xScale_ufo(d.ufo_shape);
+                return barX >= x0 && barX <= x1;
+            });
+
+            vis.svg_ufo.selectAll(".bar").classed("selected", d => selectedBars.includes(d));
+            vis.svg_ufo.selectAll(".bar").filter(".selected").style("fill", "blue");
+            vis.svg_ufo.selectAll(".bar").filter(":not(.selected)").style("fill", "#69b3a2");
+
+            // Filter data points within the brushed area
+            vis.selectedData = vis.data.filter(d => {
+                const barX = vis.xScale_ufo(d.ufo_shape);
+                return barX >= x0 && barX <= x1;
+            });
+        }
+
+        const brushend = (event) => {
+            if (!event.selection) return;
+            vis.data = vis.selectedData
+            vis.updateVis(vis.selectedData);
+            vis.updateVisEncounter(vis.selectedData);
+            vis.updateVisTimeDay(vis.selectedData);
+            vis.updateVisUFO(vis.selectedData);
+        }
+
+        // Append brush
+        vis.brush_ufo = d3.brushX()
+        .extent([[0, 0], [vis.width_ufo, vis.height_ufo]])
+        .on("start brush", brushed)
+        .on("end", brushend);
+
+        vis.svg_ufo.append("g")
+        .attr("class", "brush")
+        .call(vis.brush_ufo);
+
+        // Draw histogram bars
+        vis.svg_ufo.selectAll(".bar")
+            .data(vis.histogramData)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", d => vis.xScale_ufo(d.ufo_shape))
+            .attr("y", d => vis.yScale_ufo(d.frequency))
+            .attr("width", vis.xScale_ufo.bandwidth())
+            .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.frequency))
+            .style("fill", "#69b3a2");
+    }
+
+    updateVisUFO(data) {
+        let vis = this;
+
+        var min = d3.min(data, d => d.encounter_length)
+        var max = Math.min(d3.max(data, d => d.encounter_length), 10800)
         
-        // Filter bars within the brushed area
-        const selectedBars = vis.histogramData.filter(d => {
-            const barX = vis.xScale_ufo(d.ufo_shape);
-            return barX >= x0 && barX <= x1;
-        });
+        vis.xScale_enc.domain([min, max])
 
-        vis.svg_ufo.selectAll(".bar").classed("selected", d => selectedBars.includes(d));
-        vis.svg_ufo.selectAll(".bar").filter(".selected").style("fill", "blue");
-        vis.svg_ufo.selectAll(".bar").filter(":not(.selected)").style("fill", "#69b3a2");
+        // Calculate frequency of each ufo_shape
+        vis.ufoShapeCounts = d3.rollup(data, v => v.length, d => d.ufo_shape);
 
-        // Filter data points within the brushed area
-        vis.selectedData = vis.data.filter(d => {
-            const barX = vis.xScale_ufo(d.ufo_shape);
-            return barX >= x0 && barX <= x1;
-        });
+        // Convert the rollup map to an array of objects
+        vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
+
+        // Update the domain of y scale with new data
+        vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
+
+        // Update the domain of x scale with new data
+        vis.xScale_ufo.domain(vis.ufoShapes.map(d => d.ufo_shape));
+
+        // Update the x-axis
+        vis.svg_ufo.select(".x-axis")
+            .call(vis.xAxis_ufo);
+
+        // Update the y-axis
+        vis.svg_ufo.select(".y-axis")
+            .call(vis.yAxis_ufo);
+
+        // Convert ufoShapes to histogram bins
+        vis.histogramData = vis.ufoShapes.map(d => ({
+            ufo_shape: d.ufo_shape,
+            frequency: d.Value
+        }));
+
+        // Update existing bars
+        vis.bars_ufo = vis.svg_ufo.selectAll(".bar")
+            .data(vis.histogramData);
+
+        // Enter new bars
+        vis.bars_ufo.enter().append("rect")
+            .attr("class", "bar")
+            .merge(vis.bars_ufo)
+            .attr("x", d => vis.xScale_ufo(d.ufo_shape))
+            .attr("width", vis.xScale_ufo.bandwidth())
+            .attr("y", d => vis.yScale_ufo(d.frequency))
+            .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.frequency))
+            .style("fill", "#69b3a2");
+
+        // Remove bars that are not needed
+        vis.bars_ufo.exit().remove();
     }
-
-    const brushend = (event) => {
-        if (!event.selection) return;
-        vis.data = vis.selectedData
-        vis.updateVis(vis.selectedData);
-        vis.updateVisEncounter(vis.selectedData);
-        vis.updateVisTimeDay(vis.selectedData);
-        vis.updateVisUFO(vis.selectedData);
-    }
-
-    // Append brush
-    vis.brush_ufo = d3.brushX()
-    .extent([[0, 0], [vis.width_ufo, vis.height_ufo]])
-    .on("start brush", brushed)
-    .on("end", brushend);
-
-    vis.svg_ufo.append("g")
-    .attr("class", "brush")
-    .call(vis.brush_ufo);
-
-    // Draw histogram bars
-    vis.svg_ufo.selectAll(".bar")
-        .data(vis.histogramData)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", d => vis.xScale_ufo(d.ufo_shape))
-        .attr("y", d => vis.yScale_ufo(d.frequency))
-        .attr("width", vis.xScale_ufo.bandwidth())
-        .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.frequency))
-        .style("fill", "#69b3a2");
-}
-
-updateVisUFO(data) {
-    let vis = this;
-
-    // Calculate frequency of each ufo_shape
-    vis.ufoShapeCounts = d3.rollup(data, v => v.length, d => d.ufo_shape);
-
-    // Convert the rollup map to an array of objects
-    vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
-
-    // Update the domain of y scale with new data
-    vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
-
-    // Update the domain of x scale with new data
-    vis.xScale_ufo.domain(vis.ufoShapes.map(d => d.ufo_shape));
-
-    // Update the x-axis
-    vis.svg_ufo.select(".x-axis")
-        .transition()
-        .duration(500)
-        .call(vis.xAxis_ufo);
-
-    // Update the y-axis
-    vis.svg_ufo.select(".y-axis")
-        .transition()
-        .duration(500)
-        .call(vis.yAxis_ufo);
-
-    // Convert ufoShapes to histogram bins
-    vis.histogramData = vis.ufoShapes.map(d => ({
-        ufo_shape: d.ufo_shape,
-        frequency: d.Value
-    }));
-
-    // Update existing bars
-    vis.bars_ufo = vis.svg_ufo.selectAll(".bar")
-        .data(vis.histogramData);
-
-    // Enter new bars
-    vis.bars_ufo.enter().append("rect")
-        .attr("class", "bar")
-        .merge(vis.bars_ufo)
-        .transition()
-        .duration(500)
-        .attr("x", d => vis.xScale_ufo(d.ufo_shape))
-        .attr("width", vis.xScale_ufo.bandwidth())
-        .attr("y", d => vis.yScale_ufo(d.frequency))
-        .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.frequency))
-        .style("fill", "#69b3a2");
-
-    // Remove bars that are not needed
-    vis.bars_ufo.exit().remove();
-}
 
     initVisEncounter() {
 
@@ -458,7 +468,7 @@ updateVisUFO(data) {
         const brushed = (event) => {
             if (!event.selection) return;
             var [x0, x1] = event.selection;
-            const selectedBars = vis.bins_enc.filter(d => x0 <= vis.xScale_enc(d.x0) && x1 >= vis.xScale_enc(d.x1));
+            const selectedBars = vis.bins_enc.filter(d => x0 - 10 <= vis.xScale_enc(d.x0) && x1 >= vis.xScale_enc(d.x1));
             vis.selectedData = selectedBars.flatMap(bin => bin.map(d => d));
             vis.bars_enc.classed("selected", d => x0 <= vis.xScale_enc(d.x0) && x1 >= vis.xScale_enc(d.x1));
             vis.bars_enc.filter(".selected").style("fill", "blue");
@@ -489,7 +499,9 @@ updateVisUFO(data) {
     updateVisEncounter(data) {
         let vis = this;
 
+        console.log(data)
         vis.bins_enc = vis.histogram_enc(data)
+
 
         // Update yScale domain based on data
         vis.yScale_enc.domain([0, d3.max(vis.bins_enc, d => d.length)]);
@@ -612,7 +624,7 @@ updateVisUFO(data) {
 
         const brushend = (event) => {
             if (!event.selection) return;
-            vis.data = vis.selectedData
+
             vis.updateVis(vis.selectedData);
             vis.updateVisEncounter(vis.selectedData);
             vis.updateVisTimeDay(vis.selectedData);
@@ -635,6 +647,19 @@ updateVisUFO(data) {
         let vis = this;
         console.log(data)
 
+        const hourValues = data.map(d => {
+            if (typeof d.date_time != "number") {
+                return parseInt(d.date_time.split(" ")[1].split(":")[0]);
+            }
+            return null;
+        }).filter(d => d !== null);
+
+        // Calculate the minimum and maximum hour values
+        const minHour = d3.min(hourValues);
+        let maxHour = d3.max(hourValues);
+
+        // Update xScale domain based on the min and max hour values
+        vis.xScale_time.domain([minHour, maxHour + 1]);
         vis.bins_time = vis.histogram_time(data)
 
         // Update yScale domain based on data
