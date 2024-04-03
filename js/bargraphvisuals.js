@@ -331,11 +331,6 @@ class BarGraphVisuals {
     updateVisUFO(data) {
         let vis = this;
 
-        var min = d3.min(data, d => d.encounter_length)
-        var max = Math.min(d3.max(data, d => d.encounter_length), 10800)
-        
-        vis.xScale_enc.domain([min, max])
-
         // Calculate frequency of each ufo_shape
         vis.ufoShapeCounts = d3.rollup(data, v => v.length, d => d.ufo_shape);
 
@@ -502,6 +497,10 @@ class BarGraphVisuals {
         console.log(data)
         vis.bins_enc = vis.histogram_enc(data)
 
+        var min = d3.min(data, d => d.encounter_length)
+        var max = Math.min(d3.max(data, d => d.encounter_length), 10800)
+        
+        vis.xScale_enc.domain([min, max])
 
         // Update yScale domain based on data
         vis.yScale_enc.domain([0, d3.max(vis.bins_enc, d => d.length)]);
