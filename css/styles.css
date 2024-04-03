@@ -1,103 +1,145 @@
 /* Main styles for the entire application. */
 
 body {
-   font-family: 'Noto Sans JP', sans-serif;
-   font-size: 20px;
-   padding: 20px;
-   background: #f7f7f7;
- }
+  font-family: 'Noto Sans JP', sans-serif; /* Default font */
+  font-size: 20px;
+  padding: 20px;
+  background: #f7f7f7;
+}
+
+/* Add the following rule to apply monospace font */
+body, h1, h2, h3, h4, h5, h6, p, label, input, select, option, button, span, div {
+  font-family: 'Courier New', Courier, monospace;
+}
 
 header {
-   background-color: #333;
-   color: white;
-   text-align: center;
-   padding: 20px;
-   /* padding-bottom: 20%; */
-   display: flex;
-   flex-direction: column; 
-   justify-content: space-between;
-   align-items: center;
+  background-color: #333;
+  border-style: groove;
+  box-shadow: inset 2px 2px 10px black;
+  border-radius: 30px;
+  color: white;
+  text-align: center;
+  padding: 20px;
 }
 
- label{
-   font-size: 25px;
-   color: whitesmoke;
- }
-
- input{
-   width: 80%;
- }
-#row1{
-   display: grid;
-   grid-template-columns: 1fr 3fr;
-   padding: 10px;
-   height: 100%;
-   width: 100%;
+header h1 {
+  font-size: 36px; /* Increase font size for the main title */
+  margin-bottom: 10px; /* Add some space below the title */
 }
 
-#filter{
-   width: 80%;
+header h2 {
+  font-size: 24px; /* Adjust font size for the subtitle */
 }
 
-#column1{
-   border-style: groove;
-   background-image: url('../images/Screenshot\ 2024-03-23\ at\ 3.31.45\ PM.png');
-   border-radius: 30px;
-   margin: .5em;
-   box-shadow: inset 2px 2px 10px black;
-   text-align: center ;
-   padding: 5px;
+label {
+  font-size: 25px;
+  color: whitesmoke;
 }
 
-#Sub_column1{
-   margin-top: 50%;
-   display: flex;
-   flex-direction: column;
-   justify-content: space-evenly;
+input {
+  width: 80%;
 }
 
-.row{
-   margin-top: 10px;
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
+#row1 {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
 }
+
+#filter {
+  width: 80%;
+}
+
+#column1 {
+  border-style: groove;
+  background-image: url('../images/Screenshot\ 2024-03-23\ at\ 3.31.45\ PM.png');
+  border-radius: 30px;
+  box-shadow: inset 2px 2px 10px black;
+  text-align: center;
+  align-items: center;
+  padding: 5px;
+}
+
+#Sub_column1 {
+  margin-top: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.row {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .col-25 {
-   flex-basis: 45%;
-   margin-top: 6px;
-   margin-left: 5%;
- }
-#map {
-   padding: 50px;
-   height: 66%;
+  flex-basis: 45%;
+  margin-top: 6px;
+  margin-left: 5%;
 }
+
+#map {
+  padding: 50px;
+  height: 79%;
+}
+
 /* Legend */
 .legend {
-    margin: 20px 0;
-    list-style: none;
-    padding: 0;
-  }
-  .legend-btn {
-    display: inline-block;
-    margin: 0 0px 0 20px;
-    cursor: pointer;
-    transition: all ease-in-out 200ms;
-  }
-  .legend-btn:hover.legend-btn.inactive:hover  {
-    opacity: 0.7;
-  }
-  .legend-btn.inactive {
-    opacity: 0.5;
-  }
-  .legend-symbol {
-    width: 12px;
-    height: 12px;
-    margin-right: 3px;
-    display: inline-block;
-  }
-  .legend-btn[ufo_shape="changing"] .legend-symbol {
-    background: #c41d1d;
-  }
+  margin-top: 20px;
+  border-style: groove;
+  box-shadow: inset 2px 2px 10px black;
+  border-radius: 30px;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #f7f7f7; /* Added background color */
+  padding: 10px; /* Added padding */
+  max-width: 1400px; /* Adjusted max width */
+  margin-left: auto; /* Added margin */
+  margin-right: auto; /* Added margin */
+}
+
+.legend-btn {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 10px 20px; /* Adjusted padding */
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff; /* Added background color */
+}
+
+.legend-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.legend-btn.selected {
+  background-color: #ffa7a7;
+}
+
+.legend-btn.selected .legend-symbol {
+  border: 2px solid #333;
+}
+
+.legend-symbol {
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  border-radius: 50%;
+}
+
+.legend-btn[ufo_shape="changing"] .legend-symbol {
+  background: #c41d1d;
+}
+
   .legend-btn[ufo_shape="chevron"] .legend-symbol {
     background: #995f12;
   }
@@ -187,164 +229,158 @@ header {
   .legend-btn[time_day="18:00"] .legend-symbol {
     background: #b04010;
   }
- #toggleBtn {
-   background-color: #04AA6D;
-   color: white;
-   padding: 12px 20px;
-   border: none;
-   border-radius: 4px;
-   cursor: pointer;
-   float: right;
-   margin-right: 35%;
+
+  .button {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
  }
 
-
- .row4btn{
-   display: flex;
-   justify-content: space-evenly;
-   margin-top: 5px;
-   margin-bottom: 5px;
-
+  .button:hover {
+    background-color: #3e8e41; /* Darken the button color on hover */
  }
 
- /* TODO: Add a class attribute to this & other buttons, so that we don't need to duplicate styles? */
-#btnSubmitFilters{
-   background-color: #04AA6D;
-   color: white;
-   padding: 12px 20px;
-   border: none;
-   border-radius: 4px;
-   cursor: pointer;
-   float: right;
-}
- #ClearBtn{
-   background-color: #04AA6D;
-   color: white;
-   padding: 12px 20px;
-   border: none;
-   border-radius: 4px;
-   cursor: pointer;
-   float: right;
-   margin-right: 20%;
+ .button:active {
+    transform: translateY(1px); /* Add a subtle effect on click */
  }
- 
- .col-75 {
-   flex-basis: 75%;
- }
- .col-50{
-   flex: 1;
- }
-
-#column2{
-   border-style: groove;
+/* Toggle button */
+#toggleBtn {
+  float: right;
+  margin-right: 35%;
+  
 }
 
-#map {
-   /* TODO: Delete this once we want to re-implement the map. I (Jeremy) added this to speed up load times while developing the timeline. */
-   visibility: visible;
+/* Submit and Clear buttons */
+.row4btn {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 
-#row2{
-   border-style: groove;
-   height: 100px;
-   display: flex;
-   align-items: center;
+#btnSubmitFilters {
+  float: right;
 }
 
-/* TODO: Add a class attribute to this & other buttons, so that we don't need to duplicate styles? */
+#ClearBtn {
+  float: right;
+  margin-right: 20%;
+}
+
+.col-75 {
+  flex-basis: 75%;
+}
+
+.col-50 {
+  flex: 1;
+}
+
+#column2 {
+  border-style: groove;
+  margin: .5em;
+  box-shadow: inset 2px 2px 10px black;
+  text-align: center;
+  padding: 5px;
+  
+}
+
+#row2 {
+  border-style: groove;
+  border-radius: 30px;
+  margin: .5em;
+  box-shadow: inset 2px 2px 10px black;
+  text-align: center;
+  padding: 5px;
+  border-style: groove;
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+/* Reset timeline button */
 #btnResetTimeline {
-   background-color: #04AA6D;
-   color: white;
-   padding: 12px 20px;
-   border: none;
-   border-radius: 4px;
-   cursor: pointer;
-   /* float: right; */
-   /* margin-right: 65%; */
+  float: right;
+  margin-right: 3%;
+  margin-left: 1%;
 }
 
-/* TODO: Add a class attribute to this & other buttons, so that we don't need to duplicate styles? */
-#resetBtn {
-   background-color: #04AA6D;
-   color: white;
-   padding: 12px 20px;
-   border: none;
-   border-radius: 4px;
-   cursor: pointer;
-   /* float: right; */
-   /* margin-right: 65%; */
+#timeline {
+  margin-left: 20%;
 }
 
+/* Tooltip */
+#tooltip {
+  position: absolute;
+  background: #fff;
+  box-shadow: 3px 3px 3px 0px rgb(92 92 92 / 0.5);
+  border: 1px solid #ddd;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px;
+  min-width: 160px;
+  color: #333;
+}
 
- /* Tooltip */
- /* TODO: Add tooltip styles */
- #tooltip {
-   position: absolute;
-   background: #fff;
-   box-shadow: 3px 3px 3px 0px rgb(92 92 92 / 0.5);
-   border: 1px solid #ddd;
-   font-size: 12px;
-   font-weight: 500;
-   padding: 8px;
-   min-width: 160px;
-   color: #333;
+.tooltip-title {
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
 
- }
- .tooltip-title {
-   color: #000;
-   font-size: 14px;
-   font-weight: 600;
-   text-align: center;
- }
- #tooltip ul {
-   margin: 5px 0 0 0;
-   padding-left: 20px;
-   text-align: left;
- }
+#tooltip ul {
+  margin: 5px 0 0 0;
+  padding-left: 20px;
+  text-align: left;
+}
 
- /* Styles for the information button */
+/* Information button */
 .info-button {
-  position: fixed; /* Fixed position */
-  top: 20px; /* Distance from the top */
-  right: 20px; /* Distance from the right */
-  z-index: 1000; /* Ensure it's above other content */
-  background-color: rgba(255, 255, 255, 0.8); /* Background color */
-  border: 3px solid #ccc; /* Border */
-  border-radius: 50%; /* Rounded shape */
-  width: 40px; /* Button width */
-  height: 40px; /* Button height */
-  display: flex; /* Flex display for centering content */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  cursor: pointer; /* Cursor style */
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 3px solid #ccc;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .info-button i {
-  color: #333; /* Icon color */
-  font-size: 24px; /* Icon size */
+  color: #333;
+  font-size: 24px;
 }
 
-/* Styles for the modal */
+/* Modal */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1001; /* Sit on top of the button */
+  display: none;
+  position: fixed;
+  z-index: 1001;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
-  padding-top: 60px; /* Location of the modal content */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
 }
 
 .modal-content {
   background-color: #fefefe;
-  margin: 5% auto; /* 5% from the top and centered */
+  margin: 5% auto;
   padding: 20px;
   border: 1px solid #888;
-  border-radius: 10px; /* Rounded corners */
-  width: 60%; /* Could be more or less, depending on screen size */
+  border-radius: 10px;
+  width: 60%;
 }
 
 /* Close button */
@@ -362,16 +398,53 @@ header {
   cursor: pointer;
 }
 
-.month-graph{
-   margin-top: 10px;
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
+.month-graph {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.ufo-graph{
-   margin-top: 10px;
-   padding-left: 100px;
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
+
+.ufo-graph {
+  margin-top: 10px;
+  padding-left: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#graphContainer {
+  display: none;
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
+}
+
+#graphContainer .modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 10px;
+  width: 60%;
+}
+
+#graphContainer .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#graphContainer .close:hover,
+#graphContainer .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }

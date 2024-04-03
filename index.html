@@ -38,117 +38,132 @@
    <div id ="mainContent">
       <div id="row1">
          <div id="column1">
-            
             <h2>Let's Filter Out</h2>
-
+        
             <form id="Sub_column1">
-               <div class="row">
-                  <div class="col-25">
-                     <label for="filter">Select Attribute:</label>
-                  </div>
-
-                  <div class="col-75">
-                  
-                     <select id="filter">
-                        <option value="month">Month</option>
-                        <option value="year">Year</option>
-                        <option value="ufo_shape">UFO Shape</option>
-                        <option value="time_day">Time of Day</option>
-                        <option value="country">Country</option>                
-                        <option value="city_area">City Area</option>
-                        <option value="state">State</option>
-                        <option value="country">Country</option>
-                        <option value="encounter_length">Encounter Length</option>
-                        <option value="described_encounter_length">Described Encounter Length</option>
-                        <option value="description">Description</option>
-                        <option value="date_documented">Date Documented</option>
-                        <option value="latitude">Latitude</option>
-                        <option value="longitude">Longitude</option>
-                     </select>
-                  </div>
-
-               </div>
-
-               <div class="row">
-                  <div class="col-75">
-                     <input id="txtWordSearch" placeholder="Search for a Word(s)"/>
-                  </div>
-                  <div class="col-25">
-                     <button id="ClearBtn" type="button">Clear</button>
-                  </div>
-               </div>
-
-               <div class="row">
-                  <div class="col-25">
-                     <label for="toggleBtn" > Switch View: </label>
-                  </div>
-                  <div class="col-75">
-                     <button type='button' id="toggleBtn" >Toggle Map</button>
-                  </div>
-               </div>
-
-               <div class="row4btn">
-                  <div class="col-50">
-                     <button id="btnSubmitFilters" type="button"> Submit</button>
-                  </div>
-                  <div class="col-50">
-                     <button id="resetBtn"> Reset </button>
-                  </div>
-               </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="filter">Select Attribute:</label>
+                    </div>
+        
+                    <div class="col-75">
+                        <select id="filter">
+                            <option value="month">Month</option>
+                            <option value="year">Year</option>
+                            <option value="ufo_shape">UFO Shape</option>
+                            <option value="time_day">Time of Day</option>
+                            <option value="country">Country</option>
+                            <option value="city_area">City Area</option>
+                            <option value="state">State</option>
+                            <option value="country">Country</option>
+                            <option value="encounter_length">Encounter Length</option>
+                            <option value="described_encounter_length">Described Encounter Length</option>
+                            <option value="description">Description</option>
+                            <option value="date_documented">Date Documented</option>
+                            <option value="latitude">Latitude</option>
+                            <option value="longitude">Longitude</option>
+                        </select>
+                    </div>
+                </div>
+        
+                <div class="row">
+                    <div class="col-75">
+                        <input id="txtWordSearch" placeholder="Search for a Word(s)"/>
+                    </div>
+                    <div class="col-25">
+                        <button class="button" id="ClearBtn" type="button">Clear</button>
+                    </div>
+                </div>
+        
+                <div class="row">
+                    <div class="col-25">
+                        <label for="toggleBtn" >Switch View:</label>
+                    </div>
+                    <div class="col-75">
+                        <button class="button" type='button' id="toggleBtn">Toggle Map</button>
+                    </div>
+                </div>
+        
+                <div class="row4btn">
+                    <div class="col-50">
+                        <button class="button" id="btnSubmitFilters" type="button">Submit</button>
+                    </div>
+                    <div class="col-50">
+                        <button class="button" id="resetBtn" type="button">Reset</button>
+                    </div>
+                </div>
             </form>
-         </div>
+        </div>
 
          <div id="column2">
             <div id="map"></div>
-            <div>
-                   <ul class="legend">
-                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="changing"><span class="legend-symbol"></span> Changing</li>
-                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="chevron"><span class="legend-symbol"></span> Chevron</li>
-                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="cigar"><span class="legend-symbol"></span>  Cigar</li>
-                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="circle"><span class="legend-symbol"></span> Circle</li>
-                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="cylinder"><span class="legend-symbol"></span> Cylinder</li>
-                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="diamond"><span class="legend-symbol"></span> Diamond</li>
-                       <li style="display: none" class="legend-btn ufo_shape" ufo_shape="disk"><span class="legend-symbol"></span> Disk</li>
-                       <li style="display: none" class="legend-btn month" month="1"><span class="legend-symbol"></span> January</li>
-                       <li style="display: none" class="legend-btn month" month="2"><span class="legend-symbol"></span> February</li>
-                       <li style="display: none" class="legend-btn month" month="3"><span class="legend-symbol"></span> March</li>
-                       <li style="display: none" class="legend-btn month" month="4"><span class="legend-symbol"></span> April</li>
-                       <li style="display: none" class="legend-btn month" month="5"><span class="legend-symbol"></span> May</li>
-                       <li style="display: none" class="legend-btn month" month="6"><span class="legend-symbol"></span> June</li>
-                       <li style="display: none" class="legend-btn month" month="7"><span class="legend-symbol"></span> July</li>
-                       <li style="display: none" class="legend-btn month" month="8"><span class="legend-symbol"></span> August</li>
-                       <li style="display: none" class="legend-btn month" month="9"><span class="legend-symbol"></span> September</li>
-                       <li style="display: none" class="legend-btn month" month="10"><span class="legend-symbol"></span> October</li>
-                       <li style="display: none" class="legend-btn month" month="11"><span class="legend-symbol"></span> November</li>
-                       <li style="display: none" class="legend-btn month" month="12"><span class="legend-symbol"></span> December</li>
-                       <li style="display: none" class="legend-btn year" year="1950"><span class="legend-symbol"></span> 1950s</li>
-                       <li style="display: none" class="legend-btn year" year="1960"><span class="legend-symbol"></span> 1960s</li>
-                       <li style="display: none" class="legend-btn year" year="1970"><span class="legend-symbol"></span> 1970s</li>
-                       <li style="display: none" class="legend-btn year" year="1980"><span class="legend-symbol"></span> 1980s</li>
-                       <li style="display: none" class="legend-btn year" year="1990"><span class="legend-symbol"></span> 1990s</li>
-                       <li style="display: none" class="legend-btn year" year="2000"><span class="legend-symbol"></span> 2000s</li>
-                       <li style="display: none" class="legend-btn year" year="2010"><span class="legend-symbol"></span> 2010s</li>
-                       <li style="display: none" class="legend-btn time_day" time_day="6:00"><span class="legend-symbol"></span> Morning</li>
-                       <li style="display: none" class="legend-btn time_day" time_day="12:00"><span class="legend-symbol"></span> Afternoon</li>
-                       <li style="display: none" class="legend-btn time_day" time_day="18:00"><span class="legend-symbol"></span> Evening</li>
-                       <li style="display: none" class="legend-btn time_day" time_day="0:00"><span class="legend-symbol"></span> Night</li>
-                   </ul>
-            </div>
-         </div>
-         <div id="tooltip"></div>
+         </div> 
+      <div id="tooltip"></div>
       </div> <!-- row1 div -->
+         <div id="legend" >
+               <h2 style="text-align: center; margin-bottom: -20px; margin-top: -15px;">Legend</h2>
+               <ul class="legend">
+                   <li style="display: none" class="legend-btn ufo_shape" ufo_shape="changing"><span class="legend-symbol"></span> Changing</li>
+                   <li style="display: none" class="legend-btn ufo_shape" ufo_shape="chevron"><span class="legend-symbol"></span> Chevron</li>
+                   <li style="display: none" class="legend-btn ufo_shape" ufo_shape="cigar"><span class="legend-symbol"></span>  Cigar</li>
+                   <li style="display: none" class="legend-btn ufo_shape" ufo_shape="circle"><span class="legend-symbol"></span> Circle</li>
+                   <li style="display: none" class="legend-btn ufo_shape" ufo_shape="cylinder"><span class="legend-symbol"></span> Cylinder</li>
+                   <li style="display: none" class="legend-btn ufo_shape" ufo_shape="diamond"><span class="legend-symbol"></span> Diamond</li>
+                   <li style="display: none" class="legend-btn ufo_shape" ufo_shape="disk"><span class="legend-symbol"></span> Disk</li>
+                   <li style="display: none" class="legend-btn month" month="1"><span class="legend-symbol"></span> January</li>
+                   <li style="display: none" class="legend-btn month" month="2"><span class="legend-symbol"></span> February</li>
+                   <li style="display: none" class="legend-btn month" month="3"><span class="legend-symbol"></span> March</li>
+                   <li style="display: none" class="legend-btn month" month="4"><span class="legend-symbol"></span> April</li>
+                   <li style="display: none" class="legend-btn month" month="5"><span class="legend-symbol"></span> May</li>
+                   <li style="display: none" class="legend-btn month" month="6"><span class="legend-symbol"></span> June</li>
+                   <li style="display: none" class="legend-btn month" month="7"><span class="legend-symbol"></span> July</li>
+                   <li style="display: none" class="legend-btn month" month="8"><span class="legend-symbol"></span> August</li>
+                   <li style="display: none" class="legend-btn month" month="9"><span class="legend-symbol"></span> September</li>
+                   <li style="display: none" class="legend-btn month" month="10"><span class="legend-symbol"></span> October</li>
+                   <li style="display: none" class="legend-btn month" month="11"><span class="legend-symbol"></span> November</li>
+                   <li style="display: none" class="legend-btn month" month="12"><span class="legend-symbol"></span> December</li>
+                   <li style="display: none" class="legend-btn year" year="1950"><span class="legend-symbol"></span> 1950s</li>
+                   <li style="display: none" class="legend-btn year" year="1960"><span class="legend-symbol"></span> 1960s</li>
+                   <li style="display: none" class="legend-btn year" year="1970"><span class="legend-symbol"></span> 1970s</li>
+                   <li style="display: none" class="legend-btn year" year="1980"><span class="legend-symbol"></span> 1980s</li>
+                   <li style="display: none" class="legend-btn year" year="1990"><span class="legend-symbol"></span> 1990s</li>
+                   <li style="display: none" class="legend-btn year" year="2000"><span class="legend-symbol"></span> 2000s</li>
+                   <li style="display: none" class="legend-btn year" year="2010"><span class="legend-symbol"></span> 2010s</li>
+                   <li style="display: none" class="legend-btn time_day" time_day="6:00"><span class="legend-symbol"></span> Morning</li>
+                   <li style="display: none" class="legend-btn time_day" time_day="12:00"><span class="legend-symbol"></span> Afternoon</li>
+                   <li style="display: none" class="legend-btn time_day" time_day="18:00"><span class="legend-symbol"></span> Evening</li>
+                   <li style="display: none" class="legend-btn time_day" time_day="0:00"><span class="legend-symbol"></span> Night</li>
+               </ul> 
+      </div>
+   
+      
       
       <div id ="row2">
          <svg id="timeline"></svg>
-         <button id="btnResetTimeline" type="button">Reset</button>
+         <button class ="button" id="btnResetTimeline" type="button">Reset</button>
+         <button class="button" id="showGraphsBtn" type="button">Show Graphs</button>
+         <div id="graphContainer" class="modal">
+            <div class="modal-content">
+               <span class="close" onclick="closeGraphs()">&times;</span>
+               <div id="graphs" style="display: flex; flex-wrap: wrap;">
+                  <div style="flex: 1; margin-right: 10px;">
+                     <div id="month-graph"></div>
+                  </div>
+                  <div style="flex: 1; margin-right: 10px;">
+                     <div id="ufo-shape-graph"></div>
+                  </div>
+                  <div style="flex: 1; margin-right: 10px;">
+                     <div id="encounter-graph"></div>
+                  </div>
+                  <div style="flex: 1;">
+                     <div id="time-graph"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
 
-      <div id ="graphs">
-         <div id="month-graph"></div>
-         <div id="ufo-shape-graph"></div>
-         <div id="encounter-graph"></div>
-         <div id="time-graph"></div>
-      </div>
+      
    </div>   <!-- mainContent div -->
 
    <!--
@@ -178,5 +193,31 @@
           modal.style.display = "none";
       }
   </script>
+  <script>
+   // Function to open the graph container
+   function openGraphs() {
+      var graphContainer = document.getElementById("graphContainer");
+      graphContainer.style.display = "block";
+   }
+
+   // Function to close the graph container
+   function closeGraphs() {
+      var graphContainer = document.getElementById("graphContainer");
+      graphContainer.style.display = "none";
+   }
+
+   // Add click event listener to the button
+   var showGraphsBtn = document.getElementById("showGraphsBtn");
+   showGraphsBtn.addEventListener("click", openGraphs);
+</script>
+<script>
+   // Add click event listener to each legend button
+   var legendBtns = document.querySelectorAll('.legend-btn');
+   legendBtns.forEach(function(btn) {
+     btn.addEventListener('click', function() {
+       this.classList.toggle('selected');
+     });
+   });
+</script>
 </body>
 </html>
