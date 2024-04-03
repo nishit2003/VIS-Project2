@@ -51,6 +51,23 @@ class LeafletMap {
         L.svg({clickable:true}).addTo(vis.theMap)   // we have to make the svg layer clickable
         vis.overlay = d3.select(vis.theMap.getPanes().overlayPane)
         vis.svg = vis.overlay.select('svg').attr("pointer-events", "auto")
+        
+        // Add a group for brushing
+        vis.brushGroup = vis.svg.append("g").attr("class", "brush");
+
+        // Bring the brush layer to the front
+        //vis.brushGroup.bringToFront();
+
+        // Select the overlay pane and its SVG child
+        //const overlayPane = vis.theMap.getPanes().overlayPane;
+        //const svg = overlayPane.querySelector('svg');
+
+        // Append the brush group as the last child of the SVG
+        //vis.svg.appendChild(vis.brushGroup.node());
+        vis.brushGroup.raise();
+
+        // Now we call a method which initializes the leaflet map brush
+        this.initializeMapBrush();
 
         // handler here for updating the map, as you zoom in and out           
         vis.theMap.on("zoomend", function() {
@@ -115,11 +132,6 @@ class LeafletMap {
                     .attr('r', 3)     // change radius
                 d3.select('#tooltip').style('opacity', 0);  // turn off the tooltip
             });
-
-        // handler here for updating the map, as you zoom in and out           
-        vis.theMap.on("zoomend", function() {
-            vis.updateVis();
-        });
 
         // Enter new dots
         vis.Dots.enter()
@@ -246,5 +258,84 @@ class LeafletMap {
         vis.overlay = d3.select(vis.theMap.getPanes().overlayPane)
         vis.svg = vis.overlay.select('svg').attr("pointer-events", "auto")
         vis.updateVis(); // Update the data visualization
+    }
+
+    initializeMapBrush() {
+        let vis = this;
+
+        // Define the brushing function
+        function brushed(event) {
+            if (!DataStore.brushingLeaflepMap) { return; }  // Check if brushing is enabled
+
+            const selection = event.selection;
+            if (selection) {
+                // Convert pixel coordinates to LatLng coordinates
+                const bounds = [
+                    vis.theMap.containerPointToLatLng([selection[0][0], selection[0][1]]),
+                    vis.theMap.containerPointToLatLng([selection[1][0], selection[1][1]])
+                ];
+
+                // Filter data points based on selection bounds
+                DataStore.filteredData = vis.data.filter(d => {
+                    const latLngBounds = L.latLngBounds(bounds[0], bounds[1]);  // Create LatLngBounds from brush selection bounds
+                    const latLng = L.latLng(d.latitude, d.longitude);   // Create LatLng object from data point coordinates
+                    return latLngBounds.contains(latLng);   // Check if LatLngBounds contains the LatLng object
+                });
+
+                vis.updateVis();    // update the leaflet map
+            }
+        }
+
+        // Create a brush only if brushing is enabled
+        if (DataStore.brushingLeaflepMap) {
+            // Create a brush
+            vis.brush = d3.brush()
+                .extent([[0, 0], [vis.theMap.getSize().x, vis.theMap.getSize().y]])
+                .on("start brush", brushed);
+
+            // Call the brush
+            vis.brushGroup.call(vis.brush);
+        }
+        else {
+            this.clearMapBrush();   // this path is called when checkbox is unchecked
+        }
+    }
+
+    // Method to clear/remove brushGroup, brush, and selection
+    clearMapBrush() {
+        // Remove the brush
+        if (this.brush) {
+            this.brushGroup.call(this.brush.move, null);
+            this.brushGroup.selectAll('*').remove(); // Remove all elements inside brushGroup
+            this.brush = null;
+        }
+
+        // TODO: These calls may need to be moved/adjusted:
+        DataStore.filteredData = DataStore.rawData;     // resets filtered data
+        this.updateVis();   // resets the leaflet map
+    }
+
+    disableMapInteraction() {
+        // Disable dragging
+        this.theMap.dragging.disable();
+        
+        // Disable click events
+        this.theMap.doubleClickZoom.disable();
+        this.theMap.scrollWheelZoom.disable();
+        this.theMap.touchZoom.disable();
+        this.theMap.boxZoom.disable();
+        this.theMap.keyboard.disable();
+    }
+
+    enableMapInteraction() {
+        // Enable dragging
+        this.theMap.dragging.enable();
+        
+        // Enable click events
+        this.theMap.doubleClickZoom.enable();
+        this.theMap.scrollWheelZoom.enable();
+        this.theMap.touchZoom.enable();
+        this.theMap.boxZoom.enable();
+        this.theMap.keyboard.enable();
     }
 }
