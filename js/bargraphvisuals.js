@@ -123,19 +123,19 @@ class BarGraphVisuals {
             if (!event.selection) return;
             var [x0, x1] = event.selection;
             const selectedBars = vis.bins_month.filter(d => x0 <= vis.xScale_month(d.x0) && x1 >= vis.xScale_month(d.x1));
-            const selectedData = selectedBars.flatMap(bin => bin.map(d => d));
+            vis.selectedData = selectedBars.flatMap(bin => bin.map(d => d));
             vis.bars_month.classed("selected", d => x0 <= vis.xScale_month(d.x0) && x1 >= vis.xScale_month(d.x1));
             vis.bars_month.filter(".selected").style("fill", "blue");
             vis.bars_month.filter(":not(.selected)").style("fill", "#69b3a2");
-            vis.data = selectedData
         }
 
         const brushend = (event) => {
             if (!event.selection) return;
-            vis.updateVis();
-            vis.updateVisEncounter();
-            vis.updateVisTimeDay();
-            vis.updateVisUFO();
+            vis.data = vis.selectedData
+            vis.updateVis(vis.selectedData);
+            vis.updateVisEncounter(vis.selectedData);
+            vis.updateVisTimeDay(vis.selectedData);
+            vis.updateVisUFO(vis.selectedData);
         }
 
         // Append brush
@@ -163,10 +163,10 @@ class BarGraphVisuals {
 
     }
 
-    updateVis() {
+    updateVis(data) {
         let vis = this;
 
-        vis.bins_month = vis.histogram_month(vis.data)
+        vis.bins_month = vis.histogram_month(data)
 
         // Update yScale domain based on data
         vis.yScale_month.domain([0, d3.max(vis.bins_month, d => d.length)]);
@@ -265,6 +265,46 @@ initVisUFO() {
         frequency: d.Value
     }));
 
+    const brushed = (event) => {
+        if (!event.selection) return;
+        var [x0, x1] = event.selection;
+        
+        // Filter bars within the brushed area
+        const selectedBars = vis.histogramData.filter(d => {
+            const barX = vis.xScale_ufo(d.ufo_shape);
+            return barX >= x0 && barX <= x1;
+        });
+
+        vis.svg_ufo.selectAll(".bar").classed("selected", d => selectedBars.includes(d));
+        vis.svg_ufo.selectAll(".bar").filter(".selected").style("fill", "blue");
+        vis.svg_ufo.selectAll(".bar").filter(":not(.selected)").style("fill", "#69b3a2");
+
+        // Filter data points within the brushed area
+        vis.selectedData = vis.data.filter(d => {
+            const barX = vis.xScale_ufo(d.ufo_shape);
+            return barX >= x0 && barX <= x1;
+        });
+    }
+
+    const brushend = (event) => {
+        if (!event.selection) return;
+        vis.data = vis.selectedData
+        vis.updateVis(vis.selectedData);
+        vis.updateVisEncounter(vis.selectedData);
+        vis.updateVisTimeDay(vis.selectedData);
+        vis.updateVisUFO(vis.selectedData);
+    }
+
+    // Append brush
+    vis.brush_ufo = d3.brushX()
+    .extent([[0, 0], [vis.width_ufo, vis.height_ufo]])
+    .on("start brush", brushed)
+    .on("end", brushend);
+
+    vis.svg_ufo.append("g")
+    .attr("class", "brush")
+    .call(vis.brush_ufo);
+
     // Draw histogram bars
     vis.svg_ufo.selectAll(".bar")
         .data(vis.histogramData)
@@ -277,11 +317,11 @@ initVisUFO() {
         .style("fill", "#69b3a2");
 }
 
-updateVisUFO() {
+updateVisUFO(data) {
     let vis = this;
 
     // Calculate frequency of each ufo_shape
-    vis.ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
+    vis.ufoShapeCounts = d3.rollup(data, v => v.length, d => d.ufo_shape);
 
     // Convert the rollup map to an array of objects
     vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
@@ -305,14 +345,14 @@ updateVisUFO() {
         .call(vis.yAxis_ufo);
 
     // Convert ufoShapes to histogram bins
-    const histogramData = vis.ufoShapes.map(d => ({
+    vis.histogramData = vis.ufoShapes.map(d => ({
         ufo_shape: d.ufo_shape,
         frequency: d.Value
     }));
 
     // Update existing bars
     vis.bars_ufo = vis.svg_ufo.selectAll(".bar")
-        .data(histogramData);
+        .data(vis.histogramData);
 
     // Enter new bars
     vis.bars_ufo.enter().append("rect")
@@ -415,12 +455,41 @@ updateVisUFO() {
         .attr("height", d => vis.height_enc - vis.yScale_enc(d.length))
         .style("fill", "#69b3a2");
 
+        const brushed = (event) => {
+            if (!event.selection) return;
+            var [x0, x1] = event.selection;
+            const selectedBars = vis.bins_enc.filter(d => x0 <= vis.xScale_enc(d.x0) && x1 >= vis.xScale_enc(d.x1));
+            vis.selectedData = selectedBars.flatMap(bin => bin.map(d => d));
+            vis.bars_enc.classed("selected", d => x0 <= vis.xScale_enc(d.x0) && x1 >= vis.xScale_enc(d.x1));
+            vis.bars_enc.filter(".selected").style("fill", "blue");
+            vis.bars_enc.filter(":not(.selected)").style("fill", "#69b3a2");
+        }
+
+        const brushend = (event) => {
+            if (!event.selection) return;
+            vis.data = vis.selectedData
+            vis.updateVis(vis.selectedData);
+            vis.updateVisEncounter(vis.selectedData);
+            vis.updateVisTimeDay(vis.selectedData);
+            vis.updateVisUFO(vis.selectedData);
+        }
+
+        // Append brush
+        vis.brush_enc = d3.brushX()
+        .extent([[0, 0], [vis.width_enc, vis.height_enc]])
+        .on("start brush", brushed)
+        .on("end", brushend);
+
+        vis.svg_enc.append("g")
+        .attr("class", "brush")
+        .call(vis.brush_enc);
+
     }
 
-    updateVisEncounter() {
+    updateVisEncounter(data) {
         let vis = this;
 
-        vis.bins_enc = vis.histogram_enc(vis.data)
+        vis.bins_enc = vis.histogram_enc(data)
 
         // Update yScale domain based on data
         vis.yScale_enc.domain([0, d3.max(vis.bins_enc, d => d.length)]);
@@ -531,12 +600,42 @@ updateVisUFO() {
         .attr("height", d => vis.height_time - vis.yScale_time(d.length))
         .style("fill", "#69b3a2");
 
+        const brushed = (event) => {
+            if (!event.selection) return;
+            var [x0, x1] = event.selection;
+            const selectedBars = vis.bins_time.filter(d => x0 <= vis.xScale_time(d.x0) && x1 >= vis.xScale_time(d.x1));
+            vis.selectedData = selectedBars.flatMap(bin => bin.map(d => d));
+            vis.bars_time.classed("selected", d => x0 <= vis.xScale_time(d.x0) && x1 >= vis.xScale_time(d.x1));
+            vis.bars_time.filter(".selected").style("fill", "blue");
+            vis.bars_time.filter(":not(.selected)").style("fill", "#69b3a2");
+        }
+
+        const brushend = (event) => {
+            if (!event.selection) return;
+            vis.data = vis.selectedData
+            vis.updateVis(vis.selectedData);
+            vis.updateVisEncounter(vis.selectedData);
+            vis.updateVisTimeDay(vis.selectedData);
+            vis.updateVisUFO(vis.selectedData);
+        }
+
+        // Append brush
+        vis.brush_time = d3.brushX()
+        .extent([[0, 0], [vis.width_time, vis.height_time]])
+        .on("start brush", brushed)
+        .on("end", brushend);
+
+        vis.svg_time.append("g")
+        .attr("class", "brush")
+        .call(vis.brush_time);
+
     }
 
-    updateVisTimeDay() {
+    updateVisTimeDay(data) {
         let vis = this;
+        console.log(data)
 
-        vis.bins_time = vis.histogram_time(vis.data)
+        vis.bins_time = vis.histogram_time(data)
 
         // Update yScale domain based on data
         vis.yScale_time.domain([0, d3.max(vis.bins_time, d => d.length)]);
