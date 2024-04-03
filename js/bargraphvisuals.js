@@ -75,7 +75,7 @@ class BarGraphVisuals {
         // Create histogram layout
         vis.histogram_month = d3.histogram()
         .value(d => {
-            if (typeof d.date_time != "number") {
+            if (d.date_time.length > 6) {
                 return d.date_time.split(" ")[0].split("/")[0]}
             })
         .domain(vis.xScale_month.domain())
@@ -100,22 +100,24 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_month.append('text')
-            .attr('y', vis.height_month + 25)
+            .attr('y', vis.height_month + 35)
             .attr('x', vis.width_month)
             .attr('dy', '.71em')
             .style('text-anchor', 'end')
+            .attr('font-size', '16px')
             .text("Month");
 
         vis.svg_month.append('text')
-            .attr('x', -80)
-            .attr('y', -5)
+            .attr('x', -65)
+            .attr('y', -20)
+            .attr('font-size', '16px')
             .attr('dy', '.71em')
             .text("Frequency");
 
         vis.svg_month.append('text')
             .attr('x', vis.width_month/5)
             .attr('y', -40)
-            .attr('font-size', "px")
+            .attr('font-size', "16px")
             .attr('dy', '.71em')
             .text(`Months Histogram`);
 
@@ -169,11 +171,11 @@ class BarGraphVisuals {
         vis.bins_month = vis.histogram_month(data)
 
         var min = d3.min(data, d => {
-            if (typeof d.date_time != "number") {
+            if (d.date_time.length > 6) {
                 return Number(d.date_time.split(" ")[0].split("/")[0])}
             })
         var max = (d3.max(data, d => {
-            if (typeof d.date_time != "number") {
+            if (d.date_time.length > 6) {
                 return Number(d.date_time.split(" ")[0].split("/")[0])}
             }))
 
@@ -242,7 +244,10 @@ class BarGraphVisuals {
         vis.svg_ufo.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0, ${vis.height_ufo})`) // Corrected translation
-            .call(vis.xAxis_ufo);
+            .call(vis.xAxis_ufo)
+            .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end");;
 
         // Append Y axis
         vis.svg_ufo.append("g")
@@ -251,22 +256,24 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_ufo.append('text')
-            .attr('y', vis.height_ufo + 25)
+            .attr('y', vis.height_ufo + 35)
             .attr('x', vis.width_ufo)
             .attr('dy', '.71em')
             .style('text-anchor', 'end')
-            .text("Shape");
+            .attr('font-size', '16px')
+            .text("Shapes");
 
         vis.svg_ufo.append('text')
-            .attr('x', -80)
-            .attr('y', -5)
+            .attr('x', -65)
+            .attr('y', -20)
+            .attr('font-size', '16px')
             .attr('dy', '.71em')
             .text("Frequency");
 
         vis.svg_ufo.append('text')
             .attr('x', vis.width_ufo / 5)
             .attr('y', -40)
-            .attr('font-size', "px")
+            .attr('font-size', "16px")
             .attr('dy', '.71em')
             .text(`UFO Shape Histogram`);
 
@@ -419,7 +426,10 @@ class BarGraphVisuals {
         vis.svg_enc.append("g")
         .attr("class", "x-axis")
         .attr("transform", `translate(0, ${vis.height_enc})`)
-        .call(vis.xAxis_enc);
+        .call(vis.xAxis_enc)
+        .selectAll("text")
+        .attr("transform", "translate(-10,0)rotate(-45)")
+        .style("text-anchor", "end");
 
         // Append Y axis
         vis.svg_enc.append("g")
@@ -428,22 +438,24 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_enc.append('text')
-            .attr('y', vis.height_enc + 25)
+            .attr('y', vis.height_enc + 35)
             .attr('x', vis.width_enc)
             .attr('dy', '.71em')
             .style('text-anchor', 'end')
+            .attr('font-size', '16px')
             .text("Seconds");
 
         vis.svg_enc.append('text')
-            .attr('x', -80)
-            .attr('y', -5)
+            .attr('x', -65)
+            .attr('y', -20)
+            .attr('font-size', '16px')
             .attr('dy', '.71em')
             .text("Frequency");
 
         vis.svg_enc.append('text')
             .attr('x', vis.width_enc/5)
             .attr('y', -40)
-            .attr('font-size', "px")
+            .attr('font-size', "16px")
             .attr('dy', '.71em')
             .text(`Encounter Length Histogram`);
 
@@ -554,7 +566,7 @@ class BarGraphVisuals {
         // Create histogram layout
         vis.histogram_time = d3.histogram()
         .value(d => {
-            if (typeof d.date_time != "number") {
+            if (d.date_time.length > 6) {
                 return d.date_time.split(" ")[1].split(":")[0]}
             })
         .domain(vis.xScale_time.domain())
@@ -579,22 +591,24 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_time.append('text')
-            .attr('y', vis.height_time + 25)
+            .attr('y', vis.height_time + 35)
             .attr('x', vis.width_time)
             .attr('dy', '.71em')
             .style('text-anchor', 'end')
-            .text("Hour of day");
+            .attr('font-size', '16px')
+            .text("Hour of Day");
 
         vis.svg_time.append('text')
-            .attr('x', -80)
-            .attr('y', -5)
+            .attr('x', -65)
+            .attr('y', -20)
+            .attr('font-size', '16px')
             .attr('dy', '.71em')
             .text("Frequency");
 
         vis.svg_time.append('text')
-            .attr('x', vis.width_time/5)
+            .attr('x', vis.width_enc/5)
             .attr('y', -40)
-            .attr('font-size', "px")
+            .attr('font-size', "16px")
             .attr('dy', '.71em')
             .text(`Hour Histogram`);
 
@@ -647,7 +661,7 @@ class BarGraphVisuals {
         console.log(data)
 
         const hourValues = data.map(d => {
-            if (typeof d.date_time != "number") {
+            if (d.date_time.length > 6) {
                 return parseInt(d.date_time.split(" ")[1].split(":")[0]);
             }
             return null;

@@ -86,7 +86,7 @@ async function main() {
         }
         else if (leafletMap.filter == 'month') {
             leafletMap.data = DataStore.filteredData.filter(d => {
-                if (typeof d.date_time != "number") {
+                if (d.date_time.length > 6) {
                     var month = d.date_time.split(" ")[0].split("/")[0]
                     if (Number(month) == 1 && selectedStatus.includes(month)) {return true}
                     else if (Number(month) == 2 && selectedStatus.includes(month)) {return true}
