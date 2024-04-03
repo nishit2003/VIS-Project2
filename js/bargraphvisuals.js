@@ -132,7 +132,6 @@ class BarGraphVisuals {
 
         const brushend = (event) => {
             if (!event.selection) return;
-            vis.bins_month = vis.histogram_month(vis.data)
             vis.updateVis();
             vis.updateVisEncounter();
             vis.updateVisTimeDay();
@@ -167,6 +166,9 @@ class BarGraphVisuals {
     updateVis() {
         let vis = this;
 
+        vis.bins_month = vis.histogram_month(vis.data)
+
+        vis.xScale_month.domain([5, 7])
         // Update yScale domain based on data
         vis.yScale_month.domain([0, d3.max(vis.bins_month, d => d.length)]);
 
@@ -323,7 +325,6 @@ class BarGraphVisuals {
         // set the dimensions and margins of the graph
         vis.width_enc = vis.config_encounter.containerWidth - vis.config_encounter.margin.left - vis.config_encounter.margin.right;
         vis.height_enc = vis.config_encounter.containerHeight - vis.config_encounter.margin.top - vis.config_encounter.margin.bottom;
-
 
         // Create SVG
         vis.svg_enc = d3.select(vis.config_encounter.parentElement)
