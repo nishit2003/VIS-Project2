@@ -15,7 +15,7 @@ async function main() {
     timeline.initVis();
 
     // next we can generate the leaflet map
-    leafletMap = new LeafletMap({ parentElement: '#map'}, DataStore.filteredData, "", "topo");
+    leafletMap = new LeafletMap({ parentElement: '#map'}, DataStore.filteredData, "month", "topo");
     leafletMap.updateVis();
 
     // next we can generate the leaflet map
