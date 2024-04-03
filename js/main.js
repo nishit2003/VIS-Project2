@@ -1,6 +1,6 @@
 /* This script will act as the main "runner" of the entire application. */
 // some script-level (global) variables
-let leafletMap, timeline, barGraphVisuals, graph;
+let leafletMap, timeline, barGraphs;
 //let btnSubmitFilters = document.getElementById("#btnSubmitFilters"); // the submit button for changing active on the map
 //let btnResetTimeline = document.getElementById("#btnResetTimeline"); // the submit button for resetting the timeline selection
 
@@ -19,20 +19,31 @@ async function main() {
     leafletMap.updateVis();
 
     // next we can generate the leaflet map
-    barGraphs = new BarGraphVisuals({ parentElement: '#month-graph'}, { parentElement: '#ufo-shape-graph'}, { parentElement: '#encounter-graph'}, { parentElement: '#time-graph'}, DataStore.filteredData);
+    barGraphs = new BarGraphVisuals({ parentElement: '#month-graph'}, { parentElement: '#ufo-shape-graph'}, { parentElement: '#encounter-graph'}, { parentElement: '#time-graph'}, DataStore.filteredData, leafletMap);
 
-    document.getElementById("btnResetGraphs").addEventListener("click", function() {
-        barGraphs.updateVis(DataStore.filteredData)
-        barGraphs.updateVisUFO(DataStore.filteredData)
-        barGraphs.updateVisEncounter(DataStore.filteredData)
-        barGraphs.updateVisTimeDay(DataStore.filteredData)
+    const updateAllData = (data) => {
+        barGraphs.updateVis(data)
+        barGraphs.updateVisUFO(data)
+        barGraphs.updateVisEncounter(data)
+        barGraphs.updateVisTimeDay(data)
+        leafletMap.data = data
+        leafletMap.updateVis()     
+    }
+    document.getElementById("resetBtn").addEventListener("click", function() {
+        d3.selectAll(".legend-btn").each(function() {
+            console.log(d3.select(this).attr("class"));
+            if (d3.select(this).classed("inactive")) {
+                d3.select(this).style("opacity, 1")
+                d3.select(this).classed("inactive", false);
+            }
+        });
+        updateAllData(DataStore.filteredData)
     })
 
     // Submit button to apply filters
     document.getElementById("btnSubmitFilters").addEventListener("click", function() {
         // Change colors of dots
         var filter = document.getElementById("filter").value;
-        leafletMap.data = DataStore.filteredData
         leafletMap.filter = filter;
         leafletMap.updateVis();
 
@@ -105,7 +116,7 @@ async function main() {
         }
         else if (leafletMap.filter == 'time_day') {
             leafletMap.data = DataStore.filteredData.filter(d => {
-                if (typeof d.date_time != "number") {
+                if (d.date_time.length > 6) {
                     var hour = d.date_time.split(" ")[1].split(":")[0]
                     if ((Number(hour) <= 5 || Number(hour) >= 22) && selectedStatus.includes("0:00")) {return true}
                     else if ((Number(hour) >= 6 && Number(hour) <= 10) && selectedStatus.includes("6:00")) {return true}
@@ -115,8 +126,7 @@ async function main() {
         }
     });
       // Filter data accordingly and update vis
-
-      leafletMap.updateVis();
+      updateAllData(leafletMap.data)
     });
     
     // TODO: next we can initialize and connect callbacks/listeners for other features we want to add (timeline, buttons, dropdowns, etc)
@@ -144,8 +154,12 @@ async function main() {
  */
 function updateVisualizations() {
     console.log("called main script updateVisualizations() method"); 
-    leafletMap.data = DataStore.filteredData       // testing
-    leafletMap.updateVis();
+    leafletMap.data = DataStore.filteredData
+    leafletMap.updateVis()       // testing
+    barGraphs.updateVis(leafletMap.data)
+    barGraphs.updateVisUFO(leafletMap.data)
+    barGraphs.updateVisEncounter(leafletMap.data)
+    barGraphs.updateVisTimeDay(leafletMap.data)
     timeline.updateVis();
 
     //console.log("# of data points in rawData:", DataStore.rawData.length);  // testing

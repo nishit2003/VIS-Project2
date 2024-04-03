@@ -363,8 +363,11 @@ header {
 }
 
 .graph-container {
+  padding-top: 20px;
   display: flex;
   flex-direction: row;
+  border: 1px solid #888;
+  border-radius: 10px; /* Rounded corners */
 }
 
 .graph {

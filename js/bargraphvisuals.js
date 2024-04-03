@@ -8,32 +8,32 @@ class BarGraphVisuals {
      * @param {Object}
      * @param {Array}
      */
-    constructor(_config_year, _config_ufo, _config_encounter, _config_time, _data) {
+    constructor(_config_year, _config_ufo, _config_encounter, _config_time, _data, _map) {
         this.config_year = {
         parentElement: _config_year.parentElement,
-        containerWidth: 400,
-        containerHeight: 300,
+        containerWidth: 500,
+        containerHeight: 400,
         margin: _config_year.margin || { top: 50, right: 60, bottom: 50, left: 100 },
         tooltipPadding: _config_year.tooltipPadding || 15,
         };
         this.config_ufo = {
         parentElement: _config_ufo.parentElement,
-        containerWidth: 400,
-        containerHeight: 300,
+        containerWidth: 500,
+        containerHeight: 400,
         margin: _config_ufo.margin || { top: 50, right: 60, bottom: 50, left: 100 },
         tooltipPadding: _config_ufo.tooltipPadding || 15,
         };
         this.config_encounter = {
         parentElement: _config_encounter.parentElement,
-        containerWidth: 400,
-        containerHeight: 300,
+        containerWidth: 500,
+        containerHeight: 400,
         margin: _config_encounter.margin || { top: 50, right: 60, bottom: 50, left: 100 },
         tooltipPadding: _config_encounter.tooltipPadding || 15,
         };
         this.config_time = {
         parentElement: _config_time.parentElement,
-        containerWidth: 400,
-        containerHeight: 300,
+        containerWidth: 500,
+        containerHeight: 400,
         margin: _config_time.margin || { top: 50, right: 60, bottom: 50, left: 100 },
         tooltipPadding: _config_time.tooltipPadding || 15,
         }; 
@@ -43,6 +43,8 @@ class BarGraphVisuals {
         this.initVisUFO()
         this.initVisEncounter()
         this.initVisTimeDay()
+        this.map = _map
+        this.map.data = _data
     }
     
     initVisMonth() {
@@ -133,11 +135,14 @@ class BarGraphVisuals {
 
         const brushend = (event) => {
             if (!event.selection) return;
+            vis.bars_month.filter(".selected").style("fill", "#69b3a2");
             vis.data = vis.selectedData
             vis.updateVis(vis.selectedData);
             vis.updateVisEncounter(vis.selectedData);
             vis.updateVisTimeDay(vis.selectedData);
             vis.updateVisUFO(vis.selectedData);
+            vis.map.data = vis.selectedData
+            vis.map.updateVis()
         }
 
         // Append brush
@@ -306,11 +311,14 @@ class BarGraphVisuals {
 
         const brushend = (event) => {
             if (!event.selection) return;
+            vis.svg_ufo.selectAll(".bar").filter(".selected").style("fill", "#69b3a2");
             vis.data = vis.selectedData
             vis.updateVis(vis.selectedData);
             vis.updateVisEncounter(vis.selectedData);
             vis.updateVisTimeDay(vis.selectedData);
             vis.updateVisUFO(vis.selectedData);
+            vis.map.data = vis.selectedData
+            vis.map.updateVis()
         }
 
         // Append brush
@@ -484,11 +492,14 @@ class BarGraphVisuals {
 
         const brushend = (event) => {
             if (!event.selection) return;
+            vis.bars_enc.filter(".selected").style("fill", "#69b3a2");
             vis.data = vis.selectedData
             vis.updateVis(vis.selectedData);
             vis.updateVisEncounter(vis.selectedData);
             vis.updateVisTimeDay(vis.selectedData);
             vis.updateVisUFO(vis.selectedData);
+            vis.map.data = vis.selectedData
+            vis.map.updateVis()
         }
 
         // Append brush
@@ -637,11 +648,13 @@ class BarGraphVisuals {
 
         const brushend = (event) => {
             if (!event.selection) return;
-
+            vis.bars_time.filter(".selected").style("fill", "#69b3a2");
             vis.updateVis(vis.selectedData);
             vis.updateVisEncounter(vis.selectedData);
             vis.updateVisTimeDay(vis.selectedData);
             vis.updateVisUFO(vis.selectedData);
+            vis.map.data = vis.selectedData
+            vis.map.updateVis()
         }
 
         // Append brush
