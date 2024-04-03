@@ -203,23 +203,23 @@ class BarGraphVisuals {
         .attr('transform', `translate(${vis.config_ufo.margin.left},${vis.config_ufo.margin.top})`);
 
         // Calculate frequency of each ufo_shape
-        let ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
+        vis.ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
 
-        console.log(Array.from(ufoShapeCounts, Value => Value[0] ))
+        console.log(Array.from(vis.ufoShapeCounts, Value => Value[0] ))
 
         // Convert the rollup map to an array of objects
-        let ufoShapes = Array.from(ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
+        vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
 
 
         // X axis
         vis.xScale_ufo = d3.scaleBand()
             .range([0, vis.width_ufo])
-            .domain(ufoShapes.map(d => d.ufo_shape))
+            .domain(vis.ufoShapes.map(d => d.ufo_shape))
             .padding(0.2);
 
         // Add Y axis
         vis.yScale_ufo = d3.scaleLinear()
-            .domain([0, d3.max(ufoShapes, d => d.Value)]) // Adjust domain based on the maximum frequency
+            .domain([0, d3.max(vis.ufoShapes, d => d.Value)]) // Adjust domain based on the maximum frequency
             .range([vis.height_ufo, 0]);
 
         // Initialize axes
@@ -228,7 +228,7 @@ class BarGraphVisuals {
         vis.yAxis_ufo = d3.axisLeft(vis.yScale_ufo)
 
         // Update the domain of y scale with new data
-        vis.yScale_ufo.domain([0, d3.max(ufoShapes, d => d.Value)]);
+        vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
 
         vis.svg_ufo.append("g")
         .attr("class", "x-axis")
@@ -262,35 +262,36 @@ class BarGraphVisuals {
             .text(`UFO Shape Histogram`);
 
 
-        vis.svg_ufo.selectAll(".bar")
-            .data(ufoShapes)
+        vis.bars_ufo = vis.svg_ufo.selectAll(".bar")
+            .data(vis.ufoShapes)
             .enter().append("rect")
+            .attr("class", "bar")
             .attr("x", d => vis.xScale_ufo(d.ufo_shape))
             .attr("y", d => vis.yScale_ufo(d.Value)) // Corrected yScale access
             .attr("width", d => vis.xScale_ufo.bandwidth())
             .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.Value))
             .style("fill", "#69b3a2");
 
-
         console.log(vis.data)
-        console.log(ufoShapes)
+        console.log(vis.ufoShapes)
     }
 
 
     updateVisUFO() {
     let vis = this;
 
+
     // Calculate frequency of each ufo_shape
-    let ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
+    vis.ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
 
     // Convert the rollup map to an array of objects
-    let ufoShapes = Array.from(ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
+    vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
 
     // Update the domain of y scale with new data
-    vis.yScale_ufo.domain([0, d3.max(ufoShapes, d => d.Value)]);
+    vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
 
     // Update the domain of x scale with new data
-    vis.xScale_ufo.domain(ufoShapes.map(d => d.ufo_shape));
+    vis.xScale_ufo.domain(vis.ufoShapes.map(d => d.ufo_shape));
 
     // Update the x-axis
     vis.svg_ufo.select(".x-axis")
@@ -305,13 +306,13 @@ class BarGraphVisuals {
         .call(vis.yAxis_ufo);
 
     // Update existing bars
-    vis.svg_ufo.selectAll(".bar")
-        .data(ufoShapes)
+    vis.bars_ufo = vis.svg_ufo.selectAll(".bar")
+        .data(vis.ufoShapes)
         .transition()
         .duration(500)
         .attr("x", d => vis.xScale_ufo(d.ufo_shape))
+        .attr("width", vis.xScale_ufo.bandwidth())
         .attr("y", d => vis.yScale_ufo(d.Value))
-        .attr("width", d => vis.xScale_ufo.bandwidth())
         .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.Value))
         .style("fill", "#69b3a2");
     }
