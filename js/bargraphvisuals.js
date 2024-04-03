@@ -11,29 +11,29 @@ class BarGraphVisuals {
     constructor(_config_year, _config_ufo, _config_encounter, _config_time, _data) {
         this.config_year = {
         parentElement: _config_year.parentElement,
-        containerWidth: 500,
-        containerHeight: 400,
+        containerWidth: 400,
+        containerHeight: 300,
         margin: _config_year.margin || { top: 50, right: 60, bottom: 50, left: 100 },
         tooltipPadding: _config_year.tooltipPadding || 15,
         };
         this.config_ufo = {
         parentElement: _config_ufo.parentElement,
-        containerWidth: 500,
-        containerHeight: 400,
+        containerWidth: 400,
+        containerHeight: 300,
         margin: _config_ufo.margin || { top: 50, right: 60, bottom: 50, left: 100 },
         tooltipPadding: _config_ufo.tooltipPadding || 15,
         };
         this.config_encounter = {
         parentElement: _config_encounter.parentElement,
-        containerWidth: 500,
-        containerHeight: 400,
+        containerWidth: 400,
+        containerHeight: 300,
         margin: _config_encounter.margin || { top: 50, right: 60, bottom: 50, left: 100 },
         tooltipPadding: _config_encounter.tooltipPadding || 15,
         };
         this.config_time = {
         parentElement: _config_time.parentElement,
-        containerWidth: 500,
-        containerHeight: 400,
+        containerWidth: 400,
+        containerHeight: 300,
         margin: _config_time.margin || { top: 50, right: 60, bottom: 50, left: 100 },
         tooltipPadding: _config_time.tooltipPadding || 15,
         }; 
