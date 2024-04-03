@@ -19,8 +19,7 @@ async function main() {
     leafletMap.updateVis();
 
     // next we can generate the leaflet map
-    barGraphs = new BarGraphVisuals({ parentElement: '#month-graph'}, { parentElement: '#ufo-graph'}, { parentElement: '#encounter-graph'}, { parentElement: '#time-graph'}, DataStore.filteredData);
-    barGraphs.updateVis();
+    barGraphs = new BarGraphVisuals({ parentElement: '#month-graph'}, { parentElement: '#ufo-shape-graph'}, { parentElement: '#encounter-graph'}, { parentElement: '#time-graph'}, DataStore.filteredData);
 
 
     // Submit button to apply filters
