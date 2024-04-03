@@ -42,6 +42,15 @@
             <h2>Let's Filter Out</h2>
 
             <form id="Sub_column1">
+
+               <!-- TODO: Remove this (or rather, style it & move somewhere else): -->
+               <div style="display: flex; margin-bottom: 5px;">
+                  <label for="chkBrushMap" style="white-space: nowrap; font-size: 20px; margin-left: 50px;">Brush Map</label>
+                  <input type="checkbox" id="chkBrushMap">
+              </div>
+              <label style="font-size: 9px;">Please move this, I hate front-end stuff... -Jeremy</label>
+
+
                <div class="row">
                   <div class="col-25">
                      <label for="filter">Select Attribute:</label>
@@ -136,12 +145,14 @@
             </div>
          </div>
          <div id="tooltip"></div>
-      </div> <!-- row1 div -->
+         <div id="timeline-tooltip"></div>
+      </div>   <!-- row1 div -->
       
       <div id ="row2">
          <svg id="timeline"></svg>
          <button id="btnResetTimeline" type="button">Reset</button>
-      </div>
+         <br>
+      </div>   <!-- row2 div -->
 
       <div id ="graphs">
          <div id="month-graph"></div>
@@ -157,7 +168,6 @@
    -->
    <script src="js/d3.v6.min.js" type="text/javascript"></script>
    <script src="js/leaflet.js" type="text/javascript"></script>
-   <script src="js/encountergraph.js" type="text/javascript"></script>
    <script src="js/bargraphvisuals.js" type="text/javascript"></script>
    <script src="js/datastore.js" type="text/javascript"></script>
    <script src="js/csvdataparser.js" type="text/javascript"></script>

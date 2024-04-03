@@ -20,8 +20,19 @@ class Timeline {
 
         // first, we need to parse the dates from the dataset into JavaScript Date() objects
         var parsedDates = vis.data.map(function(d) {
-            return new Date(d.date_documented);
+            // Split the string into date and time components
+            const [dateString, timeString] = d.date_time.split(' ');
+
+            // Convert the date/time string into a format recognized by the Date constructor
+            const formattedDateTimeString = `${dateString} ${timeString}`;
+
+            // Create a new Date object using the formatted date/time string
+            return new Date(formattedDateTimeString);
         });
+
+        // save the min & max dates parsed
+        let minDate = d3.min(parsedDates);
+        let maxDate = d3.max(parsedDates);
 
         // then we'll set up margins and dimensions
         const margin = { top: 10, right: 50, bottom: 30, left: 50 };
@@ -63,18 +74,49 @@ class Timeline {
             .attr("class", "timeline-brush")
             .call(vis.brush);
 
+        // Tooltip
+        vis.brushGroup.on('mouseover', function(event, d) {
+            d3.select(this).transition()    // D3 selects the object we have moused over in order to perform operations on it
+                .duration('150')    // how long we are transitioning between the two states
+                .attr("r", 4);  // change radius
+            
+            // create a tool tip
+            d3.select("#timeline-tooltip")
+                .style('opacity', 1)
+                .style('z-index', 1000000)
+                .html(
+                    `<div class="tooltip-label">
+                        <ul>
+                            <li>${minDate.getFullYear()} - ${maxDate.getFullYear()}</li>
+                        </ul>
+                    </div>`
+                );
+        })
+        .on('mousemove', (event) => {
+            //position the tooltip
+            d3.select('#timeline-tooltip')
+                .style('left', (event.pageX + 10) + 'px')   
+                .style('top', (event.pageY + 10) + 'px');
+        })
+        .on('mouseleave', function() {  // function to add mouseover event
+            d3.select(this).transition()    // D3 selects the object we have moused over in order to perform operations on it
+                .duration('150')  // how long we are transitioning between the two states
+                .attr('r', 3)     // change radius
+            d3.select('#timeline-tooltip').style('opacity', 0);  // turn off the tooltip
+        });
+
         // Function to handle brushing
         function brushed(event) {
             if (!event.selection) return; // Ignore empty selections
             const [x0, x1] = event.selection.map(xScale.invert);    // x0 & x1 are Date() objects
 
             // Filter data based on selection
-            //const filteredData = vis.data.filter(d => {
             DataStore.filteredData = vis.data.filter(d => {
                 const date = new Date(d.date_documented);  // Convert d.date_documented to Date object
+                minDate = x0;   // updates min date
+                maxDate = x1;   // updates max date
                 return date >= x0 && date <= x1;
             });
-            //console.log(filteredData);  // log filtered data to console for development purposes
 
             updateVisualizations(); // calls the 'updateVisualizations()' method in the main.js script, which'll then update ALL visualizations
         }
