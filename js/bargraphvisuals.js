@@ -170,7 +170,7 @@ class BarGraphVisuals {
 
         var min = d3.min(data, d => {
             if (typeof d.date_time != "number") {
-                return d.date_time.split(" ")[0].split("/")[0]}
+                return Number(d.date_time.split(" ")[0].split("/")[0])}
             })
         var max = (d3.max(data, d => {
             if (typeof d.date_time != "number") {
@@ -481,7 +481,7 @@ class BarGraphVisuals {
 
         // Append brush
         vis.brush_enc = d3.brushX()
-        .extent([[0, 0], [vis.width_enc, vis.height_enc]])
+        .extent([[-20, 0], [vis.width_enc, vis.height_enc]])
         .on("start brush", brushed)
         .on("end", brushend);
 
