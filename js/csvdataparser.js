@@ -17,6 +17,14 @@ class CsvDataParser {
             const deepCopyRawData = JSON.parse(JSON.stringify(data));   // creates a deep copy so that modifications to this object don't affect the data object
             DataStore.rawData = deepCopyRawData;    // saves the raw data to the DataStore() class
 
+            /* TODO: Doesn't seem to work:
+            // Filter out data entries with a year greater than 5000
+            data = data.filter(d => {
+                const year = new Date(d.date_time).getFullYear(); // Extract the year from the date_time attribute
+                return year <= 5000; // Keep only entries with a year less than or equal to 5000
+            });
+            */
+
             // iterate through all data entries, parsing & converting values as necessary
             data.forEach(d => {
                 Object.keys(d).forEach(key => {
