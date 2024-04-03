@@ -116,46 +116,6 @@ header {
   .legend-btn[ufo_shape="disk"] .legend-symbol {
     background: #0f7d41;
   }
-  .legend-btn[ufo_shape="egg"] .legend-symbol {
-    background: #0f7d63;
-  }
-  .legend-btn[ufo_shape="fireball"] .legend-symbol {
-    background: #0f787d;
-  }
-  .legend-btn[ufo_shape="flash"] .legend-symbol {
-    background: #0e75a1;
-  }
-  .legend-btn[ufo_shape="formation"] .legend-symbol {
-    background: #0f4187;
-  }
-  .legend-btn[ufo_shape="light"] .legend-symbol {
-    background: #0f2387;
-  }
-  .legend-btn[ufo_shape="NA"] .legend-symbol {
-    background: #321bb3;
-  }
-  .legend-btn[ufo_shape="other"] .legend-symbol {
-    background: #3f1170;
-  }
-  .legend-btn[ufo_shape="oval"] .legend-symbol {
-    background: #9c3cc2;
-  }
-  .legend-btn[ufo_shape="rectangle"] .legend-symbol {
-    background: #744975;
-  }
-  .legend-btn[ufo_shape="sphere"] .legend-symbol {
-    background: #c286b4;
-  }
-  .legend-btn[ufo_shape="teardrop"] .legend-symbol {
-    background: #752b49;
-  }
-  .legend-btn[ufo_shape="triangle"] .legend-symbol {
-    background: #8f2845;
-  }
-  .legend-btn[ufo_shape="unknown"] .legend-symbol {
-    background: #ce9ab2;
-  }
-
   .legend-btn[month="1"] .legend-symbol {
     background: #c41d1d;
   }
@@ -400,4 +360,18 @@ header {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+.month-graph{
+   margin-top: 10px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+.ufo-graph{
+   margin-top: 10px;
+   padding-left: 100px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
 }

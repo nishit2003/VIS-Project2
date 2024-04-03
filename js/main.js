@@ -1,6 +1,6 @@
 /* This script will act as the main "runner" of the entire application. */
 // some script-level (global) variables
-let leafletMap, timeline;
+let leafletMap, timeline, barGraphVisuals, graph;
 //let btnSubmitFilters = document.getElementById("#btnSubmitFilters"); // the submit button for changing active on the map
 //let btnResetTimeline = document.getElementById("#btnResetTimeline"); // the submit button for resetting the timeline selection
 
@@ -17,6 +17,10 @@ async function main() {
     // next we can generate the leaflet map
     leafletMap = new LeafletMap({ parentElement: '#map'}, DataStore.filteredData, "", "topo");
     leafletMap.updateVis();
+
+    // next we can generate the leaflet map
+    barGraphs = new BarGraphVisuals({ parentElement: '#month-graph'}, { parentElement: '#ufo-shape-graph'}, { parentElement: '#encounter-graph'}, { parentElement: '#time-graph'}, DataStore.filteredData);
+
 
     // Submit button to apply filters
     document.getElementById("btnSubmitFilters").addEventListener("click", function() {
@@ -62,13 +66,13 @@ async function main() {
             leafletMap.data = DataStore.filteredData.filter(d => 
                 {if (typeof d.date_time != "number") {
                     var year = d.date_time.split(" ")[0].split("/")[2]
-                    if (Number(year) <= 1959 && Number(year) >= 1950 && selectedStatus.includes("1950")) {return true}
-                    else if (Number(year) <= 1969 && Number(year) >= 1960 && selectedStatus.includes("1960")) {return true}
-                    else if (Number(year) <= 1979 && Number(year) >= 1970 && selectedStatus.includes("1970")) {return true}
-                    else if (Number(year) <= 1989 && Number(year) >= 1980 && selectedStatus.includes("1980")) {return true}
-                    else if (Number(year) <= 1999 && Number(year) >= 1990 && selectedStatus.includes("1990")) {return true}
-                    else if (Number(year) <= 2009 && Number(year) >= 2000 && selectedStatus.includes("2000")) {return true}
-                    else if (Number(year) <= 2019 && Number(year) >= 2010 && selectedStatus.includes("2010")) {return true}
+                    if (Number(year) <= 9 && Number(year) >= 0 && selectedStatus.includes("2000")) {return true}
+                    else if (Number(year) <= 19 && Number(year) >= 10 && selectedStatus.includes("2010")) {return true}
+                    else if (Number(year) <= 59 && Number(year) >= 50 && selectedStatus.includes("1950")) {return true}
+                    else if (Number(year) <= 69 && Number(year) >= 60 && selectedStatus.includes("1960")) {return true}
+                    else if (Number(year) <= 79 && Number(year) >= 70 && selectedStatus.includes("1970")) {return true}
+                    else if (Number(year) <= 89 && Number(year) >= 80 && selectedStatus.includes("1980")) {return true}
+                    else if (Number(year) <= 99 && Number(year) >= 90 && selectedStatus.includes("1990")) {return true}
                     else {return false}
                 }
 
@@ -96,7 +100,7 @@ async function main() {
         else if (leafletMap.filter == 'time_day') {
             leafletMap.data = DataStore.filteredData.filter(d => {
                 if (typeof d.date_time != "number") {
-                    var hour = d.date_time.split(" ")[1].split(":")[1]
+                    var hour = d.date_time.split(" ")[1].split(":")[0]
                     if ((Number(hour) <= 5 || Number(hour) >= 22) && selectedStatus.includes("0:00")) {return true}
                     else if ((Number(hour) >= 6 && Number(hour) <= 10) && selectedStatus.includes("6:00")) {return true}
                     else if ((Number(hour) >= 11 && Number(hour) <= 17) && selectedStatus.includes("12:00")) {return true}
@@ -133,7 +137,8 @@ async function main() {
  *  Inside the class method itself, we can target the 'DataStore.filteredData' which is also directly modified from UI controls.
  */
 function updateVisualizations() {
-    console.log("called main script updateVisualizations() method");        // testing
+    console.log("called main script updateVisualizations() method"); 
+    leafletMap.data = DataStore.filteredData       // testing
     leafletMap.updateVis();
     timeline.updateVis();
 
