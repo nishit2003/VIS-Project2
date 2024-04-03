@@ -120,14 +120,14 @@ class BarGraphVisuals {
             .text(`Months Histogram`);
 
         const brushed = (event) => {
-        if (!event.selection) return;
-        var [x0, x1] = event.selection;
-        const selectedBars = vis.bins_month.filter(d => x0 <= vis.xScale_month(d.x0) && x1 >= vis.xScale_month(d.x1));
-        const selectedData = selectedBars.flatMap(bin => bin.map(d => d));
-        vis.bars_month.classed("selected", d => x0 <= vis.xScale_month(d.x0) && x1 >= vis.xScale_month(d.x1));
-        vis.bars_month.filter(".selected").style("fill", "blue");
-        vis.bars_month.filter(":not(.selected)").style("fill", "#69b3a2");
-        vis.data = selectedData
+            if (!event.selection) return;
+            var [x0, x1] = event.selection;
+            const selectedBars = vis.bins_month.filter(d => x0 <= vis.xScale_month(d.x0) && x1 >= vis.xScale_month(d.x1));
+            const selectedData = selectedBars.flatMap(bin => bin.map(d => d));
+            vis.bars_month.classed("selected", d => x0 <= vis.xScale_month(d.x0) && x1 >= vis.xScale_month(d.x1));
+            vis.bars_month.filter(".selected").style("fill", "blue");
+            vis.bars_month.filter(":not(.selected)").style("fill", "#69b3a2");
+            vis.data = selectedData
         }
 
         const brushend = (event) => {
@@ -168,7 +168,6 @@ class BarGraphVisuals {
 
         vis.bins_month = vis.histogram_month(vis.data)
 
-        vis.xScale_month.domain([5, 7])
         // Update yScale domain based on data
         vis.yScale_month.domain([0, d3.max(vis.bins_month, d => d.length)]);
 
@@ -190,98 +189,96 @@ class BarGraphVisuals {
         
     }
 
-    initVisUFO() {
-        let vis = this;
+initVisUFO() {
+    let vis = this;
 
-        vis.width_ufo = vis.config_ufo.containerWidth - vis.config_ufo.margin.left - vis.config_ufo.margin.right;
-        vis.height_ufo = vis.config_ufo.containerHeight - vis.config_ufo.margin.top - vis.config_ufo.margin.bottom;
+    vis.width_ufo = vis.config_ufo.containerWidth - vis.config_ufo.margin.left - vis.config_ufo.margin.right;
+    vis.height_ufo = vis.config_ufo.containerHeight - vis.config_ufo.margin.top - vis.config_ufo.margin.bottom;
 
-        // Create SVG
-        vis.svg_ufo = d3.select(vis.config_ufo.parentElement)
+    // Create SVG
+    vis.svg_ufo = d3.select(vis.config_ufo.parentElement)
         .append('svg')
         .attr('width', vis.config_ufo.containerWidth)
         .attr('height', vis.config_ufo.containerHeight)
         .append('g')
         .attr('transform', `translate(${vis.config_ufo.margin.left},${vis.config_ufo.margin.top})`);
 
-        // Calculate frequency of each ufo_shape
-        vis.ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
+    // Calculate frequency of each ufo_shape
+    vis.ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
 
-        console.log(Array.from(vis.ufoShapeCounts, Value => Value[0] ))
+    // Convert the rollup map to an array of objects
+    vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
 
-        // Convert the rollup map to an array of objects
-        vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
+    // X axis
+    vis.xScale_ufo = d3.scaleBand()
+        .range([0, vis.width_ufo])
+        .domain(vis.ufoShapes.map(d => d.ufo_shape))
+        .padding(0.2);
 
+    // Add Y axis
+    vis.yScale_ufo = d3.scaleLinear()
+        .domain([0, d3.max(vis.ufoShapes, d => d.Value)]) // Adjust domain based on the maximum frequency
+        .range([vis.height_ufo, 0]);
 
-        // X axis
-        vis.xScale_ufo = d3.scaleBand()
-            .range([0, vis.width_ufo])
-            .domain(vis.ufoShapes.map(d => d.ufo_shape))
-            .padding(0.2);
+    // Initialize axes
+    vis.xAxis_ufo = d3.axisBottom(vis.xScale_ufo)
 
-        // Add Y axis
-        vis.yScale_ufo = d3.scaleLinear()
-            .domain([0, d3.max(vis.ufoShapes, d => d.Value)]) // Adjust domain based on the maximum frequency
-            .range([vis.height_ufo, 0]);
+    vis.yAxis_ufo = d3.axisLeft(vis.yScale_ufo)
 
-        // Initialize axes
-        vis.xAxis_ufo = d3.axisBottom(vis.xScale_ufo)
+    // Update the domain of y scale with new data
+    vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
 
-        vis.yAxis_ufo = d3.axisLeft(vis.yScale_ufo)
-
-        // Update the domain of y scale with new data
-        vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
-
-        vis.svg_ufo.append("g")
+    vis.svg_ufo.append("g")
         .attr("class", "x-axis")
         .attr("transform", `translate(0, ${vis.height_ufo})`) // Corrected translation
         .call(vis.xAxis_ufo);
 
-        // Append Y axis
-        vis.svg_ufo.append("g")
+    // Append Y axis
+    vis.svg_ufo.append("g")
         .attr("class", "y-axis")
         .call(vis.yAxis_ufo);
 
-        // Append both axis titles
-        vis.svg_ufo.append('text')
-            .attr('y', vis.height_ufo + 25)
-            .attr('x', vis.width_ufo)
-            .attr('dy', '.71em')
-            .style('text-anchor', 'end')
-            .text("Shape");
+    // Append both axis titles
+    vis.svg_ufo.append('text')
+        .attr('y', vis.height_ufo + 25)
+        .attr('x', vis.width_ufo)
+        .attr('dy', '.71em')
+        .style('text-anchor', 'end')
+        .text("Shape");
 
-        vis.svg_ufo.append('text')
-            .attr('x', -80)
-            .attr('y', -5)
-            .attr('dy', '.71em')
-            .text("Frequency");
+    vis.svg_ufo.append('text')
+        .attr('x', -80)
+        .attr('y', -5)
+        .attr('dy', '.71em')
+        .text("Frequency");
 
-        vis.svg_ufo.append('text')
-            .attr('x', vis.width_ufo/5)
-            .attr('y', -40)
-            .attr('font-size', "px")
-            .attr('dy', '.71em')
-            .text(`UFO Shape Histogram`);
+    vis.svg_ufo.append('text')
+        .attr('x', vis.width_ufo / 5)
+        .attr('y', -40)
+        .attr('font-size', "px")
+        .attr('dy', '.71em')
+        .text(`UFO Shape Histogram`);
 
+    // Convert ufoShapes to histogram bins
+    vis.histogramData = vis.ufoShapes.map(d => ({
+        ufo_shape: d.ufo_shape,
+        frequency: d.Value
+    }));
 
-        vis.bars_ufo = vis.svg_ufo.selectAll(".bar")
-            .data(vis.ufoShapes)
-            .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", d => vis.xScale_ufo(d.ufo_shape))
-            .attr("y", d => vis.yScale_ufo(d.Value)) // Corrected yScale access
-            .attr("width", d => vis.xScale_ufo.bandwidth())
-            .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.Value))
-            .style("fill", "#69b3a2");
+    // Draw histogram bars
+    vis.svg_ufo.selectAll(".bar")
+        .data(vis.histogramData)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", d => vis.xScale_ufo(d.ufo_shape))
+        .attr("y", d => vis.yScale_ufo(d.frequency))
+        .attr("width", vis.xScale_ufo.bandwidth())
+        .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.frequency))
+        .style("fill", "#69b3a2");
+}
 
-        console.log(vis.data)
-        console.log(vis.ufoShapes)
-    }
-
-
-    updateVisUFO() {
+updateVisUFO() {
     let vis = this;
-
 
     // Calculate frequency of each ufo_shape
     vis.ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
@@ -307,17 +304,31 @@ class BarGraphVisuals {
         .duration(500)
         .call(vis.yAxis_ufo);
 
+    // Convert ufoShapes to histogram bins
+    const histogramData = vis.ufoShapes.map(d => ({
+        ufo_shape: d.ufo_shape,
+        frequency: d.Value
+    }));
+
     // Update existing bars
     vis.bars_ufo = vis.svg_ufo.selectAll(".bar")
-        .data(vis.ufoShapes)
+        .data(histogramData);
+
+    // Enter new bars
+    vis.bars_ufo.enter().append("rect")
+        .attr("class", "bar")
+        .merge(vis.bars_ufo)
         .transition()
         .duration(500)
         .attr("x", d => vis.xScale_ufo(d.ufo_shape))
         .attr("width", vis.xScale_ufo.bandwidth())
-        .attr("y", d => vis.yScale_ufo(d.Value))
-        .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.Value))
+        .attr("y", d => vis.yScale_ufo(d.frequency))
+        .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.frequency))
         .style("fill", "#69b3a2");
-    }
+
+    // Remove bars that are not needed
+    vis.bars_ufo.exit().remove();
+}
 
     initVisEncounter() {
 
