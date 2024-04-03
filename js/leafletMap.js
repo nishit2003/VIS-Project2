@@ -82,7 +82,7 @@ class LeafletMap {
         // these are the city locations, displayed as a set of dots 
         vis.Dots = vis.svg.selectAll('circle')
             //.data(vis.data)
-            .data(DataStore.filteredData)
+            .data(vis.data)
             .join('circle')
             .attr("fill", "steelblue")
             .attr("stroke", "black")
@@ -135,6 +135,7 @@ class LeafletMap {
 
         // Enter new dots
         vis.Dots.enter()
+            .data(vis.data)
             .append('circle')
             .attr("fill", "steelblue")
             .attr("stroke", "black")
@@ -168,13 +169,13 @@ class LeafletMap {
             vis.Dots.attr("fill", d => {
                 if (typeof d.date_time != "number") {
                     var year = d.date_time.split(" ")[0].split("/")[2]
-                    if (Number(year) <= 1959) {return vis.colorScale("1950")}
-                    else if (Number(year) <= 1969) {return vis.colorScale("1960")}
-                    else if (Number(year) <= 1979) {return vis.colorScale("1970")}
-                    else if (Number(year) <= 1989) {return vis.colorScale("1980")}
-                    else if (Number(year) <= 1999) {return vis.colorScale("1990")}
-                    else if (Number(year) <= 2009) {return vis.colorScale("2000")}
-                    else if (Number(year) <= 2019) {return vis.colorScale("2010")}
+                    if (Number(year) <= 9) {return vis.colorScale("2000")}
+                    else if (Number(year) <= 19) {return vis.colorScale("2010")}
+                    else if (Number(year) <= 59) {return vis.colorScale("1950")}
+                    else if (Number(year) <= 69) {return vis.colorScale("1960")}
+                    else if (Number(year) <= 79) {return vis.colorScale("1970")}
+                    else if (Number(year) <= 89) {return vis.colorScale("1980")}
+                    else if (Number(year) <= 99) {return vis.colorScale("1990")}
                 }
                 else {return vis.colorScale("2010")}
             })
@@ -204,10 +205,8 @@ class LeafletMap {
         }
         else if (filter == "ufo_shape") {
             vis.colorScale = d3.scaleOrdinal()
-            .range(['#c41d1d', '#995f12', '#998c12', "#7a9912", "#3b9912", "#0f7d1c", "#0f7d41", "#0f7d63", "#0f787d", "#0e75a1",
-                    "#0f4187", "#0f2387", "#321bb3", "#3f1170", "#9c3cc2", "#744975", "#c286b4", "#752b49", "#8f2845", "#ce9ab2"])
-            .domain(['changing','chevron', "cigar", "circle", "cylinder", "diamond", "disk", "egg", "fireball", "flash", 
-                    "formation", "light", "NA", "other", "oval", "rectangle", "sphere", "teardrop", "triangle", "unknown"]);
+            .range(['#c41d1d', '#995f12', '#998c12', "#7a9912", "#3b9912", "#0f7d1c"])
+            .domain(['changing','chevron', "cigar", "circle", "cylinder", "diamond", "disk"]);
             vis.Dots.attr("fill", d => vis.colorScale(d.ufo_shape))
         }
         else if (filter == "time_day") {
@@ -216,7 +215,7 @@ class LeafletMap {
             .domain(['0:00','6:00', "12:00", "18:00"]);
             vis.Dots.attr("fill", d => {
                 if (typeof d.date_time != "number") {
-                    var hour = d.date_time.split(" ")[1].split(":")[1]
+                    var hour = d.date_time.split(" ")[1].split(":")[0]
                     if (Number(hour) <= 5 || Number(hour) >= 22) {return vis.colorScale("0:00")}
                     else if (Number(hour) >= 6 && Number(hour) <= 10) {return vis.colorScale("6:00")}
                     else if (Number(hour) >= 11 && Number(hour) <= 17) {return vis.colorScale("12:00")}
