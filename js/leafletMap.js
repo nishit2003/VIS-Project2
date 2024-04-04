@@ -81,8 +81,7 @@ class LeafletMap {
         vis.radiusSize = 3;
         // these are the city locations, displayed as a set of dots 
         vis.Dots = vis.svg.selectAll('circle')
-            //.data(vis.data)
-            .data(DataStore.filteredData)
+            .data(vis.data)
             .join('circle')
             .attr("fill", "steelblue")
             .attr("stroke", "black")
@@ -275,7 +274,7 @@ class LeafletMap {
                 ];
 
                 // Filter data points based on selection bounds
-                DataStore.filteredData = vis.data.filter(d => {
+                vis.data = DataStore.filteredData.filter(d => {
                     const latLngBounds = L.latLngBounds(bounds[0], bounds[1]);  // Create LatLngBounds from brush selection bounds
                     const latLng = L.latLng(d.latitude, d.longitude);   // Create LatLng object from data point coordinates
                     return latLngBounds.contains(latLng);   // Check if LatLngBounds contains the LatLng object
