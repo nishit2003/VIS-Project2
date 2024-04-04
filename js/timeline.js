@@ -27,7 +27,14 @@ class Timeline {
             const formattedDateTimeString = `${dateString} ${timeString}`;
 
             // Create a new Date object using the formatted date/time string
-            return new Date(formattedDateTimeString);
+            let dateObj = new Date(formattedDateTimeString);
+
+            // Adjust the year if it's greater than 2024 to interpret it as a date in the 1900s
+            if (dateObj.getFullYear() > 2024) {
+                dateObj.setFullYear(dateObj.getFullYear() - 100);
+            }
+
+            return dateObj;
         });
 
         // save the min & max dates parsed
