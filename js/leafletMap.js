@@ -167,7 +167,7 @@ class LeafletMap {
                 .range(["#585661", '#9151a8', '#85152f', '#b0522a', "#b09a2a",  "#186e26",  "#094263"])
                 .domain(['1950','1960',"1970","1980","1990", "2000", "2010"]);
             vis.Dots.attr("fill", d => {
-                if (typeof d.date_time != "number") {
+                if (d.date_time.length > 6) {
                     var year = d.date_time.split(" ")[0].split("/")[2]
                     if (Number(year) <= 9) {return vis.colorScale("2000")}
                     else if (Number(year) <= 19) {return vis.colorScale("2010")}
@@ -185,7 +185,7 @@ class LeafletMap {
             .range(['#c41d1d', '#995f12', '#998c12', "#7a9912", "#3b9912", "#0f7d1c", "#0f7d41", "#0f7d63", "#0f787d", "#0e75a1", "#0f4187", "#0f2387"])
             .domain(['1','2', "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]);
             vis.Dots.attr("fill", d => {
-                if (typeof d.date_time != "number") {
+                if (d.date_time.length > 6) {
                     var month = d.date_time.split(" ")[0].split("/")[0]
                     if (Number(month) == 1) {return vis.colorScale("1")}
                     else if (Number(month) == 2) {return vis.colorScale("2")}
@@ -214,7 +214,7 @@ class LeafletMap {
             .range(["#19544e", '#0f780d', '#83b010', '#b04010'])
             .domain(['0:00','6:00', "12:00", "18:00"]);
             vis.Dots.attr("fill", d => {
-                if (typeof d.date_time != "number") {
+                if (d.date_time.length > 6) {
                     var hour = d.date_time.split(" ")[1].split(":")[0]
                     if (Number(hour) <= 5 || Number(hour) >= 22) {return vis.colorScale("0:00")}
                     else if (Number(hour) >= 6 && Number(hour) <= 10) {return vis.colorScale("6:00")}

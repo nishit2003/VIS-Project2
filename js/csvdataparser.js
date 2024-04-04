@@ -27,6 +27,7 @@ class CsvDataParser {
 
             // iterate through all data entries, parsing & converting values as necessary
             data.forEach(d => {
+                if (d.date_time.length < 6) {return;}
                 Object.keys(d).forEach(key => {
                     const NUMERIC_VALUE = +d[key];
                     if (isNaN(NUMERIC_VALUE)) {

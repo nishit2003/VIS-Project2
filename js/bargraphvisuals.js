@@ -8,7 +8,7 @@ class BarGraphVisuals {
      * @param {Object}
      * @param {Array}
      */
-    constructor(_config_year, _config_ufo, _config_encounter, _config_time, _data) {
+    constructor(_config_year, _config_ufo, _config_encounter, _config_time, _data, _map) {
         this.config_year = {
         parentElement: _config_year.parentElement,
         containerWidth: 500,
@@ -36,13 +36,15 @@ class BarGraphVisuals {
         containerHeight: 400,
         margin: _config_time.margin || { top: 50, right: 60, bottom: 50, left: 100 },
         tooltipPadding: _config_time.tooltipPadding || 15,
-        };
+        }; 
         this.data = _data;
 
         this.initVisMonth()
         this.initVisUFO()
         this.initVisEncounter()
         this.initVisTimeDay()
+        this.map = _map
+        this.map.data = _data
     }
     
     initVisMonth() {
@@ -75,7 +77,7 @@ class BarGraphVisuals {
         // Create histogram layout
         vis.histogram_month = d3.histogram()
         .value(d => {
-            if (typeof d.date_time != "number") {
+            if (d.date_time.length > 6) {
                 return d.date_time.split(" ")[0].split("/")[0]}
             })
         .domain(vis.xScale_month.domain())
@@ -100,42 +102,47 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_month.append('text')
-            .attr('y', vis.height_month + 25)
+            .attr('y', vis.height_month + 35)
             .attr('x', vis.width_month)
             .attr('dy', '.71em')
             .style('text-anchor', 'end')
+            .attr('font-size', '16px')
             .text("Month");
 
         vis.svg_month.append('text')
-            .attr('x', -80)
-            .attr('y', -5)
+            .attr('x', -65)
+            .attr('y', -20)
+            .attr('font-size', '16px')
             .attr('dy', '.71em')
             .text("Frequency");
 
         vis.svg_month.append('text')
             .attr('x', vis.width_month/5)
             .attr('y', -40)
-            .attr('font-size', "px")
+            .attr('font-size', "16px")
             .attr('dy', '.71em')
             .text(`Months Histogram`);
 
         const brushed = (event) => {
-        if (!event.selection) return;
-        var [x0, x1] = event.selection;
-        const selectedBars = vis.bins_month.filter(d => x0 <= vis.xScale_month(d.x0) && x1 >= vis.xScale_month(d.x1));
-        const selectedData = selectedBars.flatMap(bin => bin.map(d => d));
-        vis.bars_month.classed("selected", d => x0 <= vis.xScale_month(d.x0) && x1 >= vis.xScale_month(d.x1));
-        vis.bars_month.filter(".selected").style("fill", "blue");
-        vis.bars_month.filter(":not(.selected)").style("fill", "#69b3a2");
-        vis.data = selectedData
+            if (!event.selection) return;
+            var [x0, x1] = event.selection;
+            const selectedBars = vis.bins_month.filter(d => x0 <= vis.xScale_month(d.x0) && x1 >= vis.xScale_month(d.x1));
+            vis.selectedData = selectedBars.flatMap(bin => bin.map(d => d));
+            vis.bars_month.classed("selected", d => x0 <= vis.xScale_month(d.x0) && x1 >= vis.xScale_month(d.x1));
+            vis.bars_month.filter(".selected").style("fill", "blue");
+            vis.bars_month.filter(":not(.selected)").style("fill", "#69b3a2");
         }
 
         const brushend = (event) => {
             if (!event.selection) return;
-            vis.updateVis();
-            vis.updateVisEncounter();
-            vis.updateVisTimeDay();
-            vis.updateVisUFO();
+            vis.bars_month.filter(".selected").style("fill", "#69b3a2");
+            vis.data = vis.selectedData
+            vis.updateVis(vis.selectedData);
+            vis.updateVisEncounter(vis.selectedData);
+            vis.updateVisTimeDay(vis.selectedData);
+            vis.updateVisUFO(vis.selectedData);
+            vis.map.data = vis.selectedData
+            vis.map.updateVis()
         }
 
         // Append brush
@@ -163,12 +170,22 @@ class BarGraphVisuals {
 
     }
 
-    updateVis() {
+    updateVis(data) {
         let vis = this;
 
-        vis.bins_month = vis.histogram_month(vis.data)
+        vis.bins_month = vis.histogram_month(data)
 
-        vis.xScale_month.domain([5, 7])
+        var min = d3.min(data, d => {
+            if (d.date_time.length > 6) {
+                return Number(d.date_time.split(" ")[0].split("/")[0])}
+            })
+        var max = (d3.max(data, d => {
+            if (d.date_time.length > 6) {
+                return Number(d.date_time.split(" ")[0].split("/")[0])}
+            }))
+
+        vis.xScale_month.domain([min, max + 1])
+
         // Update yScale domain based on data
         vis.yScale_month.domain([0, d3.max(vis.bins_month, d => d.length)]);
 
@@ -198,20 +215,17 @@ class BarGraphVisuals {
 
         // Create SVG
         vis.svg_ufo = d3.select(vis.config_ufo.parentElement)
-        .append('svg')
-        .attr('width', vis.config_ufo.containerWidth)
-        .attr('height', vis.config_ufo.containerHeight)
-        .append('g')
-        .attr('transform', `translate(${vis.config_ufo.margin.left},${vis.config_ufo.margin.top})`);
+            .append('svg')
+            .attr('width', vis.config_ufo.containerWidth)
+            .attr('height', vis.config_ufo.containerHeight)
+            .append('g')
+            .attr('transform', `translate(${vis.config_ufo.margin.left},${vis.config_ufo.margin.top})`);
 
         // Calculate frequency of each ufo_shape
         vis.ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
 
-        console.log(Array.from(vis.ufoShapeCounts, Value => Value[0] ))
-
         // Convert the rollup map to an array of objects
         vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
-
 
         // X axis
         vis.xScale_ufo = d3.scaleBand()
@@ -233,90 +247,147 @@ class BarGraphVisuals {
         vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
 
         vis.svg_ufo.append("g")
-        .attr("class", "x-axis")
-        .attr("transform", `translate(0, ${vis.height_ufo})`) // Corrected translation
-        .call(vis.xAxis_ufo);
+            .attr("class", "x-axis")
+            .attr("transform", `translate(0, ${vis.height_ufo})`) // Corrected translation
+            .call(vis.xAxis_ufo)
+            .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end");;
 
         // Append Y axis
         vis.svg_ufo.append("g")
-        .attr("class", "y-axis")
-        .call(vis.yAxis_ufo);
+            .attr("class", "y-axis")
+            .call(vis.yAxis_ufo);
 
         // Append both axis titles
         vis.svg_ufo.append('text')
-            .attr('y', vis.height_ufo + 25)
+            .attr('y', vis.height_ufo + 35)
             .attr('x', vis.width_ufo)
             .attr('dy', '.71em')
             .style('text-anchor', 'end')
-            .text("Shape");
+            .attr('font-size', '16px')
+            .text("Shapes");
 
         vis.svg_ufo.append('text')
-            .attr('x', -80)
-            .attr('y', -5)
+            .attr('x', -65)
+            .attr('y', -20)
+            .attr('font-size', '16px')
             .attr('dy', '.71em')
             .text("Frequency");
 
         vis.svg_ufo.append('text')
-            .attr('x', vis.width_ufo/5)
+            .attr('x', vis.width_ufo / 5)
             .attr('y', -40)
-            .attr('font-size', "px")
+            .attr('font-size', "16px")
             .attr('dy', '.71em')
             .text(`UFO Shape Histogram`);
 
+        // Convert ufoShapes to histogram bins
+        vis.histogramData = vis.ufoShapes.map(d => ({
+            ufo_shape: d.ufo_shape,
+            frequency: d.Value
+        }));
 
-        vis.bars_ufo = vis.svg_ufo.selectAll(".bar")
-            .data(vis.ufoShapes)
+        const brushed = (event) => {
+            if (!event.selection) return;
+            var [x0, x1] = event.selection;
+            
+            // Filter bars within the brushed area
+            const selectedBars = vis.histogramData.filter(d => {
+                const barX = vis.xScale_ufo(d.ufo_shape);
+                return barX >= x0 && barX <= x1;
+            });
+
+            vis.svg_ufo.selectAll(".bar").classed("selected", d => selectedBars.includes(d));
+            vis.svg_ufo.selectAll(".bar").filter(".selected").style("fill", "blue");
+            vis.svg_ufo.selectAll(".bar").filter(":not(.selected)").style("fill", "#69b3a2");
+
+            // Filter data points within the brushed area
+            vis.selectedData = vis.data.filter(d => {
+                const barX = vis.xScale_ufo(d.ufo_shape);
+                return barX >= x0 && barX <= x1;
+            });
+        }
+
+        const brushend = (event) => {
+            if (!event.selection) return;
+            vis.svg_ufo.selectAll(".bar").filter(".selected").style("fill", "#69b3a2");
+            vis.data = vis.selectedData
+            vis.updateVis(vis.selectedData);
+            vis.updateVisEncounter(vis.selectedData);
+            vis.updateVisTimeDay(vis.selectedData);
+            vis.updateVisUFO(vis.selectedData);
+            vis.map.data = vis.selectedData
+            vis.map.updateVis()
+        }
+
+        // Append brush
+        vis.brush_ufo = d3.brushX()
+        .extent([[0, 0], [vis.width_ufo, vis.height_ufo]])
+        .on("start brush", brushed)
+        .on("end", brushend);
+
+        vis.svg_ufo.append("g")
+        .attr("class", "brush")
+        .call(vis.brush_ufo);
+
+        // Draw histogram bars
+        vis.svg_ufo.selectAll(".bar")
+            .data(vis.histogramData)
             .enter().append("rect")
             .attr("class", "bar")
             .attr("x", d => vis.xScale_ufo(d.ufo_shape))
-            .attr("y", d => vis.yScale_ufo(d.Value)) // Corrected yScale access
-            .attr("width", d => vis.xScale_ufo.bandwidth())
-            .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.Value))
+            .attr("y", d => vis.yScale_ufo(d.frequency))
+            .attr("width", vis.xScale_ufo.bandwidth())
+            .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.frequency))
             .style("fill", "#69b3a2");
-
-        console.log(vis.data)
-        console.log(vis.ufoShapes)
     }
 
+    updateVisUFO(data) {
+        let vis = this;
 
-    updateVisUFO() {
-    let vis = this;
+        // Calculate frequency of each ufo_shape
+        vis.ufoShapeCounts = d3.rollup(data, v => v.length, d => d.ufo_shape);
 
+        // Convert the rollup map to an array of objects
+        vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
 
-    // Calculate frequency of each ufo_shape
-    vis.ufoShapeCounts = d3.rollup(vis.data, v => v.length, d => d.ufo_shape);
+        // Update the domain of y scale with new data
+        vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
 
-    // Convert the rollup map to an array of objects
-    vis.ufoShapes = Array.from(vis.ufoShapeCounts, ([ufo_shape, Value]) => ({ ufo_shape, Value }));
+        // Update the domain of x scale with new data
+        vis.xScale_ufo.domain(vis.ufoShapes.map(d => d.ufo_shape));
 
-    // Update the domain of y scale with new data
-    vis.yScale_ufo.domain([0, d3.max(vis.ufoShapes, d => d.Value)]);
+        // Update the x-axis
+        vis.svg_ufo.select(".x-axis")
+            .call(vis.xAxis_ufo);
 
-    // Update the domain of x scale with new data
-    vis.xScale_ufo.domain(vis.ufoShapes.map(d => d.ufo_shape));
+        // Update the y-axis
+        vis.svg_ufo.select(".y-axis")
+            .call(vis.yAxis_ufo);
 
-    // Update the x-axis
-    vis.svg_ufo.select(".x-axis")
-        .transition()
-        .duration(500)
-        .call(vis.xAxis_ufo);
+        // Convert ufoShapes to histogram bins
+        vis.histogramData = vis.ufoShapes.map(d => ({
+            ufo_shape: d.ufo_shape,
+            frequency: d.Value
+        }));
 
-    // Update the y-axis
-    vis.svg_ufo.select(".y-axis")
-        .transition()
-        .duration(500)
-        .call(vis.yAxis_ufo);
+        // Update existing bars
+        vis.bars_ufo = vis.svg_ufo.selectAll(".bar")
+            .data(vis.histogramData);
 
-    // Update existing bars
-    vis.bars_ufo = vis.svg_ufo.selectAll(".bar")
-        .data(vis.ufoShapes)
-        .transition()
-        .duration(500)
-        .attr("x", d => vis.xScale_ufo(d.ufo_shape))
-        .attr("width", vis.xScale_ufo.bandwidth())
-        .attr("y", d => vis.yScale_ufo(d.Value))
-        .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.Value))
-        .style("fill", "#69b3a2");
+        // Enter new bars
+        vis.bars_ufo.enter().append("rect")
+            .attr("class", "bar")
+            .merge(vis.bars_ufo)
+            .attr("x", d => vis.xScale_ufo(d.ufo_shape))
+            .attr("width", vis.xScale_ufo.bandwidth())
+            .attr("y", d => vis.yScale_ufo(d.frequency))
+            .attr("height", d => vis.height_ufo - vis.yScale_ufo(d.frequency))
+            .style("fill", "#69b3a2");
+
+        // Remove bars that are not needed
+        vis.bars_ufo.exit().remove();
     }
 
     initVisEncounter() {
@@ -363,7 +434,10 @@ class BarGraphVisuals {
         vis.svg_enc.append("g")
         .attr("class", "x-axis")
         .attr("transform", `translate(0, ${vis.height_enc})`)
-        .call(vis.xAxis_enc);
+        .call(vis.xAxis_enc)
+        .selectAll("text")
+        .attr("transform", "translate(-10,0)rotate(-45)")
+        .style("text-anchor", "end");
 
         // Append Y axis
         vis.svg_enc.append("g")
@@ -372,22 +446,24 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_enc.append('text')
-            .attr('y', vis.height_enc + 25)
+            .attr('y', vis.height_enc + 35)
             .attr('x', vis.width_enc)
             .attr('dy', '.71em')
             .style('text-anchor', 'end')
+            .attr('font-size', '16px')
             .text("Seconds");
 
         vis.svg_enc.append('text')
-            .attr('x', -80)
-            .attr('y', -5)
+            .attr('x', -65)
+            .attr('y', -20)
+            .attr('font-size', '16px')
             .attr('dy', '.71em')
             .text("Frequency");
 
         vis.svg_enc.append('text')
             .attr('x', vis.width_enc/5)
             .attr('y', -40)
-            .attr('font-size', "px")
+            .attr('font-size', "16px")
             .attr('dy', '.71em')
             .text(`Encounter Length Histogram`);
 
@@ -404,12 +480,50 @@ class BarGraphVisuals {
         .attr("height", d => vis.height_enc - vis.yScale_enc(d.length))
         .style("fill", "#69b3a2");
 
+        const brushed = (event) => {
+            if (!event.selection) return;
+            var [x0, x1] = event.selection;
+            const selectedBars = vis.bins_enc.filter(d => x0 - 10 <= vis.xScale_enc(d.x0) && x1 >= vis.xScale_enc(d.x1));
+            vis.selectedData = selectedBars.flatMap(bin => bin.map(d => d));
+            vis.bars_enc.classed("selected", d => x0 <= vis.xScale_enc(d.x0) && x1 >= vis.xScale_enc(d.x1));
+            vis.bars_enc.filter(".selected").style("fill", "blue");
+            vis.bars_enc.filter(":not(.selected)").style("fill", "#69b3a2");
+        }
+
+        const brushend = (event) => {
+            if (!event.selection) return;
+            vis.bars_enc.filter(".selected").style("fill", "#69b3a2");
+            vis.data = vis.selectedData
+            vis.updateVis(vis.selectedData);
+            vis.updateVisEncounter(vis.selectedData);
+            vis.updateVisTimeDay(vis.selectedData);
+            vis.updateVisUFO(vis.selectedData);
+            vis.map.data = vis.selectedData
+            vis.map.updateVis()
+        }
+
+        // Append brush
+        vis.brush_enc = d3.brushX()
+        .extent([[-20, 0], [vis.width_enc, vis.height_enc]])
+        .on("start brush", brushed)
+        .on("end", brushend);
+
+        vis.svg_enc.append("g")
+        .attr("class", "brush")
+        .call(vis.brush_enc);
+
     }
 
-    updateVisEncounter() {
+    updateVisEncounter(data) {
         let vis = this;
 
-        vis.bins_enc = vis.histogram_enc(vis.data)
+        console.log(data)
+        vis.bins_enc = vis.histogram_enc(data)
+
+        var min = d3.min(data, d => d.encounter_length)
+        var max = Math.min(d3.max(data, d => d.encounter_length), 10800)
+        
+        vis.xScale_enc.domain([min, max])
 
         // Update yScale domain based on data
         vis.yScale_enc.domain([0, d3.max(vis.bins_enc, d => d.length)]);
@@ -463,7 +577,7 @@ class BarGraphVisuals {
         // Create histogram layout
         vis.histogram_time = d3.histogram()
         .value(d => {
-            if (typeof d.date_time != "number") {
+            if (d.date_time.length > 6) {
                 return d.date_time.split(" ")[1].split(":")[0]}
             })
         .domain(vis.xScale_time.domain())
@@ -488,22 +602,24 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_time.append('text')
-            .attr('y', vis.height_time + 25)
+            .attr('y', vis.height_time + 35)
             .attr('x', vis.width_time)
             .attr('dy', '.71em')
             .style('text-anchor', 'end')
-            .text("Hour of day");
+            .attr('font-size', '16px')
+            .text("Hour of Day");
 
         vis.svg_time.append('text')
-            .attr('x', -80)
-            .attr('y', -5)
+            .attr('x', -65)
+            .attr('y', -20)
+            .attr('font-size', '16px')
             .attr('dy', '.71em')
             .text("Frequency");
 
         vis.svg_time.append('text')
-            .attr('x', vis.width_time/5)
+            .attr('x', vis.width_enc/5)
             .attr('y', -40)
-            .attr('font-size', "px")
+            .attr('font-size', "16px")
             .attr('dy', '.71em')
             .text(`Hour Histogram`);
 
@@ -520,12 +636,57 @@ class BarGraphVisuals {
         .attr("height", d => vis.height_time - vis.yScale_time(d.length))
         .style("fill", "#69b3a2");
 
+        const brushed = (event) => {
+            if (!event.selection) return;
+            var [x0, x1] = event.selection;
+            const selectedBars = vis.bins_time.filter(d => x0 <= vis.xScale_time(d.x0) && x1 >= vis.xScale_time(d.x1));
+            vis.selectedData = selectedBars.flatMap(bin => bin.map(d => d));
+            vis.bars_time.classed("selected", d => x0 <= vis.xScale_time(d.x0) && x1 >= vis.xScale_time(d.x1));
+            vis.bars_time.filter(".selected").style("fill", "blue");
+            vis.bars_time.filter(":not(.selected)").style("fill", "#69b3a2");
+        }
+
+        const brushend = (event) => {
+            if (!event.selection) return;
+            vis.bars_time.filter(".selected").style("fill", "#69b3a2");
+            vis.updateVis(vis.selectedData);
+            vis.updateVisEncounter(vis.selectedData);
+            vis.updateVisTimeDay(vis.selectedData);
+            vis.updateVisUFO(vis.selectedData);
+            vis.map.data = vis.selectedData
+            vis.map.updateVis()
+        }
+
+        // Append brush
+        vis.brush_time = d3.brushX()
+        .extent([[0, 0], [vis.width_time, vis.height_time]])
+        .on("start brush", brushed)
+        .on("end", brushend);
+
+        vis.svg_time.append("g")
+        .attr("class", "brush")
+        .call(vis.brush_time);
+
     }
 
-    updateVisTimeDay() {
+    updateVisTimeDay(data) {
         let vis = this;
+        console.log(data)
 
-        vis.bins_time = vis.histogram_time(vis.data)
+        const hourValues = data.map(d => {
+            if (d.date_time.length > 6) {
+                return parseInt(d.date_time.split(" ")[1].split(":")[0]);
+            }
+            return null;
+        }).filter(d => d !== null);
+
+        // Calculate the minimum and maximum hour values
+        const minHour = d3.min(hourValues);
+        let maxHour = d3.max(hourValues);
+
+        // Update xScale domain based on the min and max hour values
+        vis.xScale_time.domain([minHour, maxHour + 1]);
+        vis.bins_time = vis.histogram_time(data)
 
         // Update yScale domain based on data
         vis.yScale_time.domain([0, d3.max(vis.bins_time, d => d.length)]);

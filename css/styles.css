@@ -362,16 +362,14 @@ header {
   cursor: pointer;
 }
 
-.month-graph{
-   margin-top: 10px;
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
+.graph-container {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #888;
+  border-radius: 10px; /* Rounded corners */
 }
-.ufo-graph{
-   margin-top: 10px;
-   padding-left: 100px;
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
+
+.graph {
+  flex-grow: 1;
 }
