@@ -33,6 +33,19 @@ function setupUICallbacks() {
         updateVisualizations(); // Call the function to update all visualizations
     });
 
+    document.getElementById("chkBrushMap").addEventListener("click", function() {
+        if (this.checked) {            
+            DataStore.brushingLeaflepMap = true;
+            leafletMap.initializeMapBrush();
+            leafletMap.disableMapInteraction();
+        }
+        else {            
+            DataStore.brushingLeaflepMap = false;
+            leafletMap.initializeMapBrush();
+            leafletMap.enableMapInteraction();
+        }
+    });
+
     // TODO: Add more callbacks as necessary:
     //  Simply follow the structure above (copy & paste for template) of targeting the UI element,
     //      doing whatever processing is necessary, and calling the updateVisualizations() method afterwards

@@ -160,10 +160,8 @@ function updateVisualizations() {
     barGraphs.updateVisUFO(leafletMap.data)
     barGraphs.updateVisEncounter(leafletMap.data)
     barGraphs.updateVisTimeDay(leafletMap.data)
-    timeline.updateVis();
 
-    //console.log("# of data points in rawData:", DataStore.rawData.length);  // testing
-    //console.log("# of data points shown:", DataStore.filteredData.length);  // testing
+    timeline.updateVis();
 
     // TODO: Add calls as necessary
 }

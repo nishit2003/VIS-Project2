@@ -708,6 +708,4 @@ class BarGraphVisuals {
         .attr("height", d => vis.height_time - vis.yScale_time(d.length));
         
     }
-
-
 }
