@@ -42,12 +42,11 @@ input {
 
 #row1 {
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 1fr 4fr 1fr;
   padding: 10px;
   height: 100%;
   width: 100%;
 }
-
 #filter {
   width: 80%;
 }
@@ -59,11 +58,12 @@ input {
   box-shadow: inset 2px 2px 10px black;
   text-align: center;
   align-items: center;
+  width: 100%;
   padding: 5px;
 }
 
 #Sub_column1 {
-  margin-top: 50%;
+  margin-top: 30%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -83,25 +83,30 @@ input {
 }
 
 #map {
-  padding: 50px;
+  padding: 68px;
   height: 79%;
+  border-style: groove;
+  box-shadow: inset 2px 2px 10px black;
 }
 
 /* Legend */
-.legend {
-  margin-top: 20px;
+#legend {
   border-style: groove;
   box-shadow: inset 2px 2px 10px black;
   border-radius: 30px;
   list-style: none;
-  padding: 0;
+  padding: 10px;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column; /* Change to column layout */
+  align-items: center; /* Center align the items */
   background-color: #f7f7f7; /* Added background color */
-  padding: 10px; /* Added padding */
-  max-width: 1400px; /* Adjusted max width */
-  margin-left: auto; /* Added margin */
-  margin-right: auto; /* Added margin */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px; /* Added padding */
+  max-width: 200px; /* Adjusted max width */
+  max-height: 564px;
+  margin-left: 0px; /* Added margin */
+  margin-right: 20px; /* Adjusted margin to move it closer to the map */
 }
 
 .legend-btn {
@@ -250,8 +255,7 @@ input {
 /* Toggle button */
 #toggleBtn {
   float: right;
-  margin-right: 35%;
-  
+  margin-right: 30%;  
 }
 
 /* Submit and Clear buttons */
@@ -280,12 +284,18 @@ input {
 }
 
 #column2 {
-  border-style: groove;
   margin: .5em;
-  box-shadow: inset 2px 2px 10px black;
   text-align: center;
   padding: 5px;
   
+  width: 95%;
+  padding-left: 2%;
+}
+
+#column3 {
+  text-align: center;
+  padding: 5px;
+  margin: .5em;
 }
 
 #row2 {
@@ -295,7 +305,6 @@ input {
   box-shadow: inset 2px 2px 10px black;
   text-align: center;
   padding: 5px;
-  border-style: groove;
   height: 100px;
   display: flex;
   align-items: center;
