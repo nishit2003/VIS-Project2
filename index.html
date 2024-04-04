@@ -255,6 +255,15 @@
        this.classList.toggle('selected');
      });
    });
+   // Add click event listener to the reset button
+   var resetBtn = document.getElementById("resetBtn");
+   resetBtn.addEventListener("click", function() {
+      // Reset the selected state of all legend buttons
+      var legendBtns = document.querySelectorAll('.legend-btn');
+      legendBtns.forEach(function(btn) {
+         btn.classList.remove('selected');
+    });
+});
 </script>
 </body>
 </html>
