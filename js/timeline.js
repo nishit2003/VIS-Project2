@@ -112,7 +112,7 @@ class Timeline {
 
             // Filter data based on selection
             DataStore.filteredData = vis.data.filter(d => {
-                const date = new Date(d.date_documented);  // Convert d.date_documented to Date object
+                const date = new Date(d.date_time);  // Convert d.date_documented to Date object
                 minDate = x0;   // updates min date
                 maxDate = x1;   // updates max date
                 return date >= x0 && date <= x1;
