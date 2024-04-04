@@ -102,12 +102,14 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_month.append('text')
-            .attr('y', vis.height_month + 35)
-            .attr('x', vis.width_month)
-            .attr('dy', '.71em')
-            .style('text-anchor', 'end')
-            .attr('font-size', '16px')
-            .text("Month");
+        .attr('y', vis.height_month + 35)
+        .attr('x', vis.width_month / 2) // Set x position to half of the SVG width
+        .attr('dy', '.71em')
+        .style('text-anchor', 'middle')
+        .style('alignment-baseline', 'middle')
+        .attr('font-size', '16px')
+        .text("Month");
+
 
         vis.svg_month.append('text')
             .attr('x', -65)
@@ -261,12 +263,12 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_ufo.append('text')
-            .attr('y', vis.height_ufo + 35)
-            .attr('x', vis.width_ufo)
-            .attr('dy', '.71em')
-            .style('text-anchor', 'end')
-            .attr('font-size', '16px')
-            .text("Shapes");
+        .attr('y', vis.height_ufo + 37)
+        .attr('x', vis.width_ufo / 2) // Set x position to half of the SVG width
+        .attr('dy', '.71em')
+        .style('text-anchor', 'middle')
+        .attr('font-size', '16px')
+        .text("Shapes");
 
         vis.svg_ufo.append('text')
             .attr('x', -65)
@@ -446,12 +448,12 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_enc.append('text')
-            .attr('y', vis.height_enc + 35)
-            .attr('x', vis.width_enc)
-            .attr('dy', '.71em')
-            .style('text-anchor', 'end')
-            .attr('font-size', '16px')
-            .text("Seconds");
+        .attr('y', vis.height_enc + 35)
+        .attr('x', vis.width_enc / 2) // Set x position to half of the SVG width
+        .attr('dy', '.71em')
+        .style('text-anchor', 'middle')
+        .attr('font-size', '16px')
+        .text("Seconds");
 
         vis.svg_enc.append('text')
             .attr('x', -65)
@@ -602,12 +604,12 @@ class BarGraphVisuals {
 
         // Append both axis titles
         vis.svg_time.append('text')
-            .attr('y', vis.height_time + 35)
-            .attr('x', vis.width_time)
-            .attr('dy', '.71em')
-            .style('text-anchor', 'end')
-            .attr('font-size', '16px')
-            .text("Hour of Day");
+        .attr('y', vis.height_time + 35)
+        .attr('x', vis.width_time / 2) // Set x position to half of the SVG width
+        .attr('dy', '.71em')
+        .style('text-anchor', 'middle')
+        .attr('font-size', '16px')
+        .text("Hour of Day");
 
         vis.svg_time.append('text')
             .attr('x', -65)
